@@ -579,27 +579,27 @@
                     <div class="bg-brand-900 text-white p-6 rounded-2xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 relative overflow-hidden">
                         
                         <!-- Hero Metric 1: Current Value -->
-                        <div class="space-y-1 md:border-r md:border-brand-700/60 md:pr-6">
-                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium">
+                        <div class="bg-brand-700/30 p-5 rounded-xl border border-brand-700/50 flex flex-col justify-between items-center text-center space-y-2">
+                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium justify-center">
                                 <span>Current Value</span>
                                 <div class="tooltip-container cursor-pointer">
                                     <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100/70"></i>
-                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed">
+                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed text-left">
                                         Active principal capital remaining in non-matured loans.
                                     </div>
                                 </div>
                             </div>
                             <p id="plan-current-val" class="text-3xl font-extrabold text-white tracking-tight">₹90,000</p>
-                            <p class="text-[11px] text-brand-100/60">Active capital in circulation</p>
+                            <span class="text-[10px] bg-brand-700/60 text-brand-100 px-2.5 py-0.5 rounded-full">Active capital in circulation</span>
                         </div>
 
                         <!-- Hero Metric 2: Net Returns -->
-                        <div class="space-y-1">
-                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium">
+                        <div class="bg-brand-700/30 p-5 rounded-xl border border-brand-700/50 flex flex-col justify-between items-center text-center space-y-2">
+                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium justify-center">
                                 <span>Net Returns</span>
                                 <div class="tooltip-container cursor-pointer">
                                     <i data-lucide="info" class="w-3.5 h-3.5 text-brand-500"></i>
-                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-3 rounded-xl shadow-xl font-normal space-y-1 w-56">
+                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-3 rounded-xl shadow-xl font-normal space-y-1 w-56 text-left">
                                         <div class="font-bold border-b border-neutralScale-500 pb-1 text-brand-500">Plan Returns Formula</div>
                                         <div class="flex justify-between"><span>Net Returns:</span> <span id="tt-returns" class="font-bold text-brand-500">+₹21,500</span></div>
                                         <div class="flex justify-between"><span>Total Amount Lent:</span> <span id="tt-lent" class="font-medium">₹1,96,000</span></div>
@@ -609,7 +609,7 @@
                                 </div>
                             </div>
                             <p id="plan-returns-val" class="text-3xl font-extrabold text-brand-500 tracking-tight">+₹21,500</p>
-                            <p class="text-[11px] text-brand-100/60">Net profit generated to date</p>
+                            <span class="text-[10px] bg-brand-500/20 text-brand-500 font-semibold px-2.5 py-0.5 rounded-full">Net profit generated to date</span>
                         </div>
 
                     </div>

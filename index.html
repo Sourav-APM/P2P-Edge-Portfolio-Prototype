@@ -572,131 +572,118 @@
                     </div>
                 </div>
 
-                <!-- Expanded 3-Column Grid Layout with Full Un-shortened Headings -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- NEW DESIGN STRUCTURE: Clear visual hierarchy & grid symmetry -->
+                <div class="space-y-4">
                     
-                    <!-- 1. Current Value -->
-                    <div class="bg-white p-5 rounded-2xl border border-neutralScale-200 shadow-2xs hover:shadow-xs transition space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-neutralScale-500 tracking-wide flex items-center">
-                                Current Value
-                                <div class="tooltip-container ml-1.5 cursor-pointer">
-                                    <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500"></i>
+                    <!-- HERO LEVEL: Primary High-Priority Metrics -->
+                    <div class="bg-brand-900 text-white p-6 rounded-2xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 relative overflow-hidden">
+                        
+                        <!-- Hero Metric 1: Current Value -->
+                        <div class="space-y-1 md:border-r md:border-brand-700/60 md:pr-6">
+                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium">
+                                <span>Current Value</span>
+                                <div class="tooltip-container cursor-pointer">
+                                    <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100/70"></i>
                                     <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed">
-                                        Active principal capital remaining in non-matured loans. Resets to ₹0 for closed state.
+                                        Active principal capital remaining in non-matured loans.
                                     </div>
                                 </div>
-                            </span>
-                            <div class="w-8 h-8 rounded-lg bg-neutralScale-100 flex items-center justify-center text-neutralScale-900">
-                                <i data-lucide="wallet" class="w-4 h-4"></i>
                             </div>
+                            <p id="plan-current-val" class="text-3xl font-extrabold text-white tracking-tight">₹90,000</p>
+                            <p class="text-[11px] text-brand-100/60">Active capital in circulation</p>
                         </div>
-                        <p id="plan-current-val" class="text-2xl font-bold text-neutralScale-900">₹90,000</p>
-                        <p class="text-[11px] text-neutralScale-500">Active capital in circulation</p>
-                    </div>
 
-                    <!-- 2. Total Initial Amount -->
-                    <div class="bg-white p-5 rounded-2xl border border-neutralScale-200 shadow-2xs hover:shadow-xs transition space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-neutralScale-500 tracking-wide">
-                                Total Initial Amount
-                            </span>
-                            <div class="w-8 h-8 rounded-lg bg-neutralScale-100 flex items-center justify-center text-neutralScale-900">
-                                <i data-lucide="layers" class="w-4 h-4"></i>
-                            </div>
-                        </div>
-                        <p id="plan-initial-val" class="text-2xl font-bold text-neutralScale-900">₹2,00,000</p>
-                        <p class="text-[11px] text-neutralScale-500">Original invested principal</p>
-                    </div>
-
-                    <!-- 3. Net Returns -->
-                    <div class="bg-white p-5 rounded-2xl border border-neutralScale-200 shadow-2xs hover:shadow-xs transition space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-neutralScale-500 tracking-wide flex items-center">
-                                Net Returns
-                                <div class="tooltip-container ml-1.5 cursor-pointer">
-                                    <i data-lucide="info" class="w-3.5 h-3.5 text-brand-600"></i>
+                        <!-- Hero Metric 2: Net Returns -->
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium">
+                                <span>Net Returns</span>
+                                <div class="tooltip-container cursor-pointer">
+                                    <i data-lucide="info" class="w-3.5 h-3.5 text-brand-500"></i>
                                     <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-3 rounded-xl shadow-xl font-normal space-y-1 w-56">
                                         <div class="font-bold border-b border-neutralScale-500 pb-1 text-brand-500">Plan Returns Formula</div>
                                         <div class="flex justify-between"><span>Net Returns:</span> <span id="tt-returns" class="font-bold text-brand-500">+₹21,500</span></div>
                                         <div class="flex justify-between"><span>Total Amount Lent:</span> <span id="tt-lent" class="font-medium">₹1,96,000</span></div>
-                                        <div class="flex justify-between"><span>Net Repaid:</span> <span id="tt-repaid" class="font-medium">₹1,10,000</span></div>
+                                        <div class="flex justify-between"><span>Net Repaid:</span> <span id="tt-repaid" class="font-medium">₹1,31,500</span></div>
                                         <div class="flex justify-between"><span>Current Value:</span> <span id="tt-current" class="font-medium">₹90,000</span></div>
                                     </div>
                                 </div>
-                            </span>
-                            <div class="w-8 h-8 rounded-lg bg-brand-100/80 flex items-center justify-center text-brand-900">
-                                <i data-lucide="trending-up" class="w-4 h-4"></i>
                             </div>
+                            <p id="plan-returns-val" class="text-3xl font-extrabold text-brand-500 tracking-tight">+₹21,500</p>
+                            <p class="text-[11px] text-brand-100/60">Net profit generated to date</p>
                         </div>
-                        <p id="plan-returns-val" class="text-2xl font-bold text-brand-600">+₹21,500</p>
-                        <p class="text-[11px] text-neutralScale-500">Net yield generated to date</p>
+
                     </div>
 
-                    <!-- 4. Principal Received -->
-                    <div class="bg-white p-5 rounded-2xl border border-neutralScale-200 shadow-2xs hover:shadow-xs transition space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-neutralScale-500 tracking-wide">
-                                Principal Received
-                            </span>
-                            <div class="w-8 h-8 rounded-lg bg-neutralScale-100 flex items-center justify-center text-neutralScale-900">
-                                <i data-lucide="arrow-down-left" class="w-4 h-4"></i>
+                    <!-- SECONDARY LEVEL: Equal-Sized 4-Column Metric Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <!-- Card 1: Total Initial Amount -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold">Total Initial Amount</span>
+                                <i data-lucide="layers" class="w-4 h-4 text-neutralScale-500"></i>
                             </div>
+                            <p id="plan-initial-val" class="text-xl font-bold text-neutralScale-900">₹2,00,000</p>
+                            <p class="text-[10px] text-neutralScale-500">Original deposited capital</p>
                         </div>
-                        <p id="plan-principal-recd" class="text-2xl font-bold text-neutralScale-900">₹1,10,000</p>
-                        <p class="text-[11px] text-neutralScale-500">Returned base capital</p>
-                    </div>
 
-                    <!-- 5. Interest Received -->
-                    <div class="bg-white p-5 rounded-2xl border border-neutralScale-200 shadow-2xs hover:shadow-xs transition space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-neutralScale-500 tracking-wide">
-                                Interest Received
-                            </span>
-                            <div class="w-8 h-8 rounded-lg bg-brand-100/80 flex items-center justify-center text-brand-900">
-                                <i data-lucide="percent" class="w-4 h-4"></i>
-                            </div>
-                        </div>
-                        <p id="plan-interest-recd" class="text-2xl font-bold text-brand-600">₹25,500</p>
-                        <p class="text-[11px] text-neutralScale-500">Gross interest collected</p>
-                    </div>
-
-                    <!-- 6. Net Repaid to Bank -->
-                    <div class="bg-white p-5 rounded-2xl border border-neutralScale-200 shadow-2xs hover:shadow-xs transition space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-neutralScale-500 tracking-wide flex items-center">
-                                Net Repaid to Bank
-                                <div class="tooltip-container ml-1.5 cursor-pointer">
-                                    <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500"></i>
-                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed w-56">
-                                        Principal Received + Interest Received - Fees Charged
+                        <!-- Card 2: Total Amount Lent -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold flex items-center">
+                                    Total Amount Lent
+                                    <div class="tooltip-container ml-1 cursor-pointer">
+                                        <i data-lucide="info" class="w-3 h-3 text-neutralScale-500"></i>
+                                        <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2 rounded-lg shadow-xl font-normal">
+                                            Capital deployed post platform fees.
+                                        </div>
                                     </div>
-                                </div>
-                            </span>
-                            <div class="w-8 h-8 rounded-lg bg-neutralScale-100 flex items-center justify-center text-neutralScale-900">
-                                <i data-lucide="building-2" class="w-4 h-4"></i>
+                                </span>
+                                <i data-lucide="send" class="w-4 h-4 text-neutralScale-500"></i>
                             </div>
+                            <p id="plan-lent-val" class="text-xl font-bold text-neutralScale-900">₹1,96,000</p>
+                            <p class="text-[10px] text-neutralScale-500">Deployed after fee deduction</p>
                         </div>
-                        <p id="plan-net-repaid" class="text-2xl font-bold text-neutralScale-900">₹1,31,500</p>
-                        <p class="text-[11px] text-neutralScale-500">Total payouts remitted</p>
+
+                        <!-- Card 3: Principal Received -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold">Principal Received</span>
+                                <i data-lucide="arrow-down-left" class="w-4 h-4 text-neutralScale-500"></i>
+                            </div>
+                            <p id="plan-principal-recd" class="text-xl font-bold text-neutralScale-900">₹1,10,000</p>
+                            <p class="text-[10px] text-neutralScale-500">Returned base principal</p>
+                        </div>
+
+                        <!-- Card 4: Interest Received -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold">Interest Received</span>
+                                <i data-lucide="percent" class="w-4 h-4 text-brand-600"></i>
+                            </div>
+                            <p id="plan-interest-recd" class="text-xl font-bold text-brand-600">₹25,500</p>
+                            <p class="text-[10px] text-neutralScale-500">Collected interest payouts</p>
+                        </div>
+
                     </div>
 
-                </div>
+                    <!-- TERTIARY LEVEL: Clear Operational Summary Bar -->
+                    <div class="bg-neutralScale-100 border border-neutralScale-200 rounded-xl px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between text-xs text-neutralScale-900 font-medium gap-3">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="building-2" class="w-4 h-4 text-neutralScale-500 shrink-0"></i>
+                            <span>Net Repaid to Bank: <strong id="plan-net-repaid" class="font-bold text-neutralScale-900">₹1,31,500</strong></span>
+                        </div>
 
-                <!-- Plan Level NPA & Fees Strip -->
-                <div class="bg-white border border-neutralScale-200 px-6 py-3.5 rounded-2xl flex flex-col sm:flex-row items-center justify-between text-xs text-neutralScale-500 shadow-2xs gap-2">
-                    <div class="flex items-center space-x-1.5">
-                        <span>Portfolio NPA Rate: <strong id="plan-npa-text" class="text-amber-600 font-bold">0.18% (₹162)</strong></span>
-                        <div class="tooltip-container cursor-pointer">
-                            <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500"></i>
-                            <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2 rounded-lg shadow-xl font-normal">
-                                Non-performing assets recorded for loans under this specific plan.
+                        <div class="flex items-center space-x-6 text-neutralScale-500">
+                            <div>
+                                <span>Portfolio NPA Rate: <strong id="plan-npa-text" class="text-amber-600 font-bold">0.18% (₹162)</strong></span>
+                            </div>
+                            <div>
+                                <span>Total Fees Charged: <strong id="plan-fees-text" class="text-neutralScale-900 font-bold">₹4,000</strong></span>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <span>Total Fees Charged: <strong id="plan-fees-text" class="text-neutralScale-900 font-bold">₹4,000</strong></span>
-                    </div>
+
                 </div>
 
                 <!-- Report Download Banner -->
@@ -838,14 +825,14 @@
                 active: {
                     current: '₹90,000',
                     initial: '₹2,00,000',
+                    lent: '₹1,96,000', // Total Amount Lent = Initial Amount (₹2,00,000) - Fees (₹4,000)
                     returns: '+₹21,500',
                     principalRecd: '₹1,10,000',
                     interestRecd: '₹25,500',
                     netRepaid: '₹1,31,500',
                     npa: '0.18% (₹162)',
                     fees: '₹4,000',
-                    lent: '₹1,96,000',
-                    repaid: '₹1,10,000',
+                    repaid: '₹1,31,500',
                     lockins: [
                         { id: '#05828074DBNF', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,800', xirr: '12.8%' },
                         { id: '#08921142KLPQ', initial: '₹20,000', current: '₹10,000', returnVal: '+₹2,100', xirr: '12.7%' },
@@ -862,14 +849,14 @@
                 closed: {
                     current: '₹0', // Always 0 for fully closed state
                     initial: '₹1,50,000',
+                    lent: '₹1,47,200', // ₹1,50,000 - ₹2,800 fees
                     returns: '+₹16,400',
                     principalRecd: '₹1,50,000',
                     interestRecd: '₹19,200',
                     netRepaid: '₹1,66,400',
                     npa: '0.00% (₹0)',
                     fees: '₹2,800',
-                    lent: '₹1,47,200',
-                    repaid: '₹1,50,000',
+                    repaid: '₹1,66,400',
                     lockins: [
                         { id: '#01928374CLSD', initial: '₹20,000', current: '₹0', returnVal: '+₹2,100', xirr: '12.5%' },
                         { id: '#02837482CLSD', initial: '₹25,000', current: '₹0', returnVal: '+₹2,750', xirr: '12.8%' },
@@ -887,14 +874,14 @@
                 active: {
                     current: '₹50,000',
                     initial: '₹1,20,000',
+                    lent: '₹1,17,600',
                     returns: '+₹12,400',
                     principalRecd: '₹70,000',
                     interestRecd: '₹14,800',
                     netRepaid: '₹82,400',
                     npa: '0.12% (₹60)',
                     fees: '₹2,400',
-                    lent: '₹1,18,000',
-                    repaid: '₹70,000',
+                    repaid: '₹82,400',
                     lockins: [
                         { id: '#09128383LKM1', initial: '₹30,000', current: '₹12,000', returnVal: '+₹3,100', xirr: '12.2%' },
                         { id: '#09128383LKM2', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,600', xirr: '12.1%' },
@@ -906,14 +893,14 @@
                 closed: {
                     current: '₹0',
                     initial: '₹80,000',
+                    lent: '₹78,400',
                     returns: '+₹8,200',
                     principalRecd: '₹80,000',
                     interestRecd: '₹9,800',
                     netRepaid: '₹88,200',
                     npa: '0.00% (₹0)',
                     fees: '₹1,600',
-                    lent: '₹78,400',
-                    repaid: '₹80,000',
+                    repaid: '₹88,200',
                     lockins: [
                         { id: '#03829102CLSD1', initial: '₹20,000', current: '₹0', returnVal: '+₹2,050', xirr: '12.1%' },
                         { id: '#03829102CLSD2', initial: '₹30,000', current: '₹0', returnVal: '+₹3,100', xirr: '12.2%' },
@@ -927,14 +914,14 @@
                 active: {
                     current: '₹40,000',
                     initial: '₹1,00,000',
+                    lent: '₹98,000',
                     returns: '+₹10,850',
                     principalRecd: '₹60,000',
                     interestRecd: '₹12,850',
                     netRepaid: '₹70,850',
                     npa: '0.15% (₹60)',
                     fees: '₹2,000',
-                    lent: '₹98,000',
-                    repaid: '₹60,000',
+                    repaid: '₹70,850',
                     lockins: [
                         { id: '#10293847PLM1', initial: '₹40,000', current: '₹16,000', returnVal: '+₹4,300', xirr: '13.1%' },
                         { id: '#10293847PLM2', initial: '₹35,000', current: '₹14,000', returnVal: '+₹3,800', xirr: '13.2%' },
@@ -944,14 +931,14 @@
                 closed: {
                     current: '₹0',
                     initial: '₹50,000',
+                    lent: '₹49,000',
                     returns: '+₹5,600',
                     principalRecd: '₹50,000',
                     interestRecd: '₹6,600',
                     netRepaid: '₹55,600',
                     npa: '0.00% (₹0)',
                     fees: '₹1,000',
-                    lent: '₹49,000',
-                    repaid: '₹50,000',
+                    repaid: '₹55,600',
                     lockins: [
                         { id: '#10293847CLSD1', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.0%' },
                         { id: '#10293847CLSD2', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.1%' }
@@ -963,14 +950,14 @@
                 active: {
                     current: '₹30,000',
                     initial: '₹80,000',
+                    lent: '₹78,400',
                     returns: '+₹3,500',
                     principalRecd: '₹50,000',
                     interestRecd: '₹5,100',
                     netRepaid: '₹53,500',
                     npa: '0.11% (₹33)',
                     fees: '₹1,600',
-                    lent: '₹78,000',
-                    repaid: '₹50,000',
+                    repaid: '₹53,500',
                     lockins: [
                         { id: '#55493821QWE1', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,800', xirr: '11.2%' },
                         { id: '#55493821QWE2', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,700', xirr: '11.1%' }
@@ -979,14 +966,14 @@
                 closed: {
                     current: '₹0',
                     initial: '₹30,000',
+                    lent: '₹29,400',
                     returns: '+₹2,100',
                     principalRecd: '₹30,000',
                     interestRecd: '₹2,700',
                     netRepaid: '₹32,100',
                     npa: '0.00% (₹0)',
                     fees: '₹600',
-                    lent: '₹29,400',
-                    repaid: '₹30,000',
+                    repaid: '₹32,100',
                     lockins: [
                         { id: '#09281726CLSD', initial: '₹30,000', current: '₹0', returnVal: '+₹2,100', xirr: '11.0%' }
                     ]
@@ -1078,9 +1065,10 @@
             document.getElementById('count-state-active').innerText = planObj.active.lockins.length;
             document.getElementById('count-state-closed').innerText = planObj.closed.lockins.length;
 
-            // Metrics Update
+            // Core Metrics Update
             document.getElementById('plan-current-val').innerText = stateData.current;
             document.getElementById('plan-initial-val').innerText = stateData.initial;
+            document.getElementById('plan-lent-val').innerText = stateData.lent;
             document.getElementById('plan-returns-val').innerText = stateData.returns;
             document.getElementById('plan-principal-recd').innerText = stateData.principalRecd;
             document.getElementById('plan-interest-recd').innerText = stateData.interestRecd;

@@ -3,1684 +3,1175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Per Annum - Luxury Estates Return Calculator</title>
+    <title>Per Annum - P2P Edge Portfolio Prototype</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- SF Pro Display / Inter Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            100: '#D2EBD9',
+                            500: '#5CBE74',
+                            600: '#3EA056',
+                            700: '#4F6E62',
+                            900: '#15372C',
+                        },
+                        neutralScale: {
+                            50: '#F9FAFB',
+                            100: '#F6F7F9',
+                            200: '#F0F1F4',
+                            300: '#D9D9D9',
+                            500: '#708090',
+                            900: '#1C1C1C',
+                        }
+                    },
+                    fontFamily: {
+                        sf: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        /* ==========================================================================
-           Per Annum Design System Tokens & Brand Colors
-           ========================================================================== */
-        :root {
-            /* Brand Greens */
-            --green-100: #D2EBD9;
-            --green-400: #73D388;
-            --green-500: #5CBE74;
-            --green-600: #3EA056;
-            --green-700: #4F6E62;
-            --green-800: #1C4D3E;
-            --green-900: #15372C;
-
-            /* Neutrals */
-            --white: #FFFFFF;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-400: #9CA3AF;
-            --slate-500: #64748B;
-            --gray-900: #111827;
-            --black: #000000;
-
-            /* Accent & Gradients */
-            --card-gradient: linear-gradient(145deg, #183d31 0%, #0d251d 100%);
-            --badge-bg: rgba(92, 190, 116, 0.15);
-
-            --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
-        }
-
-        /* Base Reset */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-family);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            background-color: var(--gray-50);
-            color: var(--gray-900);
-            line-height: 1.5;
-            padding-bottom: 40px;
-        }
-
-        /* ==========================================================================
-           Header Navigation
-           ========================================================================== */
-        header {
-            background-color: var(--white);
-            border-bottom: 1px solid var(--gray-200);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 12px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--gray-900);
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 28px;
-            height: 28px;
-            background-color: var(--gray-900);
-            color: var(--white);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--gray-900);
-            font-weight: 500;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--green-600);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn-secondary {
-            background-color: var(--gray-200);
-            color: var(--gray-900);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--gray-300);
-        }
-
-        .btn-primary {
-            background-color: var(--gray-900);
-            color: var(--white);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--green-900);
-        }
-
-        /* ==========================================================================
-           Main Layout & Hero Section
-           ========================================================================== */
-        .container {
-            max-width: 1120px;
-            margin: 16px auto;
-            padding: 0 24px;
-        }
-
-        .hero-title {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 4px;
-            color: var(--gray-900);
-            text-align: center;
-        }
-
-        .hero-title span {
-            color: var(--green-600);
-        }
-
-        /* Flow Banner */
-        .flow-banner {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 10px 20px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-            width: fit-content;
-        }
-
-        .flow-badge {
-            background: var(--green-100);
-            color: var(--green-900);
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-
-        .flow-steps {
-            font-size: 13px;
-            color: var(--gray-900);
-            font-weight: 500;
-        }
-
-        /* Calculator Grid */
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: 1.05fr 1fr;
-            gap: 20px;
-            align-items: stretch; 
-        }
-
-        .card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 24px;
-            border: 1px solid var(--gray-200);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Highlighted Benchmark Banner */
-        .benchmark-info-card {
-            background: linear-gradient(135deg, #f0fdf4 0%, #e6f7ed 100%);
-            border: 1.5px solid #a7f3d0;
-            border-left: 4px solid var(--green-600);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(62, 160, 86, 0.08);
-        }
-
-        .benchmark-info-card .top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-
-        .benchmark-info-card .label {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--green-900);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .benchmark-tag {
-            background: var(--green-600);
-            color: var(--white);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-        }
-
-        .benchmark-info-card .subtext {
-            font-size: 11px;
-            color: #374151;
-            line-height: 1.45;
-        }
-
-        .benchmark-info-card .val {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--green-900);
-            background: rgba(255, 255, 255, 0.7);
-            padding: 2px 8px;
-            border-radius: 6px;
-            border: 1px solid #a7f3d0;
-        }
-
-        /* Form Inputs & Sliders */
-        .input-group {
-            margin-bottom: 18px;
-        }
-
-        .input-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .label-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .input-label {
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--gray-900);
-        }
-
-        .input-value-display {
-            background-color: var(--gray-100);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--green-900);
-            border: 1px solid var(--gray-200);
-        }
-
-        /* TOOLTIP BUTTON STYLE */
-        .tooltip-btn {
-            background: transparent;
-            color: var(--slate-500);
-            border: 1px solid var(--gray-300);
-            cursor: pointer;
-            width: 17px;
-            height: 17px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            font-size: 10px;
-            font-weight: 600;
-            font-style: normal;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            padding: 0;
-            line-height: 1;
-        }
-
-        /* Dark Card Overrides for Tooltip Buttons */
-        .results-card .tooltip-btn {
-            color: rgba(255, 255, 255, 0.7);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .tooltip-btn:hover {
-            color: var(--green-600);
-            border-color: var(--green-600);
-            background: rgba(62, 160, 86, 0.08);
-        }
-
-        .results-card .tooltip-btn:hover {
-            color: var(--white);
-            border-color: var(--green-400);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .tooltip-box {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            bottom: 140%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--gray-900);
-            color: var(--white);
-            text-align: left;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 1.4;
-            width: 240px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-            z-index: 200;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            pointer-events: none;
-            font-style: normal;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .tooltip-box::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: var(--gray-900) transparent transparent transparent;
-        }
-
-        .tooltip-btn:hover .tooltip-box,
-        .tooltip-btn:focus .tooltip-box {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Range Slider Styling */
-        .slider-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 6px;
-            border-radius: 4px;
-            background: var(--gray-200);
-            outline: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--green-600);
-            border: 3px solid var(--white);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-        }
-
-        .slider-ticks {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 6px;
-            font-size: 11px;
-            color: var(--slate-500);
-            font-weight: 500;
-        }
-
-        /* Simplified Awareness Box */
-        .awareness-alert {
-            background: rgba(92, 190, 116, 0.12);
-            border: 1px solid rgba(92, 190, 116, 0.35);
-            border-radius: 10px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-top: auto; 
-        }
-
-        .awareness-alert svg {
-            flex-shrink: 0;
-            color: var(--green-700);
-            margin-top: 2px;
-            width: 16px;
-            height: 16px;
-        }
-
-        .awareness-alert p {
-            font-size: 11px;
-            color: var(--slate-500);
-            line-height: 1.45;
-        }
-        .awareness-alert p strong {
-            color: var(--green-900);
-        }
-
-        /* ==========================================================================
-           OUTPUT CARD WITH UNIFORM, EQUAL-HIERARCHY STAT BOXES
-           ========================================================================== */
-        .results-card {
-            background: var(--card-gradient);
-            color: var(--white);
-            border-radius: 20px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 12px 32px rgba(21, 55, 44, 0.25);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .results-card::before {
-            content: "";
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(circle, rgba(92, 190, 116, 0.2) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .results-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .results-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--badge-bg);
-            border: 1px solid rgba(92, 190, 116, 0.4);
-            color: var(--green-400);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .results-badge-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--green-400);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--green-400);
-        }
-
-        .holding-badge-text {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-        }
-
-        /* Primary Outcome Box (Post-Tax Proceeds Focus) */
-        .hero-outcome-box {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1.5px solid rgba(255, 255, 255, 0.22);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 14px;
-            backdrop-filter: blur(8px);
-        }
-
-        .hero-outcome-label {
-            font-size: 12px;
-            color: var(--green-100);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-
-        .hero-outcome-val {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--white);
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        /* Visual Breakdown Bar */
-        .capital-visual-bar {
-            margin-top: 12px;
-        }
-
-        .bar-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 6px;
-        }
-
-        .bar-track {
-            height: 8px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .bar-fill-initial {
-            height: 100%;
-            background: rgba(255, 255, 255, 0.45);
-            transition: width 0.3s ease;
-        }
-
-        .bar-fill-profit {
-            height: 100%;
-            background: var(--green-500);
-            transition: width 0.3s ease;
-        }
-
-        /* UNIFORM EQUAL STAT BOXES (FIXED VISUAL WEIGHT) */
-        .stats-2x2-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .grid-stat-card {
-            background: rgba(15, 35, 28, 0.75);
-            border: 1.5px solid rgba(255, 255, 255, 0.22);
-            border-radius: 12px;
-            padding: 12px 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .grid-stat-label {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 4px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .grid-stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--green-400);
-        }
-
-        /* Annualized Rate Comparison Sub-card */
-        .xirr-comparison-box {
-            background: rgba(15, 35, 28, 0.75);
-            border-radius: 12px;
-            padding: 12px 16px;
-            border: 1.5px solid rgba(255, 255, 255, 0.22);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .xirr-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .xirr-title {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .xirr-val {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--white);
-            margin-top: 2px;
-        }
-
-        .xirr-val.post {
-            color: var(--green-400);
-        }
-
-        .xirr-divider {
-            width: 1px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        /* CTA Button Link */
-        .cta-button-link {
-            display: block;
-            text-decoration: none;
-            width: 100%;
-            margin-top: 16px;
-        }
-
-        .cta-button {
-            width: 100%;
-            background: linear-gradient(180deg, #62d87c 0%, #46b85e 100%);
-            color: var(--green-900);
-            font-weight: 700;
-            font-size: 14px;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-            box-shadow: 0 4px 14px rgba(62, 160, 86, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .cta-button:hover {
-            background: linear-gradient(180deg, #71e28b 0%, #4fc468 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(62, 160, 86, 0.45);
-        }
-
-        /* ==========================================================================
-           REDEFINED HIGH-CLARITY FORMULA & MATHEMATICAL WATERFALL UI
-           ========================================================================== */
-        .collapsible-container {
-            margin-top: 24px;
-            background: var(--white);
-            border-radius: 20px;
-            border: 1px solid var(--gray-200);
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
-            scroll-margin-top: 80px; 
-        }
-
-        .collapsible-trigger {
-            width: 100%;
-            padding: 20px 24px;
-            background: var(--white);
-            border: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            text-align: left;
-            transition: background 0.2s;
-        }
-
-        .collapsible-trigger:hover {
-            background-color: #f8faf9;
-        }
-
-        .collapsible-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--gray-900);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .title-icon-wrapper {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: var(--green-100);
-            color: var(--green-900);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .icon-chevron {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.3s ease;
-            color: var(--slate-500);
-        }
-
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
-            background-color: #f8fafc;
-            border-top: 1px solid transparent;
-        }
-
-        .collapsible-container.active .collapsible-content {
-            max-height: 4000px;
-            border-top-color: var(--gray-200);
-            transition: max-height 0.6s ease-in-out;
-        }
-
-        .collapsible-container.active .icon-chevron {
-            transform: rotate(180deg);
-        }
-
-        .inner-content {
-            padding: 24px;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif; background-color: #F9FAFB; color: #1C1C1C; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .breakdown-intro {
-            font-size: 13px;
-            color: var(--slate-500);
-            margin-bottom: 20px;
-            line-height: 1.5;
-            background: var(--white);
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid var(--gray-200);
-            border-left: 4px solid var(--green-600);
+        /* Custom Table Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #F0F1F4; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #708090; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #15372C; }
+
+        .clickable-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .clickable-card:hover { transform: translateY(-2px); border-color: #15372C; box-shadow: 0 12px 20px -4px rgba(21, 55, 44, 0.08); }
+        
+        /* Custom Tooltip Popover */
+        .tooltip-container { position: relative; display: inline-flex; align-items: center; }
+        .tooltip-popover {
+            visibility: hidden; opacity: 0; position: absolute; bottom: 125%; left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            transition: all 0.2s ease-in-out;
+            z-index: 50; width: 240px;
         }
-
-        /* Clear Math Flow Container */
-        .math-waterfall-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+        .tooltip-container:hover .tooltip-popover { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+        
+        /* Keyframes for XIRR Refresh Action */
+        @keyframes spin-custom {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        .math-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-            transition: border-color 0.2s;
-        }
-
-        .math-card:hover {
-            border-color: var(--green-500);
-        }
-
-        .math-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .math-card-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-
-        .math-step-badge {
-            background: var(--green-900);
-            color: var(--white);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .math-card-metric {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--green-700);
-        }
-
-        /* Formula Visual Box */
-        .formula-box {
-            background: #F1F5F9;
-            border: 1px dashed var(--gray-300);
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            font-size: 12px;
-            color: #334155;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .formula-tag {
-            background: #CBD5E1;
-            color: #1E293B;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-family: var(--font-family);
-        }
-
-        /* Equation Breakdown Rows */
-        .equation-table {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .eq-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            background: var(--gray-50);
-            font-size: 13px;
-        }
-
-        .eq-row.op-plus {
-            background: #F0FDF4;
-            border-left: 3px solid var(--green-600);
-        }
-
-        .eq-row.op-minus {
-            background: #FEF2F2;
-            border-left: 3px solid #EF4444;
-        }
-
-        .eq-row.op-result {
-            background: #ECFDF5;
-            border: 1px solid var(--green-400);
-            font-weight: 700;
-        }
-
-        .eq-label {
-            color: #475569;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .eq-operator {
-            font-weight: 800;
-            width: 16px;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .eq-operator.plus { color: var(--green-600); }
-        .eq-operator.minus { color: #DC2626; }
-        .eq-operator.equals { color: var(--gray-900); }
-
-        .eq-val {
-            font-weight: 700;
-            color: var(--gray-900);
-            font-family: 'SFMono-Regular', Consolas, monospace;
-        }
-
-        .eq-val.green { color: var(--green-700); }
-        .eq-val.red { color: #DC2626; }
-
-        /* Step 6 Hero Result Card */
-        .math-card.hero-step {
-            background: linear-gradient(135deg, #15372C 0%, #0d251d 100%);
-            border: 1.5px solid var(--green-600);
-            color: var(--white);
-        }
-
-        .math-card.hero-step .math-card-header {
-            border-bottom-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .math-card.hero-step .math-card-title {
-            color: var(--white);
-        }
-
-        .math-card.hero-step .math-step-badge {
-            background: var(--green-500);
-            color: var(--green-900);
-        }
-
-        .math-card.hero-step .math-card-metric {
-            color: var(--green-400);
-            font-size: 18px;
-        }
-
-        .math-card.hero-step .formula-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--green-100);
-        }
-
-        .math-card.hero-step .formula-tag {
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--white);
-        }
-
-        .math-card.hero-step .eq-row {
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--white);
-        }
-
-        .math-card.hero-step .eq-row.op-minus {
-            background: rgba(239, 68, 68, 0.15);
-            border-left-color: #F87171;
-        }
-
-        .math-card.hero-step .eq-row.op-result {
-            background: rgba(92, 190, 116, 0.2);
-            border-color: var(--green-400);
-        }
-
-        .math-card.hero-step .eq-label {
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        .math-card.hero-step .eq-val {
-            color: var(--white);
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 850px) {
-            .calculator-grid {
-                grid-template-columns: 1fr;
-            }
-            .nav-links {
-                display: none;
-            }
-            .flow-banner {
-                width: 100%;
-                flex-direction: column;
-                text-align: center;
-            }
-            .stats-2x2-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .animate-spin-active { animation: spin-custom 0.6s linear infinite; }
     </style>
 </head>
-<body>
+<body class="h-screen overflow-hidden flex text-neutralScale-900 font-sf">
 
-    <!-- Navigation Header -->
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo-group">
-                <div class="logo-icon">%</div>
-                <span>Per Annum</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Blogs</a></li>
-                <li><a href="#">Newsletters</a></li>
-                <li><a href="#">FAQs</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <button class="btn-secondary">Log in</button>
-                <button class="btn-primary">Sign up</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <div class="container">
-        
-        <h1 class="hero-title">Estates <span>Return Calculator</span></h1>
-        
-        <!-- Centered Flow Guide -->
-        <div class="flow-banner">
-            <span class="flow-badge">How It Works</span>
-            <div class="flow-steps">
-                Set Investment &nbsp;➔&nbsp; Choose Holding Period &nbsp;➔&nbsp; Set Expected Property Growth &nbsp;➔&nbsp; View Net Exit Returns
-            </div>
-        </div>
-
-        <!-- Calculator Interface Grid -->
-        <div class="calculator-grid">
-            
-            <!-- User Inputs Card -->
-            <div class="card">
-                
-                <!-- Highlighted Assumed Property Price Banner -->
-                <div class="benchmark-info-card">
-                    <div class="top-row">
-                        <div class="label">
-                            <span class="benchmark-tag">Baseline</span>
-                            Assumed Property Price
-                            <button class="tooltip-btn" aria-label="Tooltip">
-                                i
-                                <div class="tooltip-box">
-                                    This is a fixed baseline asset valuation derived from active luxury properties on our platform, used to accurately compute proportional fractional returns.
-                                </div>
-                            </button>
-                        </div>
-                        <div class="val">₹ 10.50 Cr</div>
+    <!-- ========================================== -->
+    <!-- LEFT SIDEBAR                               -->
+    <!-- ========================================== -->
+    <aside class="w-60 bg-white border-r border-neutralScale-200 flex flex-col justify-between shrink-0 z-20">
+        <div>
+            <!-- Brand Logo -->
+            <div class="h-16 flex items-center px-6 border-b border-neutralScale-100">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-7 h-7 bg-brand-900 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-xs">
+                        %
                     </div>
-                    <div class="subtext">Based on the average base price derived from active properties listed on the Per Annum platform.</div>
+                    <span class="font-bold text-lg text-neutralScale-900 tracking-tight">Per Annum</span>
                 </div>
-
-                <!-- Input 1: Investment Amount Slider -->
-                <div class="input-group">
-                    <div class="input-header">
-                        <div class="label-container">
-                            <span class="input-label">Your Initial Investment</span>
-                            <button class="tooltip-btn" aria-label="Tooltip">
-                                i
-                                <div class="tooltip-box">
-                                    Your upfront capital contribution towards the booking amount of the luxury property pool.
-                                </div>
-                            </button>
-                        </div>
-                        <span class="input-value-display" id="amountDisplay">₹ 10,00,000</span>
-                    </div>
-                    <div class="slider-container">
-                        <input type="range" id="amountSlider" min="500000" max="5000000" step="100000" value="1000000">
-                    </div>
-                    <div class="slider-ticks">
-                        <span>₹5 Lakhs</span>
-                        <span>₹25 Lakhs</span>
-                        <span>₹50 Lakhs</span>
-                    </div>
-                </div>
-
-                <!-- Input 2: Holding Period Slider -->
-                <div class="input-group">
-                    <div class="input-header">
-                        <div class="label-container">
-                            <span class="input-label">Holding Period (Exit Timeline)</span>
-                            <button class="tooltip-btn" aria-label="Tooltip">
-                                i
-                                <div class="tooltip-box">
-                                    How long you plan to keep your investment before the property is resold at exit.
-                                </div>
-                            </button>
-                        </div>
-                        <span class="input-value-display" id="periodDisplay">24 Months</span>
-                    </div>
-                    <div class="slider-container">
-                        <input type="range" id="periodSlider" min="12" max="60" step="1" value="24">
-                    </div>
-                    <div class="slider-ticks">
-                        <span>12 Months</span>
-                        <span>36 Months</span>
-                        <span>60 Months</span>
-                    </div>
-                </div>
-
-                <!-- Input 3: Capital Growth Rate Slider -->
-                <div class="input-group">
-                    <div class="input-header">
-                        <div class="label-container">
-                            <span class="input-label">Expected Property Price Growth</span>
-                            <button class="tooltip-btn" aria-label="Tooltip">
-                                i
-                                <div class="tooltip-box">
-                                    The estimated annual appreciation rate of the prime real estate asset over time.
-                                </div>
-                            </button>
-                        </div>
-                        <span class="input-value-display" id="growthDisplay">8.0% p.a.</span>
-                    </div>
-                    <div class="slider-container">
-                        <input type="range" id="growthSlider" min="4" max="16" step="0.5" value="8.0">
-                    </div>
-                    <div class="slider-ticks">
-                        <span>4.0% p.a.</span>
-                        <span>10.0% p.a.</span>
-                        <span>16.0% p.a.</span>
-                    </div>
-                </div>
-
-                <!-- Simplified Awareness Note -->
-                <div class="awareness-alert">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                    <p><strong>Note:</strong> The calculated returns are estimations based on our mathematical model and your selected inputs. These projections are designed to give you a directional understanding and are not guaranteed.</p>
-                </div>
-
             </div>
 
-            <!-- Output Results Panel (Uniform Box Hierarchy) -->
-            <div class="results-card">
+            <!-- Navigation Links -->
+            <div class="p-3 space-y-5">
                 <div>
-                    <!-- Top Status Bar -->
-                    <div class="results-header-row">
-                        <div class="results-badge">
-                            <span class="results-badge-dot"></span>
-                            Estimated Exit Projection
-                        </div>
-                        <span class="holding-badge-text" id="badgeHoldingText">24-Month Horizon</span>
-                    </div>
+                    <p class="text-[10px] font-bold text-neutralScale-500 uppercase tracking-wider mb-2 px-3">GENERAL</p>
+                    <nav class="space-y-1">
+                        <button class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-neutralScale-500 hover:bg-neutralScale-50 text-xs font-medium transition">
+                            <i data-lucide="home" class="w-4 h-4 text-neutralScale-500"></i>
+                            <span>Home</span>
+                        </button>
+                        <button onclick="navigateTo('portfolio')" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg bg-brand-100/60 text-brand-900 text-xs font-bold transition">
+                            <i data-lucide="pie-chart" class="w-4 h-4 text-brand-900"></i>
+                            <span>Portfolio</span>
+                        </button>
+                        <button class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-neutralScale-500 hover:bg-neutralScale-50 text-xs font-medium transition">
+                            <div class="flex items-center space-x-3">
+                                <i data-lucide="user" class="w-4 h-4 text-neutralScale-500"></i>
+                                <span>Profile</span>
+                            </div>
+                            <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-500"></i>
+                        </button>
+                        <button class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-neutralScale-500 hover:bg-neutralScale-50 text-xs font-medium transition">
+                            <div class="flex items-center space-x-3">
+                                <i data-lucide="gift" class="w-4 h-4 text-neutralScale-500"></i>
+                                <span>Rewards</span>
+                            </div>
+                            <span class="bg-amber-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">NEW</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <div>
+                    <p class="text-[10px] font-bold text-neutralScale-500 uppercase tracking-wider mb-2 px-3">PRODUCTS</p>
+                    <nav class="space-y-1">
+                        <button class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-neutralScale-500 hover:bg-neutralScale-50 text-xs font-medium transition">
+                            <i data-lucide="building" class="w-4 h-4 text-neutralScale-500"></i>
+                            <span>Estates</span>
+                        </button>
+                        <button class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-neutralScale-500 hover:bg-neutralScale-50 text-xs font-medium transition">
+                            <i data-lucide="percent" class="w-4 h-4 text-neutralScale-500"></i>
+                            <span>P2P Edge</span>
+                        </button>
+                        <button class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-neutralScale-500 hover:bg-neutralScale-50 text-xs font-medium transition">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4 text-neutralScale-500"></i>
+                            <span>NCDs</span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ========================================== -->
+    <!-- MAIN WORKSPACE                             -->
+    <!-- ========================================== -->
+    <main class="flex-1 flex flex-col overflow-y-auto hide-scrollbar">
+        
+        <!-- Top Navbar -->
+        <header class="h-16 bg-white border-b border-neutralScale-200 px-8 flex items-center justify-between sticky top-0 z-10 shadow-xs">
+            <div id="breadcrumb" class="flex items-center text-sm text-neutralScale-500 font-medium space-x-2">
+                <!-- Dynamic Breadcrumb -->
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div class="text-right">
+                    <p class="text-xs font-bold text-neutralScale-900">Sourav S.</p>
+                    <p class="text-[10px] text-neutralScale-500">sourav.singh@example.com</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-brand-900 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                    S
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body Workspace -->
+        <div class="p-8 max-w-7xl w-full mx-auto space-y-6">
+
+            <!-- ========================================== -->
+            <!-- LEVEL 1: OVERALL PORTFOLIO VIEW            -->
+            <!-- ========================================== -->
+            <div id="view-portfolio" class="space-y-6">
+                
+                <div>
+                    <h1 class="text-xl font-bold text-neutralScale-900">Portfolio Overview</h1>
+                </div>
+
+                <!-- Tabs Switcher -->
+                <div class="border-b border-neutralScale-200 flex space-x-8">
+                    <button class="pb-2.5 text-sm font-bold text-brand-900 relative">
+                        P2P Edge
+                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-900 rounded-t-full"></span>
+                    </button>
+                    <button class="pb-2.5 text-sm font-medium text-neutralScale-500 hover:text-neutralScale-900">Estates</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
-                    <!-- Main Focus Box: Post-Tax Total Proceeds -->
-                    <div class="hero-outcome-box">
-                        <div class="hero-outcome-label">
-                            Estimated Post-Tax Total Proceeds
-                            <button class="tooltip-btn" aria-label="Tooltip">
-                                i
-                                <div class="tooltip-box">
-                                    The estimated total payout (Initial Investment + Post-Tax Profit) credited to your account after 34.94% tax deduction.
+                    <!-- Left Main Area -->
+                    <div class="lg:col-span-2 space-y-6">
+
+                        <!-- P2P Edge Portfolio Overview Card -->
+                        <div class="bg-white rounded-2xl border border-neutralScale-200 shadow-xs overflow-hidden">
+                            
+                            <div class="p-6 space-y-5">
+                                <!-- Header Section -->
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutralScale-100 pb-4 gap-3">
+                                    <div>
+                                        <h2 class="text-base font-bold text-neutralScale-900">P2P Edge Portfolio Overview</h2>
+                                        <p class="text-xs text-neutralScale-500 mt-0.5">Aggregated performance across active P2P contracts</p>
+                                    </div>
+                                    <div class="flex items-center space-x-3 shrink-0">
+                                        <!-- Single-Line XIRR Badge -->
+                                        <div class="bg-brand-100/70 border border-brand-100 px-3 py-1 rounded-full flex items-center space-x-1.5 whitespace-nowrap">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>
+                                            <span id="overview-xirr-text" class="text-xs font-bold text-brand-900">Avg. XIRR 12.4%</span>
+                                            <button onclick="refreshXIRRAction(this, 'overview')" title="Refresh XIRR" class="text-brand-900 hover:text-black transition ml-0.5 focus:outline-none">
+                                                <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                        </div>
+                                        <!-- Header Nav CTA -->
+                                        <button onclick="navigateTo('plans_list')" class="bg-brand-900 hover:bg-black text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow-2xs">
+                                            <span>View Plans Breakdown</span>
+                                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
                                 </div>
+
+                                <!-- Core Metric Grid -->
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    
+                                    <!-- Current Value -->
+                                    <div class="bg-neutralScale-200/50 p-4 rounded-xl border border-neutralScale-200/80">
+                                        <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
+                                            Current Value
+                                            <div class="tooltip-container ml-1 cursor-pointer">
+                                                <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500"></i>
+                                                <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed">
+                                                    Active principal capital remaining across loans.
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <p class="text-2xl font-bold text-neutralScale-900">₹2,10,000</p>
+                                    </div>
+
+                                    <!-- Total Initial Amount -->
+                                    <div class="bg-neutralScale-200/50 p-4 rounded-xl border border-neutralScale-200/80">
+                                        <span class="text-xs text-neutralScale-500 font-medium block mb-1">Total Initial Amount</span>
+                                        <p class="text-2xl font-bold text-neutralScale-900">₹5,00,000</p>
+                                    </div>
+
+                                    <!-- Net Returns -->
+                                    <div class="bg-neutralScale-200/50 p-4 rounded-xl border border-neutralScale-200/80">
+                                        <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
+                                            Net Returns
+                                            <div class="tooltip-container ml-1 cursor-pointer">
+                                                <i data-lucide="info" class="w-3.5 h-3.5 text-brand-600"></i>
+                                                <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed">
+                                                    Net interest accrued minus service deductions across active plans.
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <p class="text-2xl font-bold text-brand-600">+₹48,250</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- WALLET STRIP -->
+                            <div class="bg-brand-100/50 border-t border-brand-100 px-6 py-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-2 text-xs text-neutralScale-900">
+                                    <i data-lucide="wallet" class="w-4 h-4 text-brand-900 shrink-0"></i>
+                                    <span class="font-medium text-neutralScale-500">Wallet balance:</span>
+                                    <span class="font-bold text-neutralScale-900 text-sm">₹1,43,500</span>
+                                </div>
+                                <button onclick="navigateTo('plans_list')" class="bg-brand-900 hover:bg-black text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow-2xs">
+                                    <span>Deploy Now</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- P2P Distribution Analytics Section -->
+                        <div class="bg-white rounded-2xl border border-neutralScale-200 p-5 shadow-xs space-y-4">
+                            <p class="text-[11px] font-bold text-neutralScale-500 uppercase tracking-wider">P2P AMOUNT DISTRIBUTION (BY CURRENT VALUE)</p>
+                            
+                            <div class="flex items-center justify-between text-xs font-bold text-neutralScale-900">
+                                <span>Active Current Value: ₹2,10,000</span>
+                                <span class="text-brand-900 font-semibold">4 Invested Plans</span>
+                            </div>
+                            
+                            <!-- Visual Progress Bar -->
+                            <div class="w-full h-3.5 bg-neutralScale-200 rounded-full overflow-hidden flex">
+                                <div class="h-full bg-brand-900" style="width: 42.8%;" title="Growth Pro 2 Months (42.8%)"></div>
+                                <div class="h-full bg-brand-700" style="width: 23.8%;" title="Growth X (23.8%)"></div>
+                                <div class="h-full bg-brand-600" style="width: 19.0%;" title="Growth Pro 6 Months (19.0%)"></div>
+                                <div class="h-full bg-brand-500" style="width: 14.4%;" title="Growth Plus (14.4%)"></div>
+                            </div>
+
+                            <!-- Legend -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px] font-medium text-neutralScale-500 pt-1">
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-900 shrink-0"></span>
+                                    <span class="truncate">Growth Pro 2 Months</span>
+                                </div>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-700 shrink-0"></span>
+                                    <span class="truncate">Growth X</span>
+                                </div>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-600 shrink-0"></span>
+                                    <span class="truncate">Growth Pro 6 Months</span>
+                                </div>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-500 shrink-0"></span>
+                                    <span class="truncate">Growth Plus</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column Sidebar -->
+                    <div class="space-y-6">
+                        
+                        <!-- User's Portfolio Card -->
+                        <div class="bg-brand-900 text-white rounded-2xl p-6 shadow-md relative overflow-hidden space-y-4">
+                            <div class="flex justify-between items-start border-b border-brand-700/50 pb-3">
+                                <div>
+                                    <h3 class="font-bold text-base text-white">Sourav's Portfolio</h3>
+                                    <p class="text-[11px] text-brand-100/80 mt-0.5">Last updated 03 Sep '26 • 10:48 AM</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-xs text-brand-100/70">Current Value</p>
+                                    <p class="text-2xl font-bold text-white mt-0.5">₹5,06,500</p>
+                                </div>
+                                
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-brand-100/70">Lifetime Interest:</span>
+                                    <span class="font-bold text-brand-500">+₹58,750</span>
+                                </div>
+
+                                <div class="pt-3 border-t border-brand-700/50 space-y-2 text-xs">
+                                    <div class="flex justify-between items-center text-[10px] uppercase font-bold text-brand-100/70 border-b border-brand-700/30 pb-1">
+                                        <span>PRODUCT</span>
+                                        <span>AMOUNT</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-white">
+                                        <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-500 mr-2"></span>P2P Edge</span>
+                                        <span class="font-bold">₹2,10,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-white">
+                                        <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-100 mr-2"></span>Estates</span>
+                                        <span class="font-bold">₹2,96,500</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Invest Mandate Card -->
+                        <div class="bg-white rounded-2xl border border-neutralScale-200 p-5 shadow-xs space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-brand-100/60 text-brand-900 flex items-center justify-center shrink-0">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-neutralScale-900">Auto-Invest Mandate</h4>
+                                    <p class="text-[11px] text-neutralScale-500">Automate recurring deposits</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-neutralScale-500 leading-relaxed">Create a mandate to pull funds directly from bank to wallet for continuous compounding.</p>
+                            <button class="w-full bg-neutralScale-900 hover:bg-black text-white text-xs font-bold py-2.5 rounded-xl transition">
+                                Create a Mandate
                             </button>
                         </div>
-                        <div class="hero-outcome-val" id="postTaxProceeds">₹ 14,28,374</div>
-                        
-                        <!-- Dynamic Visual Ratio Bar -->
-                        <div class="capital-visual-bar">
-                            <div class="bar-labels">
-                                <span>Initial: <strong id="barInitialText">₹10.00L</strong></span>
-                                <span style="color:var(--green-400);">Estimated Profit: <strong id="barProfitText">+₹4.28L</strong></span>
-                            </div>
-                            <div class="bar-track">
-                                <div class="bar-fill-initial" id="barFillInitial" style="width: 70%;"></div>
-                                <div class="bar-fill-profit" id="barFillProfit" style="width: 30%;"></div>
-                            </div>
-                        </div>
+
                     </div>
 
-                    <!-- Secondary Key Metrics Grid (Uniform Styling & Borders) -->
-                    <div class="stats-2x2-grid">
-                        <div class="grid-stat-card">
-                            <div class="grid-stat-label">
-                                Estimated Post-Tax Net Profit
-                                <button class="tooltip-btn" aria-label="Tooltip">
-                                    i
-                                    <div class="tooltip-box">
-                                        Your estimated take-home net gain after deducting sales costs, performance fees, and taxes.
-                                    </div>
-                                </button>
-                            </div>
-                            <div class="grid-stat-value" id="postTaxProfitVal">+ ₹ 4,28,374</div>
-                        </div>
-                        
-                        <div class="grid-stat-card">
-                            <div class="grid-stat-label">
-                                Estimated Post-Tax Yield
-                                <button class="tooltip-btn" aria-label="Tooltip">
-                                    i
-                                    <div class="tooltip-box">
-                                        Total percentage growth on your initial capital after all deductions & taxes.
-                                    </div>
-                                </button>
-                            </div>
-                            <div class="grid-stat-value" id="postTaxAbsReturn">+ 42.8%</div>
-                        </div>
-                    </div>
+                </div>
 
-                    <!-- Annualized Rates Comparison Box (Uniform Styling & Border) -->
-                    <div class="xirr-comparison-box">
-                        <div class="xirr-item">
-                            <span class="xirr-title">
-                                Estimated Pre-Tax XIRR
-                                <button class="tooltip-btn" aria-label="Tooltip">
-                                    i
-                                    <div class="tooltip-box">
-                                        The annualized return percentage before accounting for individual income tax liabilities.
-                                    </div>
-                                </button>
-                            </span>
-                            <span class="xirr-val" id="preTaxXirrVal">28.7%</span>
-                        </div>
-                        <div class="xirr-divider"></div>
-                        <div class="xirr-item">
-                            <span class="xirr-title">
-                                Estimated Post-Tax XIRR
-                                <button class="tooltip-btn" aria-label="Tooltip">
-                                    i
-                                    <div class="tooltip-box">
-                                        The effective annualized rate of return on your investment after deducting maximum marginal bracket tax (34.94%).
-                                    </div>
-                                </button>
-                            </span>
-                            <span class="xirr-val post" id="postTaxXirrValText">19.5%</span>
-                        </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LEVEL 2: INVESTED PLANS LIST               -->
+            <!-- ========================================== -->
+            <div id="view-plans-list" class="space-y-6 hidden">
+                
+                <button onclick="navigateTo('portfolio')" class="inline-flex items-center text-xs font-bold text-neutralScale-500 hover:text-brand-900 transition">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5 mr-1"></i> Back to Portfolio Overview
+                </button>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-xl font-bold text-neutralScale-900">Your Invested Plans</h1>
+                        <p class="text-xs text-neutralScale-500 mt-0.5">High level summary of active plans</p>
                     </div>
                 </div>
 
-                <!-- Primary CTA Link -->
-                <a href="https://www.perannum.money/estates" class="cta-button-link" target="_blank" rel="noopener noreferrer">
-                    <button class="cta-button" id="ctaBtn">
-                        <span>Reserve Your Spot with ₹10.00L</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    
+                    <!-- Plan 1: Growth Pro 2 Months -->
+                    <div class="bg-white border border-neutralScale-200 rounded-2xl p-5 shadow-xs clickable-card flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-neutralScale-900 text-base">Growth Pro 2 Months</h3>
+                                    <p class="text-[11px] text-neutralScale-500">Short term compounding strategy</p>
+                                </div>
+                                <div class="bg-brand-100/70 text-brand-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-brand-100 flex items-center space-x-1 whitespace-nowrap">
+                                    <span id="xirr-val-Growth Pro 2 Months">Avg. XIRR 12.8%</span>
+                                    <button onclick="refreshXIRRAction(this, 'Growth Pro 2 Months')" title="Refresh XIRR" class="hover:text-black transition focus:outline-none">
+                                        <i data-lucide="rotate-cw" class="w-2.5 h-2.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹90,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹2,00,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹21,500</span></div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutralScale-100 flex items-center space-x-2">
+                            <button onclick="addFundsAction('Growth Pro 2 Months')" class="w-1/2 bg-brand-100/60 hover:bg-brand-100 text-brand-900 border border-brand-100 text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                                <span>Add More Funds</span>
+                            </button>
+                            <button onclick="navigateTo('plan_detail', 'Growth Pro 2 Months')" class="w-1/2 bg-brand-900 hover:bg-black text-white text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <span>View Details</span>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Plan 2: Growth X -->
+                    <div class="bg-white border border-neutralScale-200 rounded-2xl p-5 shadow-xs clickable-card flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-neutralScale-900 text-base">Growth X</h3>
+                                    <p class="text-[11px] text-neutralScale-500">Accelerated return strategy</p>
+                                </div>
+                                <div class="bg-brand-100/70 text-brand-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-brand-100 flex items-center space-x-1 whitespace-nowrap">
+                                    <span id="xirr-val-Growth X">Avg. XIRR 12.2%</span>
+                                    <button onclick="refreshXIRRAction(this, 'Growth X')" title="Refresh XIRR" class="hover:text-black transition focus:outline-none">
+                                        <i data-lucide="rotate-cw" class="w-2.5 h-2.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹50,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹1,20,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹12,400</span></div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutralScale-100 flex items-center space-x-2">
+                            <button onclick="addFundsAction('Growth X')" class="w-1/2 bg-brand-100/60 hover:bg-brand-100 text-brand-900 border border-brand-100 text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                                <span>Add More Funds</span>
+                            </button>
+                            <button onclick="navigateTo('plan_detail', 'Growth X')" class="w-1/2 bg-brand-900 hover:bg-black text-white text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <span>View Details</span>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Plan 3: Growth Pro 6 Months -->
+                    <div class="bg-white border border-neutralScale-200 rounded-2xl p-5 shadow-xs clickable-card flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-neutralScale-900 text-base">Growth Pro 6 Months</h3>
+                                    <p class="text-[11px] text-neutralScale-500">Medium term yield plan</p>
+                                </div>
+                                <div class="bg-brand-100/70 text-brand-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-brand-100 flex items-center space-x-1 whitespace-nowrap">
+                                    <span id="xirr-val-Growth Pro 6 Months">Avg. XIRR 13.1%</span>
+                                    <button onclick="refreshXIRRAction(this, 'Growth Pro 6 Months')" title="Refresh XIRR" class="hover:text-black transition focus:outline-none">
+                                        <i data-lucide="rotate-cw" class="w-2.5 h-2.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹40,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹1,00,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹10,850</span></div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutralScale-100 flex items-center space-x-2">
+                            <button onclick="addFundsAction('Growth Pro 6 Months')" class="w-1/2 bg-brand-100/60 hover:bg-brand-100 text-brand-900 border border-brand-100 text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                                <span>Add More Funds</span>
+                            </button>
+                            <button onclick="navigateTo('plan_detail', 'Growth Pro 6 Months')" class="w-1/2 bg-brand-900 hover:bg-black text-white text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <span>View Details</span>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Plan 4: Growth Plus -->
+                    <div class="bg-white border border-neutralScale-200 rounded-2xl p-5 shadow-xs clickable-card flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-neutralScale-900 text-base">Growth Plus</h3>
+                                    <p class="text-[11px] text-neutralScale-500">Flexible lock-in compounding</p>
+                                </div>
+                                <div class="bg-brand-100/70 text-brand-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-brand-100 flex items-center space-x-1 whitespace-nowrap">
+                                    <span id="xirr-val-Growth Plus">Avg. XIRR 11.2%</span>
+                                    <button onclick="refreshXIRRAction(this, 'Growth Plus')" title="Refresh XIRR" class="hover:text-black transition focus:outline-none">
+                                        <i data-lucide="rotate-cw" class="w-2.5 h-2.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹30,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹80,000</span></div>
+                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹3,500</span></div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutralScale-100 flex items-center space-x-2">
+                            <button onclick="addFundsAction('Growth Plus')" class="w-1/2 bg-brand-100/60 hover:bg-brand-100 text-brand-900 border border-brand-100 text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                                <span>Add More Funds</span>
+                            </button>
+                            <button onclick="navigateTo('plan_detail', 'Growth Plus')" class="w-1/2 bg-brand-900 hover:bg-black text-white text-xs font-bold py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                                <span>View Details</span>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LEVEL 3: PLAN SPECIFIC DETAILED VIEW       -->
+            <!-- ========================================== -->
+            <div id="view-plan-detail" class="space-y-6 hidden">
+                
+                <button onclick="navigateTo('plans_list')" class="inline-flex items-center text-xs font-bold text-neutralScale-500 hover:text-brand-900 transition">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5 mr-1"></i> Back to Invested Plans
+                </button>
+
+                <!-- Plan Banner Header with State Selector Toggle -->
+                <div class="bg-white p-6 rounded-2xl border border-neutralScale-200 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center space-x-3">
+                            <h1 id="selected-plan-title" class="text-xl font-bold text-neutralScale-900">Growth Pro 2 Months</h1>
+                            <div class="bg-brand-100/70 text-brand-900 text-xs font-bold px-3 py-0.5 rounded-full border border-brand-100 flex items-center space-x-1.5 whitespace-nowrap">
+                                <span id="selected-plan-xirr">Avg. XIRR 12.8%</span>
+                                <button onclick="refreshXIRRAction(this, 'detail')" title="Refresh XIRR" class="hover:text-black transition focus:outline-none">
+                                    <i data-lucide="rotate-cw" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-neutralScale-500">Comprehensive plan analysis, repayments, NPA metrics and lock-in contracts</p>
+                    </div>
+
+                    <!-- Top State Toggle (Active vs Closed Plan State) -->
+                    <div class="flex items-center space-x-3 shrink-0">
+                        <div class="flex bg-neutralScale-100 p-1 rounded-xl border border-neutralScale-200">
+                            <button id="plan-state-btn-active" onclick="switchPlanState('active')" class="px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition">
+                                Active Lock-ins (<span id="count-state-active">10</span>)
+                            </button>
+                            <button id="plan-state-btn-closed" onclick="switchPlanState('closed')" class="px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition">
+                                Closed Lock-ins (<span id="count-state-closed">8</span>)
+                            </button>
+                        </div>
+
+                        <button id="plan-detail-add-btn" onclick="addFundsAction(currentPlanName)" class="bg-brand-900 hover:bg-black text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-xs shrink-0">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                            <span id="dynamic-add-funds-label">Add Funds</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NEW DESIGN STRUCTURE: Clear visual hierarchy & grid symmetry -->
+                <div class="space-y-4">
+                    
+                    <!-- HERO LEVEL: Primary High-Priority Metrics -->
+                    <div class="bg-brand-900 text-white p-6 rounded-2xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 relative overflow-hidden">
+                        
+                        <!-- Hero Metric 1: Current Value -->
+                        <div class="bg-brand-700/30 p-5 rounded-xl border border-brand-700/50 flex flex-col justify-between items-center text-center space-y-2">
+                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium justify-center">
+                                <span>Current Value</span>
+                                <div class="tooltip-container cursor-pointer">
+                                    <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100/70"></i>
+                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed text-left">
+                                        Active principal capital remaining in non-matured loans.
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="plan-current-val" class="text-3xl font-extrabold text-white tracking-tight">₹90,000</p>
+                            <span class="text-[10px] bg-brand-700/60 text-brand-100 px-2.5 py-0.5 rounded-full">Active capital in circulation</span>
+                        </div>
+
+                        <!-- Hero Metric 2: Net Returns -->
+                        <div class="bg-brand-700/30 p-5 rounded-xl border border-brand-700/50 flex flex-col justify-between items-center text-center space-y-2">
+                            <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium justify-center">
+                                <span>Net Returns</span>
+                                <div class="tooltip-container cursor-pointer">
+                                    <i data-lucide="info" class="w-3.5 h-3.5 text-brand-500"></i>
+                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-3 rounded-xl shadow-xl font-normal space-y-1 w-56 text-left">
+                                        <div class="font-bold border-b border-neutralScale-500 pb-1 text-brand-500">Plan Returns Formula</div>
+                                        <div class="flex justify-between"><span>Net Returns:</span> <span id="tt-returns" class="font-bold text-brand-500">+₹21,500</span></div>
+                                        <div class="flex justify-between"><span>Total Amount Lent:</span> <span id="tt-lent" class="font-medium">₹1,96,000</span></div>
+                                        <div class="flex justify-between"><span>Net Repaid:</span> <span id="tt-repaid" class="font-medium">₹1,31,500</span></div>
+                                        <div class="flex justify-between"><span>Current Value:</span> <span id="tt-current" class="font-medium">₹90,000</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="plan-returns-val" class="text-3xl font-extrabold text-brand-500 tracking-tight">+₹21,500</p>
+                            <span class="text-[10px] bg-brand-500/20 text-brand-500 font-semibold px-2.5 py-0.5 rounded-full">Net profit generated to date</span>
+                        </div>
+
+                    </div>
+
+                    <!-- SECONDARY LEVEL: Equal-Sized 4-Column Metric Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <!-- Card 1: Total Initial Amount -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold">Total Initial Amount</span>
+                                <i data-lucide="layers" class="w-4 h-4 text-neutralScale-500"></i>
+                            </div>
+                            <p id="plan-initial-val" class="text-xl font-bold text-neutralScale-900">₹2,00,000</p>
+                            <p class="text-[10px] text-neutralScale-500">Original deposited capital</p>
+                        </div>
+
+                        <!-- Card 2: Total Amount Lent -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold flex items-center">
+                                    Total Amount Lent
+                                    <div class="tooltip-container ml-1 cursor-pointer">
+                                        <i data-lucide="info" class="w-3 h-3 text-neutralScale-500"></i>
+                                        <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2 rounded-lg shadow-xl font-normal">
+                                            Capital deployed post platform fees.
+                                        </div>
+                                    </div>
+                                </span>
+                                <i data-lucide="send" class="w-4 h-4 text-neutralScale-500"></i>
+                            </div>
+                            <p id="plan-lent-val" class="text-xl font-bold text-neutralScale-900">₹1,96,000</p>
+                            <p class="text-[10px] text-neutralScale-500">Deployed after fee deduction</p>
+                        </div>
+
+                        <!-- Card 3: Principal Received -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold">Principal Received</span>
+                                <i data-lucide="arrow-down-left" class="w-4 h-4 text-neutralScale-500"></i>
+                            </div>
+                            <p id="plan-principal-recd" class="text-xl font-bold text-neutralScale-900">₹1,10,000</p>
+                            <p class="text-[10px] text-neutralScale-500">Returned base principal</p>
+                        </div>
+
+                        <!-- Card 4: Interest Received -->
+                        <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
+                            <div class="flex items-center justify-between text-neutralScale-500">
+                                <span class="text-xs font-semibold">Interest Received</span>
+                                <i data-lucide="percent" class="w-4 h-4 text-brand-600"></i>
+                            </div>
+                            <p id="plan-interest-recd" class="text-xl font-bold text-brand-600">₹25,500</p>
+                            <p class="text-[10px] text-neutralScale-500">Collected interest payouts</p>
+                        </div>
+
+                    </div>
+
+                    <!-- TERTIARY LEVEL: Clear Operational Summary Bar -->
+                    <div class="bg-neutralScale-100 border border-neutralScale-200 rounded-xl px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between text-xs text-neutralScale-900 font-medium gap-3">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="building-2" class="w-4 h-4 text-neutralScale-500 shrink-0"></i>
+                            <span>Net Repaid to Bank: <strong id="plan-net-repaid" class="font-bold text-neutralScale-900">₹1,31,500</strong></span>
+                        </div>
+
+                        <div class="flex items-center space-x-6 text-neutralScale-500">
+                            <div>
+                                <span>Portfolio NPA Rate: <strong id="plan-npa-text" class="text-amber-600 font-bold">0.18% (₹162)</strong></span>
+                            </div>
+                            <div>
+                                <span>Total Fees Charged: <strong id="plan-fees-text" class="text-neutralScale-900 font-bold">₹4,000</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Report Download Banner -->
+                <div class="bg-brand-100/50 border border-brand-100 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl bg-brand-900 text-white flex items-center justify-center shrink-0">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                        </div>
+                        <p class="text-xs text-neutralScale-900 font-medium">
+                            For a detailed understanding of your portfolio on plan level or lockin level, kindly download the detailed reports.
+                        </p>
+                    </div>
+                    <button onclick="openReportModal()" class="bg-brand-900 hover:bg-black text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2 shrink-0 shadow-xs">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        <span>Download Reports</span>
                     </button>
-                </a>
+                </div>
+
+                <!-- Internal Scrollable Lock-ins Table Section -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 id="lockin-table-heading" class="text-xs font-bold text-neutralScale-900 uppercase tracking-wider">ACTIVE LOCK-IN CONTRACTS</h3>
+                        <span id="lockin-state-badge" class="text-[11px] font-semibold text-brand-900 bg-brand-100/60 px-2.5 py-0.5 rounded-md">Showing 10 Active Rows</span>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-neutralScale-200 overflow-hidden shadow-xs">
+                        <!-- Table Wrapper with Internal Fixed Scroll Height -->
+                        <div class="max-h-[380px] overflow-y-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="sticky top-0 z-10 bg-neutralScale-100 shadow-2xs">
+                                    <tr class="border-b border-neutralScale-200 text-[10px] uppercase font-bold text-neutralScale-500 tracking-wider">
+                                        <th class="py-3.5 px-6">LOCK-IN ID</th>
+                                        <th class="py-3.5 px-6">INITIAL AMOUNT</th>
+                                        <th class="py-3.5 px-6">CURRENT VALUE</th>
+                                        <th class="py-3.5 px-6">NET RETURN</th>
+                                        <th class="py-3.5 px-6 text-right">XIRR</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lockin-table-body" class="divide-y divide-neutralScale-100 text-xs">
+                                    <!-- Dynamic Rich Dummy Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
+    </main>
 
-        <!-- Sleek & Easy-to-Read Calculation Breakdown Section -->
-        <div class="collapsible-container" id="calcBreakdownContainer">
-            <button class="collapsible-trigger" id="calcToggleBtn" aria-expanded="false">
-                <span class="collapsible-title">
-                    <div class="title-icon-wrapper">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="3" y1="9" x2="21" y2="9"></line>
-                            <line x1="9" y1="21" x2="9" y2="9"></line>
-                        </svg>
-                    </div>
-                    How Your Return is Calculated (Detailed Breakdown)
-                </span>
-                <svg class="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </button>
+    <!-- ========================================== -->
+    <!-- REPORT DOWNLOAD MODAL                      -->
+    <!-- ========================================== -->
+    <div id="modal-report" class="fixed inset-0 bg-neutralScale-900/60 backdrop-blur-xs z-50 items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-neutralScale-100 space-y-5">
             
-            <div class="collapsible-content">
-                <div class="inner-content">
-                    <div class="breakdown-intro">
-                        <strong>Step-by-Step Return Waterfall:</strong> See exactly how your investment moves from fractional property ownership to net post-tax cash payouts. Every formula, addition, and deduction is transparently laid out below.
-                    </div>
+            <div class="flex justify-between items-start border-b border-neutralScale-100 pb-3">
+                <div>
+                    <h3 class="text-base font-bold text-neutralScale-900">Download Portfolio Report</h3>
+                    <p class="text-xs text-neutralScale-500">Request statement for plan or lock-in level analysis</p>
+                </div>
+                <button onclick="closeReportModal()" class="text-neutralScale-500 hover:text-neutralScale-900 font-bold p-1">✕</button>
+            </div>
 
-                    <div class="math-waterfall-flow">
-                        
-                        <!-- Step 1 -->
-                        <div class="math-card">
-                            <div class="math-card-header">
-                                <div class="math-card-title">
-                                    <span class="math-step-badge">STEP 1</span>
-                                    <span>Fractional Ownership Share Allocation</span>
-                                </div>
-                                <div class="math-card-metric" id="step1_share_title">4.8139% Ownership</div>
-                            </div>
-                            <div class="formula-box">
-                                <span class="formula-tag">FORMULA</span>
-                                <span>Unit Ownership % = Your Initial Contribution ÷ Upfront Booking Capital per Unit</span>
-                            </div>
-                            <div class="equation-table">
-                                <div class="eq-row">
-                                    <span class="eq-label"><span class="eq-operator"></span> Your Initial Capital Investment</span>
-                                    <span class="eq-val" id="step1_invest_val">₹ 10,00,000</span>
-                                </div>
-                                <div class="eq-row op-minus">
-                                    <span class="eq-label"><span class="eq-operator">÷</span> Total Upfront Booking Capital Required</span>
-                                    <span class="eq-val">₹ 2,07,72,759</span>
-                                </div>
-                                <div class="eq-row op-result">
-                                    <span class="eq-label"><span class="eq-operator">=</span> Calculated Unit Ownership Share</span>
-                                    <span class="eq-val green" id="step1_share_val">4.8139%</span>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Report Tabs -->
+            <div class="grid grid-cols-2 gap-2 p-1 bg-neutralScale-200/60 rounded-xl">
+                <button id="tab-btn-summary" onclick="switchReportType('summary')" class="py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs">
+                    Investment Summary
+                </button>
+                <button id="tab-btn-npa" onclick="switchReportType('npa')" class="py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900">
+                    Growth NPA
+                </button>
+            </div>
 
-                        <!-- Step 2 -->
-                        <div class="math-card">
-                            <div class="math-card-header">
-                                <div class="math-card-title">
-                                    <span class="math-step-badge">STEP 2</span>
-                                    <span>Gross Property Resale Price & Exit Expenses</span>
-                                </div>
-                                <div class="math-card-metric" id="step2_spv_profit_title">₹ 1,60,03,446 SPV Profit</div>
-                            </div>
-                            <div class="formula-box">
-                                <span class="formula-tag">FORMULA</span>
-                                <span>Resale Value = Base Price × (1 + Growth Rate)<sup>Years</sup> &nbsp;|&nbsp; Gross Profit = Resale Value − Base Price − Selling Costs</span>
-                            </div>
-                            <div class="equation-table">
-                                <div class="eq-row op-plus">
-                                    <span class="eq-label"><span class="eq-operator">+</span> Gross Resale Value (<span id="step2_growth_text">8.0% p.a. for 2.0 yrs</span> on ₹10.50 Cr)</span>
-                                    <span class="eq-val green" id="step2_resale_val">₹ 12,25,18,479</span>
-                                </div>
-                                <div class="eq-row op-minus">
-                                    <span class="eq-label"><span class="eq-operator">−</span> Base All-Inclusive Property Purchase Cost</span>
-                                    <span class="eq-val red">₹ 10,50,39,848</span>
-                                </div>
-                                <div class="eq-row op-minus">
-                                    <span class="eq-label"><span class="eq-operator">−</span> Property Selling Expenses (1% Brokerage <span id="step2_brok_val">₹12,25,185</span> + Legal <span id="step2_admin_val">₹2,50,000</span>)</span>
-                                    <span class="eq-val red" id="step2_expenses_val">₹ 14,75,185</span>
-                                </div>
-                                <div class="eq-row op-result">
-                                    <span class="eq-label"><span class="eq-operator">=</span> Total SPV Level Gross Profit</span>
-                                    <span class="eq-val green" id="step2_gross_profit_val">₹ 1,60,03,446</span>
-                                </div>
-                            </div>
-                        </div>
+            <!-- FLOW 1 -->
+            <div id="flow-investment-summary" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-neutralScale-900 mb-1.5">Select product</label>
+                    <select class="w-full bg-neutralScale-50 border border-neutralScale-200 rounded-xl px-3 py-2.5 text-xs text-neutralScale-900 font-medium focus:outline-none focus:border-brand-900">
+                        <option value="1">Growth Plan Aggregated (All Lockins)</option>
+                        <option value="2">Growth Lockin</option>
+                        <option value="3">Monthly EMI Plan Aggregated (All Tranches)</option>
+                        <option value="4">Monthly EMI Tranche</option>
+                    </select>
+                </div>
+                
+                <p class="text-xs text-neutralScale-500 leading-relaxed bg-neutralScale-50 p-3 rounded-xl border border-neutralScale-100">
+                    This report provides details of your transactions in the selected Growth Plans and Monthly EMI.
+                </p>
+            </div>
 
-                        <!-- Step 3 -->
-                        <div class="math-card">
-                            <div class="math-card-header">
-                                <div class="math-card-title">
-                                    <span class="math-step-badge">STEP 3</span>
-                                    <span>Your Proportional Share of Gross Profit</span>
-                                </div>
-                                <div class="math-card-metric" id="step3_investor_gross_title">₹ 7,70,405</div>
-                            </div>
-                            <div class="formula-box">
-                                <span class="formula-tag">FORMULA</span>
-                                <span>Your Gross Profit = Total SPV Gross Profit × Your Unit Ownership %</span>
-                            </div>
-                            <div class="equation-table">
-                                <div class="eq-row op-plus">
-                                    <span class="eq-label"><span class="eq-operator"></span> Total SPV Level Gross Profit</span>
-                                    <span class="eq-val" id="step3_spv_profit_val">₹ 1,60,03,446</span>
-                                </div>
-                                <div class="eq-row">
-                                    <span class="eq-label"><span class="eq-operator">×</span> Your Unit Ownership Share</span>
-                                    <span class="eq-val" id="step3_share_val">4.8139%</span>
-                                </div>
-                                <div class="eq-row op-result">
-                                    <span class="eq-label"><span class="eq-operator">=</span> Your Share of Gross Profit</span>
-                                    <span class="eq-val green" id="step3_result_val">₹ 7,70,405</span>
-                                </div>
-                            </div>
-                        </div>
+            <!-- FLOW 2 -->
+            <div id="flow-growth-npa" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-bold text-neutralScale-900 mb-1.5">Select report type</label>
+                    <select class="w-full bg-neutralScale-50 border border-neutralScale-200 rounded-xl px-3 py-2.5 text-xs text-neutralScale-900 font-medium focus:outline-none focus:border-brand-900">
+                        <option value="1">Aggregated NPA Report (All Lockins)</option>
+                        <option value="2">Lockin NPA Report</option>
+                    </select>
+                </div>
 
-                        <!-- Step 4 -->
-                        <div class="math-card">
-                            <div class="math-card-header">
-                                <div class="math-card-title">
-                                    <span class="math-step-badge">STEP 4</span>
-                                    <span>Hurdle Rate & Performance Fee (Carry) Calculation</span>
-                                </div>
-                                <div class="math-card-metric" style="color:#DC2626;" id="step4_fee_title">- ₹ 1,11,976 Fee</div>
-                            </div>
-                            <div class="formula-box">
-                                <span class="formula-tag">FORMULA</span>
-                                <span>Hurdle = Investment × [(1 + 15%)<sup>Years</sup> − 1] &nbsp;|&nbsp; Carry = 25% × (Your Profit − Hurdle)</span>
-                            </div>
-                            <div class="equation-table">
-                                <div class="eq-row">
-                                    <span class="eq-label"><span class="eq-operator"></span> Your Share of Gross Profit</span>
-                                    <span class="eq-val" id="step4_investor_gross_val">₹ 7,70,405</span>
-                                </div>
-                                <div class="eq-row op-minus">
-                                    <span class="eq-label"><span class="eq-operator">−</span> Guaranteed Hurdle Threshold (15% Compounded per annum)</span>
-                                    <span class="eq-val red" id="step4_hurdle_val">₹ 3,22,500</span>
-                                </div>
-                                <div class="eq-row op-plus">
-                                    <span class="eq-label"><span class="eq-operator">=</span> Excess Profit Subject to Performance Fee</span>
-                                    <span class="eq-val green" id="step4_excess_val">₹ 4,47,905</span>
-                                </div>
-                                <div class="eq-row op-result op-minus">
-                                    <span class="eq-label"><span class="eq-operator">=</span> Per Annum Performance Fee (25% of Excess Profit)</span>
-                                    <span class="eq-val red" id="step4_fee_val">₹ 1,11,976</span>
-                                </div>
-                            </div>
-                        </div>
+                <p class="text-xs text-neutralScale-500 leading-relaxed bg-neutralScale-50 p-3 rounded-xl border border-neutralScale-100">
+                    Choose a growth lockin to request its NPA report.
+                </p>
+            </div>
 
-                        <!-- Step 5 -->
-                        <div class="math-card">
-                            <div class="math-card-header">
-                                <div class="math-card-title">
-                                    <span class="math-step-badge">STEP 5</span>
-                                    <span>Pre-Tax Net Profit Calculation</span>
-                                </div>
-                                <div class="math-card-metric" id="step5_pretax_title">₹ 6,58,429 Pre-Tax</div>
-                            </div>
-                            <div class="formula-box">
-                                <span class="formula-tag">FORMULA</span>
-                                <span>Pre-Tax Net Profit = Your Gross Profit Share − Per Annum Performance Fee</span>
-                            </div>
-                            <div class="equation-table">
-                                <div class="eq-row op-plus">
-                                    <span class="eq-label"><span class="eq-operator">+</span> Your Share of Gross Profit</span>
-                                    <span class="eq-val green" id="step5_gross_val">₹ 7,70,405</span>
-                                </div>
-                                <div class="eq-row op-minus">
-                                    <span class="eq-label"><span class="eq-operator">−</span> Per Annum Performance Fee</span>
-                                    <span class="eq-val red" id="step5_fee_val">₹ 1,11,976</span>
-                                </div>
-                                <div class="eq-row op-result">
-                                    <span class="eq-label"><span class="eq-operator">=</span> Pre-Tax Net Profit</span>
-                                    <span class="eq-val green" id="step5_result_val">₹ 6,58,429</span>
-                                </div>
-                            </div>
-                        </div>
+            <div class="space-y-3 border-t border-neutralScale-100 pt-3">
+                <p class="text-xs text-neutralScale-500 flex items-center">
+                    <i data-lucide="mail" class="w-3.5 h-3.5 mr-1.5 text-brand-900"></i>
+                    Your report will be sent to <strong class="ml-1 text-neutralScale-900">sourav.singh@example.com</strong>.
+                </p>
 
-                        <!-- Step 6 Hero Final Payout Step -->
-                        <div class="math-card hero-step">
-                            <div class="math-card-header">
-                                <div class="math-card-title">
-                                    <span class="math-step-badge">STEP 6</span>
-                                    <span>Final Post-Tax Net Profit & Payout Engine</span>
-                                </div>
-                                <div class="math-card-metric" id="step6_final_title">₹ 14,28,374 Total Payout</div>
-                            </div>
-                            <div class="formula-box">
-                                <span class="formula-tag">FORMULA</span>
-                                <span>Tax = 34.94% × Pre-Tax Profit &nbsp;|&nbsp; Post-Tax Proceeds = Initial Capital + (Pre-Tax Profit − Tax)</span>
-                            </div>
-                            <div class="equation-table">
-                                <div class="eq-row op-plus">
-                                    <span class="eq-label"><span class="eq-operator">+</span> Your Initial Capital Investment</span>
-                                    <span class="eq-val" id="step6_invest_val">₹ 10,00,000</span>
-                                </div>
-                                <div class="eq-row op-plus">
-                                    <span class="eq-label"><span class="eq-operator">+</span> Pre-Tax Net Profit</span>
-                                    <span class="eq-val" id="step6_pretax_val">₹ 6,58,429</span>
-                                </div>
-                                <div class="eq-row op-minus">
-                                    <span class="eq-label"><span class="eq-operator">−</span> Income Tax (Maximum Marginal Rate @ 34.94%)</span>
-                                    <span class="eq-val red" id="step6_tax_val" style="color:#FCA5A5;">₹ 2,30,055</span>
-                                </div>
-                                <div class="eq-row op-result">
-                                    <span class="eq-label"><span class="eq-operator">=</span> Estimated Post-Tax Total Proceeds Received at Exit</span>
-                                    <span class="eq-val green" id="step6_total_payout_val" style="font-size:16px; color:var(--white);">₹ 14,28,374</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
+                <div class="flex space-x-3 pt-2">
+                    <button onclick="closeReportModal()" class="w-1/2 py-2.5 text-xs font-bold text-neutralScale-500 hover:bg-neutralScale-100 rounded-xl transition">
+                        Cancel
+                    </button>
+                    <button onclick="triggerReportRequest()" class="w-1/2 py-2.5 text-xs font-bold bg-brand-900 hover:bg-black text-white rounded-xl shadow-xs transition">
+                        Request Report
+                    </button>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
-    <!-- Mathematical Calculation Engine -->
+    <!-- Javascript Controller -->
     <script>
-        // Mathematical Constants & Base Values
-        const UNIT_PRICE = 105039848.0; 
-        const UPFRONT_BOOKING = 20772759.0; 
-        const BROKERAGE_RATE = 0.01; 
-        const ADMIN_EXPENSE = 250000.0; 
-        const HURDLE_RATE = 0.15; 
-        const PERF_FEE_RATE = 0.25; 
-        const TAX_RATE = 0.3494; 
+        lucide.createIcons();
 
-        // Input Controls
-        const amountSlider = document.getElementById('amountSlider');
-        const periodSlider = document.getElementById('periodSlider');
-        const growthSlider = document.getElementById('growthSlider');
+        let currentPlanName = 'Growth Pro 2 Months';
+        let currentPlanState = 'active'; // 'active' or 'closed'
+        let overviewXIRRVal = 12.4;
 
-        // Input Value Labels
-        const amountDisplay = document.getElementById('amountDisplay');
-        const periodDisplay = document.getElementById('periodDisplay');
-        const growthDisplay = document.getElementById('growthDisplay');
-
-        // Output Display Elements
-        const postTaxProceeds = document.getElementById('postTaxProceeds');
-        const postTaxProfitVal = document.getElementById('postTaxProfitVal');
-        const postTaxAbsReturn = document.getElementById('postTaxAbsReturn');
-        const preTaxXirrVal = document.getElementById('preTaxXirrVal');
-        const postTaxXirrValText = document.getElementById('postTaxXirrValText');
-        const badgeHoldingText = document.getElementById('badgeHoldingText');
-        
-        // Output Ratio Bar
-        const barInitialText = document.getElementById('barInitialText');
-        const barProfitText = document.getElementById('barProfitText');
-        const barFillInitial = document.getElementById('barFillInitial');
-        const barFillProfit = document.getElementById('barFillProfit');
-        
-        const ctaBtn = document.getElementById('ctaBtn');
-
-        // Accordion Controls
-        const calcBreakdownContainer = document.getElementById('calcBreakdownContainer');
-        const calcToggleBtn = document.getElementById('calcToggleBtn');
-
-        // Number Formatting Functions
-        function formatINR(val) {
-            return '₹ ' + Math.round(val).toLocaleString('en-IN');
-        }
-        function formatCr(val) {
-            return '₹ ' + (val / 10000000).toFixed(2) + ' Cr';
-        }
-        function formatLakhs(val) {
-            return '₹' + (val / 100000).toFixed(2) + 'L';
-        }
-
-        // Calculation Execution Engine
-        function calculateReturns() {
-            const P = parseFloat(amountSlider.value);
-            const months = parseInt(periodSlider.value);
-            const growthRate = parseFloat(growthSlider.value) / 100.0;
-            const years = months / 12.0;
-
-            // 1. Fractional Ownership Share
-            const unitOwnershipPct = P / UPFRONT_BOOKING;
-
-            // 2. SPV Resale Value at Exit
-            const resalePrice = UNIT_PRICE * Math.pow((1 + growthRate), years);
-            const brokerageExp = resalePrice * BROKERAGE_RATE;
-            const totalExpenses = brokerageExp + ADMIN_EXPENSE;
-
-            // 3. SPV Gross Profit
-            const spvGrossProfit = resalePrice - UNIT_PRICE - totalExpenses;
-            const investorGrossProfit = spvGrossProfit * unitOwnershipPct;
-
-            // 4. Hurdle Return & Carry Performance Fee
-            const hurdleReturnAmount = P * (Math.pow((1 + HURDLE_RATE), years) - 1);
-            const excessProfit = Math.max(0, investorGrossProfit - hurdleReturnAmount);
-            const performanceFee = excessProfit * PERF_FEE_RATE;
-
-            // 5. Pre-Tax Net Return Calculation
-            const preTaxProfit = investorGrossProfit - performanceFee;
-            const preTaxTotal = P + preTaxProfit;
-            const preTaxXirr = (Math.pow((preTaxTotal / P), (1 / years)) - 1) * 100;
-
-            // 6. Post-Tax Net Return Calculation
-            const taxAmount = preTaxProfit * TAX_RATE;
-            const postTaxProfit = preTaxProfit - taxAmount;
-            const postTaxTotal = P + postTaxProfit;
-            const postTaxXirr = (Math.pow((postTaxTotal / P), (1 / years)) - 1) * 100;
-            const absReturnPct = (postTaxProfit / P) * 100;
-
-            // Render Input Displays
-            amountDisplay.textContent = formatINR(P);
-            periodDisplay.textContent = months + ' Months (' + (months / 12).toFixed(1) + ' Yrs)';
-            growthDisplay.textContent = (growthRate * 100).toFixed(1) + '% p.a.';
-
-            // Render Output Card Metrics
-            postTaxProceeds.textContent = formatINR(postTaxTotal);
-            postTaxProfitVal.textContent = '+ ' + formatINR(postTaxProfit);
-            postTaxAbsReturn.textContent = '+ ' + absReturnPct.toFixed(1) + '%';
-            preTaxXirrVal.textContent = preTaxXirr.toFixed(1) + '%';
-            postTaxXirrValText.textContent = postTaxXirr.toFixed(1) + '%';
-            badgeHoldingText.textContent = `${months}-Month Horizon`;
-
-            // Update Visual Capital Bar
-            const initialRatio = (P / postTaxTotal) * 100;
-            const profitRatio = (postTaxProfit / postTaxTotal) * 100;
-            barFillInitial.style.width = `${initialRatio}%`;
-            barFillProfit.style.width = `${profitRatio}%`;
-            barInitialText.textContent = formatLakhs(P);
-            barProfitText.textContent = '+ ' + formatLakhs(postTaxProfit);
-
-            // Render CTA Button Text
-            ctaBtn.querySelector('span').textContent = `Reserve Your Spot with ${formatLakhs(P)}`;
-
-            // Render Detailed Math Breakdown
-            // Step 1
-            document.getElementById('step1_share_title').textContent = (unitOwnershipPct * 100).toFixed(4) + '% Ownership';
-            document.getElementById('step1_invest_val').textContent = formatINR(P);
-            document.getElementById('step1_share_val').textContent = (unitOwnershipPct * 100).toFixed(4) + '%';
-
-            // Step 2
-            document.getElementById('step2_spv_profit_title').textContent = formatINR(spvGrossProfit) + ' SPV Profit';
-            document.getElementById('step2_growth_text').textContent = `${(growthRate * 100).toFixed(1)}% p.a. for ${years.toFixed(1)} yrs`;
-            document.getElementById('step2_resale_val').textContent = formatINR(resalePrice);
-            document.getElementById('step2_brok_val').textContent = formatINR(brokerageExp);
-            document.getElementById('step2_admin_val').textContent = formatINR(ADMIN_EXPENSE);
-            document.getElementById('step2_expenses_val').textContent = formatINR(totalExpenses);
-            document.getElementById('step2_gross_profit_val').textContent = formatINR(spvGrossProfit);
-
-            // Step 3
-            document.getElementById('step3_investor_gross_title').textContent = formatINR(investorGrossProfit);
-            document.getElementById('step3_spv_profit_val').textContent = formatINR(spvGrossProfit);
-            document.getElementById('step3_share_val').textContent = (unitOwnershipPct * 100).toFixed(4) + '%';
-            document.getElementById('step3_result_val').textContent = formatINR(investorGrossProfit);
-
-            // Step 4
-            document.getElementById('step4_fee_title').textContent = '- ' + formatINR(performanceFee) + ' Fee';
-            document.getElementById('step4_investor_gross_val').textContent = formatINR(investorGrossProfit);
-            document.getElementById('step4_hurdle_val').textContent = formatINR(hurdleReturnAmount);
-            document.getElementById('step4_excess_val').textContent = formatINR(excessProfit);
-            document.getElementById('step4_fee_val').textContent = formatINR(performanceFee);
-
-            // Step 5
-            document.getElementById('step5_pretax_title').textContent = formatINR(preTaxProfit) + ' Pre-Tax';
-            document.getElementById('step5_gross_val').textContent = formatINR(investorGrossProfit);
-            document.getElementById('step5_fee_val').textContent = formatINR(performanceFee);
-            document.getElementById('step5_result_val').textContent = formatINR(preTaxProfit);
-
-            // Step 6
-            document.getElementById('step6_final_title').textContent = formatINR(postTaxTotal) + ' Total Payout';
-            document.getElementById('step6_invest_val').textContent = formatINR(P);
-            document.getElementById('step6_pretax_val').textContent = formatINR(preTaxProfit);
-            document.getElementById('step6_tax_val').textContent = formatINR(taxAmount);
-            document.getElementById('step6_total_payout_val').textContent = formatINR(postTaxTotal);
-
-            // Dynamic Slider Track Styling
-            updateSliderTrack(amountSlider);
-            updateSliderTrack(periodSlider);
-            updateSliderTrack(growthSlider);
-        }
-
-        function updateSliderTrack(slider) {
-            const min = parseFloat(slider.min);
-            const max = parseFloat(slider.max);
-            const val = parseFloat(slider.value);
-            const percentage = ((val - min) / (max - min)) * 100;
-            slider.style.background = `linear-gradient(to right, var(--green-600) 0%, var(--green-600) ${percentage}%, var(--gray-200) ${percentage}%, var(--gray-200) 100%)`;
-        }
-
-        // Accordion Toggle & Smooth Auto-Scroll Logic
-        calcToggleBtn.addEventListener('click', () => {
-            const isActive = calcBreakdownContainer.classList.toggle('active');
-            calcToggleBtn.setAttribute('aria-expanded', isActive);
-
-            if (isActive) {
-                setTimeout(() => {
-                    calcBreakdownContainer.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }, 200);
+        // Mathematical Consistency: Aggregated values strictly sum up from individual row entries
+        const plansDataMap = {
+            'Growth Pro 2 Months': {
+                xirr: 12.8,
+                active: {
+                    current: '₹90,000',
+                    initial: '₹2,00,000',
+                    lent: '₹1,96,000', // Total Amount Lent = Initial Amount (₹2,00,000) - Fees (₹4,000)
+                    returns: '+₹21,500',
+                    principalRecd: '₹1,10,000',
+                    interestRecd: '₹25,500',
+                    netRepaid: '₹1,31,500',
+                    npa: '0.18% (₹162)',
+                    fees: '₹4,000',
+                    repaid: '₹1,31,500',
+                    lockins: [
+                        { id: '#05828074DBNF', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,800', xirr: '12.8%' },
+                        { id: '#08921142KLPQ', initial: '₹20,000', current: '₹10,000', returnVal: '+₹2,100', xirr: '12.7%' },
+                        { id: '#03829103PLMK', initial: '₹25,000', current: '₹12,000', returnVal: '+₹2,650', xirr: '12.9%' },
+                        { id: '#04729184QWER', initial: '₹15,000', current: '₹8,000',  returnVal: '+₹1,600', xirr: '12.6%' },
+                        { id: '#09182374TYUI', initial: '₹30,000', current: '₹15,000', returnVal: '+₹3,200', xirr: '13.0%' },
+                        { id: '#01928374OPAS', initial: '₹18,000', current: '₹7,000',  returnVal: '+₹1,850', xirr: '12.8%' },
+                        { id: '#02837461DFGH', initial: '₹22,000', current: '₹10,000', returnVal: '+₹2,350', xirr: '12.7%' },
+                        { id: '#03746281JKLZ', initial: '₹15,000', current: '₹6,000',  returnVal: '+₹1,550', xirr: '12.5%' },
+                        { id: '#04837261XCVB', initial: '₹12,000', current: '₹5,000',  returnVal: '+₹1,300', xirr: '12.8%' },
+                        { id: '#05938271BNMM', initial: '₹18,000', current: '₹7,000',  returnVal: '+₹2,100', xirr: '12.9%' }
+                    ]
+                },
+                closed: {
+                    current: '₹0', // Always 0 for fully closed state
+                    initial: '₹1,50,000',
+                    lent: '₹1,47,200', // ₹1,50,000 - ₹2,800 fees
+                    returns: '+₹16,400',
+                    principalRecd: '₹1,50,000',
+                    interestRecd: '₹19,200',
+                    netRepaid: '₹1,66,400',
+                    npa: '0.00% (₹0)',
+                    fees: '₹2,800',
+                    repaid: '₹1,66,400',
+                    lockins: [
+                        { id: '#01928374CLSD', initial: '₹20,000', current: '₹0', returnVal: '+₹2,100', xirr: '12.5%' },
+                        { id: '#02837482CLSD', initial: '₹25,000', current: '₹0', returnVal: '+₹2,750', xirr: '12.8%' },
+                        { id: '#03829104CLSD', initial: '₹15,000', current: '₹0', returnVal: '+₹1,600', xirr: '12.4%' },
+                        { id: '#04829105CLSD', initial: '₹30,000', current: '₹0', returnVal: '+₹3,300', xirr: '12.6%' },
+                        { id: '#05829106CLSD', initial: '₹10,000', current: '₹0', returnVal: '+₹1,100', xirr: '12.3%' },
+                        { id: '#06829107CLSD', initial: '₹18,000', current: '₹0', returnVal: '+₹1,950', xirr: '12.7%' },
+                        { id: '#07829108CLSD', initial: '₹22,000', current: '₹0', returnVal: '+₹2,400', xirr: '12.5%' },
+                        { id: '#08829109CLSD', initial: '₹10,000', current: '₹0', returnVal: '+₹1,200', xirr: '12.8%' }
+                    ]
+                }
+            },
+            'Growth X': {
+                xirr: 12.2,
+                active: {
+                    current: '₹50,000',
+                    initial: '₹1,20,000',
+                    lent: '₹1,17,600',
+                    returns: '+₹12,400',
+                    principalRecd: '₹70,000',
+                    interestRecd: '₹14,800',
+                    netRepaid: '₹82,400',
+                    npa: '0.12% (₹60)',
+                    fees: '₹2,400',
+                    repaid: '₹82,400',
+                    lockins: [
+                        { id: '#09128383LKM1', initial: '₹30,000', current: '₹12,000', returnVal: '+₹3,100', xirr: '12.2%' },
+                        { id: '#09128383LKM2', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,600', xirr: '12.1%' },
+                        { id: '#09128383LKM3', initial: '₹20,000', current: '₹8,000',  returnVal: '+₹2,100', xirr: '12.3%' },
+                        { id: '#09128383LKM4', initial: '₹25,000', current: '₹11,000', returnVal: '+₹2,500', xirr: '12.0%' },
+                        { id: '#09128383LKM5', initial: '₹20,000', current: '₹9,000',  returnVal: '+₹2,100', xirr: '12.4%' }
+                    ]
+                },
+                closed: {
+                    current: '₹0',
+                    initial: '₹80,000',
+                    lent: '₹78,400',
+                    returns: '+₹8,200',
+                    principalRecd: '₹80,000',
+                    interestRecd: '₹9,800',
+                    netRepaid: '₹88,200',
+                    npa: '0.00% (₹0)',
+                    fees: '₹1,600',
+                    repaid: '₹88,200',
+                    lockins: [
+                        { id: '#03829102CLSD1', initial: '₹20,000', current: '₹0', returnVal: '+₹2,050', xirr: '12.1%' },
+                        { id: '#03829102CLSD2', initial: '₹30,000', current: '₹0', returnVal: '+₹3,100', xirr: '12.2%' },
+                        { id: '#03829102CLSD3', initial: '₹15,000', current: '₹0', returnVal: '+₹1,500', xirr: '12.0%' },
+                        { id: '#03829102CLSD4', initial: '₹15,000', current: '₹0', returnVal: '+₹1,550', xirr: '12.3%' }
+                    ]
+                }
+            },
+            'Growth Pro 6 Months': {
+                xirr: 13.1,
+                active: {
+                    current: '₹40,000',
+                    initial: '₹1,00,000',
+                    lent: '₹98,000',
+                    returns: '+₹10,850',
+                    principalRecd: '₹60,000',
+                    interestRecd: '₹12,850',
+                    netRepaid: '₹70,850',
+                    npa: '0.15% (₹60)',
+                    fees: '₹2,000',
+                    repaid: '₹70,850',
+                    lockins: [
+                        { id: '#10293847PLM1', initial: '₹40,000', current: '₹16,000', returnVal: '+₹4,300', xirr: '13.1%' },
+                        { id: '#10293847PLM2', initial: '₹35,000', current: '₹14,000', returnVal: '+₹3,800', xirr: '13.2%' },
+                        { id: '#10293847PLM3', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,750', xirr: '13.0%' }
+                    ]
+                },
+                closed: {
+                    current: '₹0',
+                    initial: '₹50,000',
+                    lent: '₹49,000',
+                    returns: '+₹5,600',
+                    principalRecd: '₹50,000',
+                    interestRecd: '₹6,600',
+                    netRepaid: '₹55,600',
+                    npa: '0.00% (₹0)',
+                    fees: '₹1,000',
+                    repaid: '₹55,600',
+                    lockins: [
+                        { id: '#10293847CLSD1', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.0%' },
+                        { id: '#10293847CLSD2', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.1%' }
+                    ]
+                }
+            },
+            'Growth Plus': {
+                xirr: 11.2,
+                active: {
+                    current: '₹30,000',
+                    initial: '₹80,000',
+                    lent: '₹78,400',
+                    returns: '+₹3,500',
+                    principalRecd: '₹50,000',
+                    interestRecd: '₹5,100',
+                    netRepaid: '₹53,500',
+                    npa: '0.11% (₹33)',
+                    fees: '₹1,600',
+                    repaid: '₹53,500',
+                    lockins: [
+                        { id: '#55493821QWE1', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,800', xirr: '11.2%' },
+                        { id: '#55493821QWE2', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,700', xirr: '11.1%' }
+                    ]
+                },
+                closed: {
+                    current: '₹0',
+                    initial: '₹30,000',
+                    lent: '₹29,400',
+                    returns: '+₹2,100',
+                    principalRecd: '₹30,000',
+                    interestRecd: '₹2,700',
+                    netRepaid: '₹32,100',
+                    npa: '0.00% (₹0)',
+                    fees: '₹600',
+                    repaid: '₹32,100',
+                    lockins: [
+                        { id: '#09281726CLSD', initial: '₹30,000', current: '₹0', returnVal: '+₹2,100', xirr: '11.0%' }
+                    ]
+                }
             }
-        });
+        };
 
-        // Real-time Dynamic Input Handlers
-        amountSlider.addEventListener('input', calculateReturns);
-        periodSlider.addEventListener('input', calculateReturns);
-        growthSlider.addEventListener('input', calculateReturns);
+        // Rotating XIRR Refresh Action
+        function refreshXIRRAction(btn, targetKey) {
+            const icon = btn.querySelector('i');
+            if (!icon) return;
 
-        // Run Calculation Engine
-        calculateReturns();
+            icon.classList.add('animate-spin-active');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                icon.classList.remove('animate-spin-active');
+                btn.disabled = false;
+
+                if (targetKey === 'overview') {
+                    const variation = (Math.random() * 0.2 - 0.1).toFixed(1);
+                    const updatedXIRR = (parseFloat(overviewXIRRVal) + parseFloat(variation)).toFixed(1);
+                    document.getElementById('overview-xirr-text').innerText = `Avg. XIRR ${updatedXIRR}%`;
+                } else if (targetKey === 'detail') {
+                    const data = plansDataMap[currentPlanName];
+                    const variation = (Math.random() * 0.2 - 0.1).toFixed(1);
+                    const updatedXIRR = (data.xirr + parseFloat(variation)).toFixed(1);
+                    document.getElementById('selected-plan-xirr').innerText = `Avg. XIRR ${updatedXIRR}%`;
+                } else if (plansDataMap[targetKey]) {
+                    const data = plansDataMap[targetKey];
+                    const variation = (Math.random() * 0.2 - 0.1).toFixed(1);
+                    const updatedXIRR = (data.xirr + parseFloat(variation)).toFixed(1);
+                    const el = document.getElementById(`xirr-val-${targetKey}`);
+                    if (el) el.innerText = `Avg. XIRR ${updatedXIRR}%`;
+                }
+            }, 800);
+        }
+
+        function updateBreadcrumbs(view) {
+            const bc = document.getElementById('breadcrumb');
+            if (view === 'portfolio') {
+                bc.innerHTML = `<span>Portfolio</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> <span class="text-brand-900 font-bold">P2P Edge Overview</span>`;
+            } else if (view === 'plans_list') {
+                bc.innerHTML = `
+                    <span class="hover:underline cursor-pointer" onclick="navigateTo('portfolio')">Portfolio</span> 
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> 
+                    <span class="text-brand-900 font-bold">Invested Plans</span>`;
+            } else if (view === 'plan_detail') {
+                bc.innerHTML = `
+                    <span class="hover:underline cursor-pointer" onclick="navigateTo('portfolio')">Portfolio</span> 
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> 
+                    <span class="hover:underline cursor-pointer" onclick="navigateTo('plans_list')">Invested Plans</span>
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> 
+                    <span class="text-brand-900 font-bold">${currentPlanName}</span>`;
+            }
+            lucide.createIcons();
+        }
+
+        function navigateTo(view, param) {
+            document.getElementById('view-portfolio').classList.add('hidden');
+            document.getElementById('view-plans-list').classList.add('hidden');
+            document.getElementById('view-plan-detail').classList.add('hidden');
+
+            if (view === 'portfolio') {
+                document.getElementById('view-portfolio').classList.remove('hidden');
+            } else if (view === 'plans_list') {
+                document.getElementById('view-plans-list').classList.remove('hidden');
+            } else if (view === 'plan_detail') {
+                if (param) currentPlanName = param;
+                currentPlanState = 'active'; // Default to active lockins when opening
+                
+                updatePlanDetailView();
+                document.getElementById('view-plan-detail').classList.remove('hidden');
+            }
+
+            updateBreadcrumbs(view);
+        }
+
+        // Updates metrics, tooltips, and lock-in table on Plan Detail screen based on Active vs Closed State
+        function updatePlanDetailView() {
+            const planObj = plansDataMap[currentPlanName];
+            const stateData = planObj[currentPlanState];
+
+            document.getElementById('selected-plan-title').innerText = currentPlanName;
+            document.getElementById('dynamic-add-funds-label').innerText = `Add Funds`;
+            document.getElementById('selected-plan-xirr').innerText = `Avg. XIRR ${planObj.xirr}%`;
+
+            // Dynamic counts for top state selector
+            document.getElementById('count-state-active').innerText = planObj.active.lockins.length;
+            document.getElementById('count-state-closed').innerText = planObj.closed.lockins.length;
+
+            // Core Metrics Update
+            document.getElementById('plan-current-val').innerText = stateData.current;
+            document.getElementById('plan-initial-val').innerText = stateData.initial;
+            document.getElementById('plan-lent-val').innerText = stateData.lent;
+            document.getElementById('plan-returns-val').innerText = stateData.returns;
+            document.getElementById('plan-principal-recd').innerText = stateData.principalRecd;
+            document.getElementById('plan-interest-recd').innerText = stateData.interestRecd;
+            document.getElementById('plan-net-repaid').innerText = stateData.netRepaid;
+            document.getElementById('plan-npa-text').innerText = stateData.npa;
+            document.getElementById('plan-fees-text').innerText = stateData.fees;
+
+            // Tooltip Breakdown Updates
+            document.getElementById('tt-returns').innerText = stateData.returns;
+            document.getElementById('tt-lent').innerText = stateData.lent;
+            document.getElementById('tt-repaid').innerText = stateData.repaid;
+            document.getElementById('tt-current').innerText = stateData.current;
+
+            // Table Header Title Updates
+            document.getElementById('lockin-table-heading').innerText = `${currentPlanState.toUpperCase()} LOCK-IN CONTRACTS`;
+            document.getElementById('lockin-state-badge').innerText = `Showing ${stateData.lockins.length} ${currentPlanState === 'active' ? 'Active' : 'Closed'} Rows`;
+
+            renderLockinTable(stateData.lockins);
+        }
+
+        function switchPlanState(state) {
+            currentPlanState = state;
+            
+            const btnActive = document.getElementById('plan-state-btn-active');
+            const btnClosed = document.getElementById('plan-state-btn-closed');
+
+            if (state === 'active') {
+                btnActive.className = "px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition";
+                btnClosed.className = "px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition";
+            } else {
+                btnClosed.className = "px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition";
+                btnActive.className = "px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition";
+            }
+
+            updatePlanDetailView();
+        }
+
+        function renderLockinTable(lockins) {
+            const tbody = document.getElementById('lockin-table-body');
+            tbody.innerHTML = '';
+
+            if (!lockins || lockins.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-neutralScale-500 font-medium">No ${currentPlanState} lock-in contracts found for this plan.</td></tr>`;
+                return;
+            }
+
+            lockins.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-neutralScale-50 transition border-b border-neutralScale-100";
+                tr.innerHTML = `
+                    <td class="py-3.5 px-6 font-bold text-brand-900">${item.id}</td>
+                    <td class="py-3.5 px-6 font-semibold text-neutralScale-900">${item.initial}</td>
+                    <td class="py-3.5 px-6 font-bold ${item.current === '₹0' ? 'text-neutralScale-500' : 'text-neutralScale-900'}">${item.current}</td>
+                    <td class="py-3.5 px-6 font-bold text-brand-600">${item.returnVal}</td>
+                    <td class="py-3.5 px-6 font-bold text-neutralScale-900 text-right font-mono">${item.xirr}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addFundsAction(planName) {
+            alert(`Redirecting to payment/investment flow to add funds to ${planName}.`);
+        }
+
+        // Modal Controllers
+        function openReportModal() {
+            const modal = document.getElementById('modal-report');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeReportModal() {
+            const modal = document.getElementById('modal-report');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function switchReportType(type) {
+            const btnSummary = document.getElementById('tab-btn-summary');
+            const btnNpa = document.getElementById('tab-btn-npa');
+            const flowSummary = document.getElementById('flow-investment-summary');
+            const flowNpa = document.getElementById('flow-growth-npa');
+
+            if (type === 'summary') {
+                btnSummary.className = "py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs";
+                btnNpa.className = "py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900";
+                flowSummary.classList.remove('hidden');
+                flowNpa.classList.add('hidden');
+            } else {
+                btnNpa.className = "py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs";
+                btnSummary.className = "py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900";
+                flowNpa.classList.remove('hidden');
+                flowSummary.classList.add('hidden');
+            }
+        }
+
+        function triggerReportRequest() {
+            alert('Report request sent successfully! You will receive it at sourav.singh@example.com shortly.');
+            closeReportModal();
+        }
+
+        // Initialize Page
+        updateBreadcrumbs('portfolio');
     </script>
 </body>
 </html>

@@ -43,7 +43,7 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Custom Table Scrollbar */
+        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #F0F1F4; border-radius: 8px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #708090; border-radius: 8px; }
@@ -52,39 +52,44 @@
         .clickable-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .clickable-card:hover { transform: translateY(-2px); border-color: #15372C; box-shadow: 0 12px 20px -4px rgba(21, 55, 44, 0.08); }
         
-        /* Custom Tooltip Popover */
-        .tooltip-container { position: relative; display: inline-flex; align-items: center; }
-        .tooltip-popover {
-            visibility: hidden; opacity: 0; position: absolute; bottom: 125%; left: 50%;
-            transform: translateX(-50%) translateY(4px);
-            transition: all 0.2s ease-in-out;
-            z-index: 50; width: 240px;
-        }
-        .tooltip-container:hover .tooltip-popover { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
-        
         /* Keyframes for XIRR Refresh Action */
         @keyframes spin-custom {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         .animate-spin-active { animation: spin-custom 0.6s linear infinite; }
+
+        /* Mobile Sidebar Overlay Transition */
+        #mobile-sidebar-backdrop { transition: opacity 0.3s ease-in-out; }
+        #mobile-sidebar { transition: transform 0.3s ease-in-out; }
     </style>
 </head>
-<body class="h-screen overflow-hidden flex text-neutralScale-900 font-sf">
+<body class="h-screen overflow-hidden flex flex-col md:flex-row text-neutralScale-900 font-sf">
+
+    <!-- GLOBAL FIXED TOOLTIP CARD CONTAINER -->
+    <div id="global-tooltip" class="fixed hidden z-[9999] pointer-events-none transition-opacity duration-150 opacity-0 bg-neutralScale-900 text-white text-[11px] p-3 rounded-xl shadow-2xl max-w-xs leading-relaxed font-normal">
+        <div id="global-tooltip-content"></div>
+    </div>
+
+    <!-- MOBILE SIDEBAR BACKDROP -->
+    <div id="mobile-sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
     <!-- ========================================== -->
-    <!-- LEFT SIDEBAR                               -->
+    <!-- SIDEBAR (RESPONSIVE FOR MOBILE & DESKTOP)  -->
     <!-- ========================================== -->
-    <aside class="w-60 bg-white border-r border-neutralScale-200 flex flex-col justify-between shrink-0 z-20">
+    <aside id="mobile-sidebar" class="fixed md:relative inset-y-0 left-0 w-64 md:w-60 bg-white border-r border-neutralScale-200 flex flex-col justify-between shrink-0 z-50 -translate-x-full md:translate-x-0 transition-transform duration-300">
         <div>
-            <!-- Brand Logo -->
-            <div class="h-16 flex items-center px-6 border-b border-neutralScale-100">
+            <!-- Brand Logo & Close Button -->
+            <div class="h-16 flex items-center justify-between px-6 border-b border-neutralScale-100">
                 <div class="flex items-center space-x-2.5">
                     <div class="w-7 h-7 bg-brand-900 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-xs">
                         %
                     </div>
                     <span class="font-bold text-lg text-neutralScale-900 tracking-tight">Per Annum</span>
                 </div>
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-neutralScale-500 hover:text-neutralScale-900">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
 
             <!-- Navigation Links -->
@@ -96,7 +101,7 @@
                             <i data-lucide="home" class="w-4 h-4 text-neutralScale-500"></i>
                             <span>Home</span>
                         </button>
-                        <button onclick="navigateTo('portfolio')" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg bg-brand-100/60 text-brand-900 text-xs font-bold transition">
+                        <button onclick="navigateTo('portfolio'); toggleMobileSidebar();" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg bg-brand-100/60 text-brand-900 text-xs font-bold transition">
                             <i data-lucide="pie-chart" class="w-4 h-4 text-brand-900"></i>
                             <span>Portfolio</span>
                         </button>
@@ -141,16 +146,21 @@
     <!-- ========================================== -->
     <!-- MAIN WORKSPACE                             -->
     <!-- ========================================== -->
-    <main class="flex-1 flex flex-col overflow-y-auto hide-scrollbar">
+    <main class="flex-1 flex flex-col overflow-y-auto hide-scrollbar w-full">
         
         <!-- Top Navbar -->
-        <header class="h-16 bg-white border-b border-neutralScale-200 px-8 flex items-center justify-between sticky top-0 z-10 shadow-xs">
-            <div id="breadcrumb" class="flex items-center text-sm text-neutralScale-500 font-medium space-x-2">
-                <!-- Dynamic Breadcrumb -->
+        <header class="h-16 bg-white border-b border-neutralScale-200 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-10 shadow-xs">
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-neutralScale-900 focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div id="breadcrumb" class="flex items-center text-xs sm:text-sm text-neutralScale-500 font-medium space-x-1.5 sm:space-x-2 truncate">
+                    <!-- Dynamic Breadcrumb -->
+                </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <div class="text-right">
+            <div class="flex items-center space-x-3 shrink-0">
+                <div class="text-right hidden sm:block">
                     <p class="text-xs font-bold text-neutralScale-900">Sourav S.</p>
                     <p class="text-[10px] text-neutralScale-500">sourav.singh@example.com</p>
                 </div>
@@ -161,7 +171,7 @@
         </header>
 
         <!-- Main Body Workspace -->
-        <div class="p-8 max-w-7xl w-full mx-auto space-y-6">
+        <div class="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
 
             <!-- ========================================== -->
             <!-- LEVEL 1: OVERALL PORTFOLIO VIEW            -->
@@ -189,24 +199,27 @@
                         <!-- P2P Edge Portfolio Overview Card -->
                         <div class="bg-white rounded-2xl border border-neutralScale-200 shadow-xs overflow-hidden">
                             
-                            <div class="p-6 space-y-5">
+                            <div class="p-4 sm:p-6 space-y-5">
                                 <!-- Header Section -->
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutralScale-100 pb-4 gap-3">
                                     <div>
                                         <h2 class="text-base font-bold text-neutralScale-900">P2P Edge Portfolio Overview</h2>
                                         <p class="text-xs text-neutralScale-500 mt-0.5">Aggregated performance across active P2P contracts</p>
                                     </div>
-                                    <div class="flex items-center space-x-3 shrink-0">
+                                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                                         <!-- Single-Line XIRR Badge -->
                                         <div class="bg-brand-100/70 border border-brand-100 px-3 py-1 rounded-full flex items-center space-x-1.5 whitespace-nowrap">
                                             <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>
                                             <span id="overview-xirr-text" class="text-xs font-bold text-brand-900">Avg. XIRR 12.4%</span>
+                                            <i data-lucide="info" class="w-3.5 h-3.5 text-brand-900 cursor-pointer" 
+                                               onmouseenter="showGlobalTooltip(this, 'Your average yearly return percentage across all your P2P Edge investments, taking exact dates into account.')" 
+                                               onmouseleave="hideGlobalTooltip()"></i>
                                             <button onclick="refreshXIRRAction(this, 'overview')" title="Refresh XIRR" class="text-brand-900 hover:text-black transition ml-0.5 focus:outline-none">
                                                 <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
                                             </button>
                                         </div>
                                         <!-- Header Nav CTA -->
-                                        <button onclick="navigateTo('plans_list')" class="bg-brand-900 hover:bg-black text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow-2xs">
+                                        <button onclick="navigateTo('plans_list')" class="w-full sm:w-auto justify-center bg-brand-900 hover:bg-black text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow-2xs">
                                             <span>View Plans Breakdown</span>
                                             <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
                                         </button>
@@ -220,19 +233,21 @@
                                     <div class="bg-neutralScale-200/50 p-4 rounded-xl border border-neutralScale-200/80">
                                         <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
                                             Current Value
-                                            <div class="tooltip-container ml-1 cursor-pointer">
-                                                <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500"></i>
-                                                <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed">
-                                                    Active principal capital remaining across loans.
-                                                </div>
-                                            </div>
+                                            <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500 ml-1 cursor-pointer" 
+                                               onmouseenter="showGlobalTooltip(this, 'The exact amount of your money currently working in active loans.')" 
+                                               onmouseleave="hideGlobalTooltip()"></i>
                                         </span>
                                         <p class="text-2xl font-bold text-neutralScale-900">₹2,10,000</p>
                                     </div>
 
                                     <!-- Total Initial Amount -->
                                     <div class="bg-neutralScale-200/50 p-4 rounded-xl border border-neutralScale-200/80">
-                                        <span class="text-xs text-neutralScale-500 font-medium block mb-1">Total Initial Amount</span>
+                                        <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
+                                            Total Initial Amount
+                                            <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500 ml-1 cursor-pointer" 
+                                               onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins across all P2P Edge plans.')" 
+                                               onmouseleave="hideGlobalTooltip()"></i>
+                                        </span>
                                         <p class="text-2xl font-bold text-neutralScale-900">₹5,00,000</p>
                                     </div>
 
@@ -240,12 +255,9 @@
                                     <div class="bg-neutralScale-200/50 p-4 rounded-xl border border-neutralScale-200/80">
                                         <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
                                             Net Returns
-                                            <div class="tooltip-container ml-1 cursor-pointer">
-                                                <i data-lucide="info" class="w-3.5 h-3.5 text-brand-600"></i>
-                                                <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed">
-                                                    Net interest accrued minus service deductions across active plans.
-                                                </div>
-                                            </div>
+                                            <i data-lucide="info" class="w-3.5 h-3.5 text-brand-600 ml-1 cursor-pointer" 
+                                               onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹48,250', '₹4,90,000', '₹3,38,250', '₹2,10,000'))" 
+                                               onmouseleave="hideGlobalTooltip()"></i>
                                         </span>
                                         <p class="text-2xl font-bold text-brand-600">+₹48,250</p>
                                     </div>
@@ -255,13 +267,13 @@
                             </div>
 
                             <!-- WALLET STRIP -->
-                            <div class="bg-brand-100/50 border-t border-brand-100 px-6 py-3 flex items-center justify-between">
+                            <div class="bg-brand-100/50 border-t border-brand-100 px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
                                 <div class="flex items-center space-x-2 text-xs text-neutralScale-900">
                                     <i data-lucide="wallet" class="w-4 h-4 text-brand-900 shrink-0"></i>
                                     <span class="font-medium text-neutralScale-500">Wallet balance:</span>
                                     <span class="font-bold text-neutralScale-900 text-sm">₹1,43,500</span>
                                 </div>
-                                <button onclick="navigateTo('plans_list')" class="bg-brand-900 hover:bg-black text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow-2xs">
+                                <button onclick="navigateTo('plans_list')" class="w-full sm:w-auto justify-center bg-brand-900 hover:bg-black text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center space-x-1.5 shadow-2xs">
                                     <span>Deploy Now</span>
                                     <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                                 </button>
@@ -270,10 +282,10 @@
                         </div>
 
                         <!-- P2P Distribution Analytics Section -->
-                        <div class="bg-white rounded-2xl border border-neutralScale-200 p-5 shadow-xs space-y-4">
+                        <div class="bg-white rounded-2xl border border-neutralScale-200 p-4 sm:p-5 shadow-xs space-y-4">
                             <p class="text-[11px] font-bold text-neutralScale-500 uppercase tracking-wider">P2P AMOUNT DISTRIBUTION (BY CURRENT VALUE)</p>
                             
-                            <div class="flex items-center justify-between text-xs font-bold text-neutralScale-900">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-bold text-neutralScale-900 gap-1">
                                 <span>Active Current Value: ₹2,10,000</span>
                                 <span class="text-brand-900 font-semibold">4 Invested Plans</span>
                             </div>
@@ -312,27 +324,40 @@
                     <!-- Right Column Sidebar -->
                     <div class="space-y-6">
                         
-                        <!-- User's Portfolio Card -->
-                        <div class="bg-brand-900 text-white rounded-2xl p-6 shadow-md relative overflow-hidden space-y-4">
+                        <!-- User's Portfolio Card (Prominently Highlighting Lifetime Earnings) -->
+                        <div class="bg-brand-900 text-white rounded-2xl p-5 sm:p-6 shadow-md relative overflow-hidden space-y-5">
                             <div class="flex justify-between items-start border-b border-brand-700/50 pb-3">
                                 <div>
                                     <h3 class="font-bold text-base text-white">Sourav's Portfolio</h3>
-                                    <p class="text-[11px] text-brand-100/80 mt-0.5">Last updated 03 Sep '26 • 10:48 AM</p>
+                                    <p class="text-[11px] text-brand-100/80 mt-0.5">Last updated 08 Sep '26, 05:55 PM</p>
                                 </div>
                             </div>
 
-                            <div class="space-y-3">
+                            <div class="space-y-4">
                                 <div>
                                     <p class="text-xs text-brand-100/70">Current Value</p>
                                     <p class="text-2xl font-bold text-white mt-0.5">₹5,06,500</p>
                                 </div>
                                 
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-brand-100/70">Lifetime Interest:</span>
-                                    <span class="font-bold text-brand-500">+₹58,750</span>
+                                <!-- HIGH VISIBILITY LIFETIME EARNINGS CARD -->
+                                <div class="bg-gradient-to-r from-brand-700 to-brand-600 p-3.5 rounded-xl border border-brand-500/40 shadow-inner space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-extrabold text-white tracking-wide flex items-center">
+                                            Lifetime Earnings
+                                            <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100 ml-1.5 cursor-pointer" 
+                                               onmouseenter="showGlobalTooltip(this, 'Total money made from P2P Edge since you started. Includes interest profit plus P2P Edge rewards, cashbacks, and discounts.')" 
+                                               onmouseleave="hideGlobalTooltip()"></i>
+                                        </span>
+                                        <span class="bg-brand-500 text-brand-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">P2P Edge</span>
+                                    </div>
+                                    <p class="text-2xl font-black text-white">+₹64,250</p>
+                                    <div class="text-[10px] text-brand-100/90 pt-1 border-t border-brand-500/30 flex justify-between">
+                                        <span>P2P Interest: +₹58,750</span>
+                                        <span>Rewards: +₹5,500</span>
+                                    </div>
                                 </div>
 
-                                <div class="pt-3 border-t border-brand-700/50 space-y-2 text-xs">
+                                <div class="pt-2 border-t border-brand-700/50 space-y-2 text-xs">
                                     <div class="flex justify-between items-center text-[10px] uppercase font-bold text-brand-100/70 border-b border-brand-700/30 pb-1">
                                         <span>PRODUCT</span>
                                         <span>AMOUNT</span>
@@ -347,23 +372,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Auto-Invest Mandate Card -->
-                        <div class="bg-white rounded-2xl border border-neutralScale-200 p-5 shadow-xs space-y-3">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 rounded-full bg-brand-100/60 text-brand-900 flex items-center justify-center shrink-0">
-                                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs font-bold text-neutralScale-900">Auto-Invest Mandate</h4>
-                                    <p class="text-[11px] text-neutralScale-500">Automate recurring deposits</p>
-                                </div>
-                            </div>
-                            <p class="text-xs text-neutralScale-500 leading-relaxed">Create a mandate to pull funds directly from bank to wallet for continuous compounding.</p>
-                            <button class="w-full bg-neutralScale-900 hover:bg-black text-white text-xs font-bold py-2.5 rounded-xl transition">
-                                Create a Mandate
-                            </button>
                         </div>
 
                     </div>
@@ -407,8 +415,24 @@
                             </div>
                             <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
                                 <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹90,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹2,00,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹21,500</span></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Total Initial Amount:
+                                        <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth Pro 2 Months.')" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-semibold text-neutralScale-900">₹2,00,000</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Net Returns:
+                                        <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹21,500', '₹1,96,000', '₹1,31,500', '₹90,000'))" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-bold text-brand-600">+₹21,500</span>
+                                </div>
                             </div>
                         </div>
 
@@ -441,8 +465,24 @@
                             </div>
                             <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
                                 <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹50,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹1,20,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹12,400</span></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Total Initial Amount:
+                                        <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth X.')" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-semibold text-neutralScale-900">₹1,20,000</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Net Returns:
+                                        <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹12,400', '₹1,17,600', '₹82,400', '₹50,000'))" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-bold text-brand-600">+₹12,400</span>
+                                </div>
                             </div>
                         </div>
 
@@ -475,8 +515,24 @@
                             </div>
                             <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
                                 <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹40,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹1,00,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹10,850</span></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Total Initial Amount:
+                                        <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth Pro 6 Months.')" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-semibold text-neutralScale-900">₹1,00,000</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Net Returns:
+                                        <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹10,850', '₹98,000', '₹70,850', '₹40,000'))" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-bold text-brand-600">+₹10,850</span>
+                                </div>
                             </div>
                         </div>
 
@@ -509,8 +565,24 @@
                             </div>
                             <div class="space-y-2 border-t border-neutralScale-100 pt-3 text-xs">
                                 <div class="flex justify-between"><span class="text-neutralScale-500">Current Value:</span><span class="font-bold text-neutralScale-900">₹30,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Total Initial Amount:</span><span class="font-semibold text-neutralScale-900">₹80,000</span></div>
-                                <div class="flex justify-between"><span class="text-neutralScale-500">Net Returns:</span><span class="font-bold text-brand-600">+₹3,500</span></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Total Initial Amount:
+                                        <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth Plus.')" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-semibold text-neutralScale-900">₹80,000</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-neutralScale-500 flex items-center">
+                                        Net Returns:
+                                        <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
+                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹3,500', '₹78,400', '₹53,500', '₹30,000'))" 
+                                           onmouseleave="hideGlobalTooltip()"></i>
+                                    </span>
+                                    <span class="font-bold text-brand-600">+₹3,500</span>
+                                </div>
                             </div>
                         </div>
 
@@ -540,9 +612,9 @@
                 </button>
 
                 <!-- Plan Banner Header with State Selector Toggle -->
-                <div class="bg-white p-6 rounded-2xl border border-neutralScale-200 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="bg-white p-4 sm:p-6 rounded-2xl border border-neutralScale-200 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                     <div class="space-y-1.5">
-                        <div class="flex items-center space-x-3">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                             <h1 id="selected-plan-title" class="text-xl font-bold text-neutralScale-900">Growth Pro 2 Months</h1>
                             <div class="bg-brand-100/70 text-brand-900 text-xs font-bold px-3 py-0.5 rounded-full border border-brand-100 flex items-center space-x-1.5 whitespace-nowrap">
                                 <span id="selected-plan-xirr">Avg. XIRR 12.8%</span>
@@ -551,80 +623,85 @@
                                 </button>
                             </div>
                         </div>
-                        <p class="text-xs text-neutralScale-500">Comprehensive plan analysis, repayments, NPA metrics and lock-in contracts</p>
+                        <p class="text-xs text-neutralScale-500">Plan details, payouts, bank repayments, and active lock-in loans</p>
                     </div>
 
                     <!-- Top State Toggle (Active vs Closed Plan State) -->
-                    <div class="flex items-center space-x-3 shrink-0">
-                        <div class="flex bg-neutralScale-100 p-1 rounded-xl border border-neutralScale-200">
-                            <button id="plan-state-btn-active" onclick="switchPlanState('active')" class="px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition">
+                    <div class="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
+                        <div class="flex bg-neutralScale-100 p-1 rounded-xl border border-neutralScale-200 w-full sm:w-auto">
+                            <button id="plan-state-btn-active" onclick="switchPlanState('active')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition">
                                 Active Lock-ins (<span id="count-state-active">10</span>)
                             </button>
-                            <button id="plan-state-btn-closed" onclick="switchPlanState('closed')" class="px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition">
+                            <button id="plan-state-btn-closed" onclick="switchPlanState('closed')" class="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition">
                                 Closed Lock-ins (<span id="count-state-closed">8</span>)
                             </button>
                         </div>
 
-                        <button id="plan-detail-add-btn" onclick="addFundsAction(currentPlanName)" class="bg-brand-900 hover:bg-black text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-xs shrink-0">
+                        <button id="plan-detail-add-btn" onclick="addFundsAction(currentPlanName)" class="w-full sm:w-auto justify-center bg-brand-900 hover:bg-black text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-xs shrink-0">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i>
                             <span id="dynamic-add-funds-label">Add Funds</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- NEW DESIGN STRUCTURE: Clear visual hierarchy & grid symmetry -->
+                <!-- DESIGN STRUCTURE: High Impact Metrics with Net Repaid Prominently Featured -->
                 <div class="space-y-4">
                     
-                    <!-- HERO LEVEL: Primary High-Priority Metrics -->
-                    <div class="bg-brand-900 text-white p-6 rounded-2xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 relative overflow-hidden">
+                    <!-- HERO LEVEL: Primary High-Priority Metrics Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         
-                        <!-- Hero Metric 1: Current Value -->
-                        <div class="bg-brand-700/30 p-5 rounded-xl border border-brand-700/50 flex flex-col justify-between items-center text-center space-y-2">
+                        <!-- Hero Card 1: Current Value -->
+                        <div class="bg-brand-900 text-white p-5 rounded-2xl shadow-sm flex flex-col justify-between items-center text-center space-y-2 border border-brand-700">
                             <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium justify-center">
                                 <span>Current Value</span>
-                                <div class="tooltip-container cursor-pointer">
-                                    <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100/70"></i>
-                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2.5 rounded-lg shadow-xl font-normal leading-relaxed text-left">
-                                        Active principal capital remaining in non-matured loans.
-                                    </div>
-                                </div>
+                                <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100/70 cursor-pointer" 
+                                   onmouseenter="showGlobalTooltip(this, 'The money you currently have actively working in ongoing loans for this plan.')" 
+                                   onmouseleave="hideGlobalTooltip()"></i>
                             </div>
                             <p id="plan-current-val" class="text-3xl font-extrabold text-white tracking-tight">₹90,000</p>
                             <span class="text-[10px] bg-brand-700/60 text-brand-100 px-2.5 py-0.5 rounded-full">Active capital in circulation</span>
                         </div>
 
-                        <!-- Hero Metric 2: Net Returns -->
-                        <div class="bg-brand-700/30 p-5 rounded-xl border border-brand-700/50 flex flex-col justify-between items-center text-center space-y-2">
+                        <!-- Hero Card 2: Net Returns -->
+                        <div class="bg-brand-900 text-white p-5 rounded-2xl shadow-sm flex flex-col justify-between items-center text-center space-y-2 border border-brand-700">
                             <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium justify-center">
                                 <span>Net Returns</span>
-                                <div class="tooltip-container cursor-pointer">
-                                    <i data-lucide="info" class="w-3.5 h-3.5 text-brand-500"></i>
-                                    <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-3 rounded-xl shadow-xl font-normal space-y-1 w-56 text-left">
-                                        <div class="font-bold border-b border-neutralScale-500 pb-1 text-brand-500">Plan Returns Formula</div>
-                                        <div class="flex justify-between"><span>Net Returns:</span> <span id="tt-returns" class="font-bold text-brand-500">+₹21,500</span></div>
-                                        <div class="flex justify-between"><span>Total Amount Lent:</span> <span id="tt-lent" class="font-medium">₹1,96,000</span></div>
-                                        <div class="flex justify-between"><span>Net Repaid:</span> <span id="tt-repaid" class="font-medium">₹1,31,500</span></div>
-                                        <div class="flex justify-between"><span>Current Value:</span> <span id="tt-current" class="font-medium">₹90,000</span></div>
-                                    </div>
-                                </div>
+                                <i id="plan-net-returns-info-icon" data-lucide="info" class="w-3.5 h-3.5 text-brand-500 cursor-pointer" 
+                                   onmouseleave="hideGlobalTooltip()"></i>
                             </div>
                             <p id="plan-returns-val" class="text-3xl font-extrabold text-brand-500 tracking-tight">+₹21,500</p>
                             <span class="text-[10px] bg-brand-500/20 text-brand-500 font-semibold px-2.5 py-0.5 rounded-full">Net profit generated to date</span>
                         </div>
 
+                        <!-- Hero Card 3: PROMINENT NET REPAID TO BANK -->
+                        <div class="bg-gradient-to-b from-brand-700 to-brand-900 text-white p-5 rounded-2xl shadow-sm flex flex-col justify-between items-center text-center space-y-2 border border-brand-500/30">
+                            <div class="flex items-center space-x-1.5 text-brand-100 text-xs font-bold justify-center">
+                                <span>Net Repaid to Bank</span>
+                                <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100 cursor-pointer" 
+                                   onmouseenter="showGlobalTooltip(this, 'Total money sent directly back to your bank account from this plan so far.<br><br><strong>Formula:</strong> Principal Received + Net Interest Received')" 
+                                   onmouseleave="hideGlobalTooltip()"></i>
+                            </div>
+                            <p id="plan-net-repaid" class="text-3xl font-extrabold text-white tracking-tight">₹1,31,500</p>
+                            <span class="text-[10px] bg-white/10 text-brand-100 font-medium px-2.5 py-0.5 rounded-full">Principal Received + Net Interest Received</span>
+                        </div>
+
                     </div>
 
-                    <!-- SECONDARY LEVEL: Equal-Sized 4-Column Metric Grid -->
+                    <!-- SECONDARY LEVEL: Detailed Breakdown Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         
                         <!-- Card 1: Total Initial Amount -->
                         <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
                             <div class="flex items-center justify-between text-neutralScale-500">
-                                <span class="text-xs font-semibold">Total Initial Amount</span>
+                                <span class="text-xs font-semibold flex items-center">
+                                    Total Initial Amount
+                                    <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                       onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for this plan.')" 
+                                       onmouseleave="hideGlobalTooltip()"></i>
+                                </span>
                                 <i data-lucide="layers" class="w-4 h-4 text-neutralScale-500"></i>
                             </div>
                             <p id="plan-initial-val" class="text-xl font-bold text-neutralScale-900">₹2,00,000</p>
-                            <p class="text-[10px] text-neutralScale-500">Original deposited capital</p>
                         </div>
 
                         <!-- Card 2: Total Amount Lent -->
@@ -632,98 +709,88 @@
                             <div class="flex items-center justify-between text-neutralScale-500">
                                 <span class="text-xs font-semibold flex items-center">
                                     Total Amount Lent
-                                    <div class="tooltip-container ml-1 cursor-pointer">
-                                        <i data-lucide="info" class="w-3 h-3 text-neutralScale-500"></i>
-                                        <div class="tooltip-popover bg-neutralScale-900 text-white text-[11px] p-2 rounded-lg shadow-xl font-normal">
-                                            Capital deployed post platform fees.
-                                        </div>
-                                    </div>
+                                    <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                       onmouseenter="showGlobalTooltip(this, 'The exact portion of your money given out to borrowers as loans.')" 
+                                       onmouseleave="hideGlobalTooltip()"></i>
                                 </span>
                                 <i data-lucide="send" class="w-4 h-4 text-neutralScale-500"></i>
                             </div>
                             <p id="plan-lent-val" class="text-xl font-bold text-neutralScale-900">₹1,96,000</p>
-                            <p class="text-[10px] text-neutralScale-500">Deployed after fee deduction</p>
                         </div>
 
-                        <!-- Card 3: Principal Received -->
+                        <!-- Card 3: Principal Received (Component 1 of Net Repaid) -->
                         <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
                             <div class="flex items-center justify-between text-neutralScale-500">
-                                <span class="text-xs font-semibold">Principal Received</span>
+                                <span class="text-xs font-semibold flex items-center">
+                                    Principal Received
+                                    <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                       onmouseenter="showGlobalTooltip(this, 'The original loan money paid back to your bank account by borrowers.')" 
+                                       onmouseleave="hideGlobalTooltip()"></i>
+                                </span>
                                 <i data-lucide="arrow-down-left" class="w-4 h-4 text-neutralScale-500"></i>
                             </div>
                             <p id="plan-principal-recd" class="text-xl font-bold text-neutralScale-900">₹1,10,000</p>
-                            <p class="text-[10px] text-neutralScale-500">Returned base principal</p>
                         </div>
 
-                        <!-- Card 4: Interest Received -->
+                        <!-- Card 4: Net Interest Received (Component 2 of Net Repaid) -->
                         <div class="bg-white p-4 rounded-xl border border-neutralScale-200 shadow-2xs space-y-1.5">
                             <div class="flex items-center justify-between text-neutralScale-500">
-                                <span class="text-xs font-semibold">Interest Received</span>
+                                <span class="text-xs font-semibold flex items-center">
+                                    Net Interest Received
+                                    <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
+                                       onmouseenter="showGlobalTooltip(this, 'The interest profit sent to your bank account after subtracting platform fees (Interest Earned minus Fees).')" 
+                                       onmouseleave="hideGlobalTooltip()"></i>
+                                </span>
                                 <i data-lucide="percent" class="w-4 h-4 text-brand-600"></i>
                             </div>
-                            <p id="plan-interest-recd" class="text-xl font-bold text-brand-600">₹25,500</p>
-                            <p class="text-[10px] text-neutralScale-500">Collected interest payouts</p>
+                            <p id="plan-interest-recd" class="text-xl font-bold text-brand-600">₹21,500</p>
                         </div>
 
                     </div>
 
-                    <!-- TERTIARY LEVEL: Clear Operational Summary Bar -->
-                    <div class="bg-neutralScale-100 border border-neutralScale-200 rounded-xl px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between text-xs text-neutralScale-900 font-medium gap-3">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="building-2" class="w-4 h-4 text-neutralScale-500 shrink-0"></i>
-                            <span>Net Repaid to Bank: <strong id="plan-net-repaid" class="font-bold text-neutralScale-900">₹1,31,500</strong></span>
-                        </div>
-
-                        <div class="flex items-center space-x-6 text-neutralScale-500">
-                            <div>
-                                <span>Portfolio NPA Rate: <strong id="plan-npa-text" class="text-amber-600 font-bold">0.18% (₹162)</strong></span>
-                            </div>
-                            <div>
-                                <span>Total Fees Charged: <strong id="plan-fees-text" class="text-neutralScale-900 font-bold">₹4,000</strong></span>
-                            </div>
+                    <!-- TERTIARY LEVEL: Risk Indicators Bar -->
+                    <div class="bg-neutralScale-100 border border-neutralScale-200 rounded-xl px-5 py-3 flex items-center justify-between text-xs text-neutralScale-900 font-medium">
+                        <div class="flex items-center space-x-1.5 text-neutralScale-500">
+                            <span>Portfolio NPA Rate:</span>
+                            <strong id="plan-npa-text" class="text-amber-600 font-bold">0.18% (₹162)</strong>
+                            <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500 ml-1 cursor-pointer" 
+                               onmouseenter="showGlobalTooltip(this, 'NPA stands for Non Performing Assets. It shows the tiny percentage of loans that are overdue or delayed in repayment.')" 
+                               onmouseleave="hideGlobalTooltip()"></i>
                         </div>
                     </div>
 
-                </div>
-
-                <!-- Report Download Banner -->
-                <div class="bg-brand-100/50 border border-brand-100 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-9 h-9 rounded-xl bg-brand-900 text-white flex items-center justify-center shrink-0">
-                            <i data-lucide="file-text" class="w-4 h-4"></i>
-                        </div>
-                        <p class="text-xs text-neutralScale-900 font-medium">
-                            For a detailed understanding of your portfolio on plan level or lockin level, kindly download the detailed reports.
-                        </p>
-                    </div>
-                    <button onclick="openReportModal()" class="bg-brand-900 hover:bg-black text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2 shrink-0 shadow-xs">
-                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                        <span>Download Reports</span>
-                    </button>
                 </div>
 
                 <!-- Internal Scrollable Lock-ins Table Section -->
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
+                <div class="space-y-3 pt-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <h3 id="lockin-table-heading" class="text-xs font-bold text-neutralScale-900 uppercase tracking-wider">ACTIVE LOCK-IN CONTRACTS</h3>
-                        <span id="lockin-state-badge" class="text-[11px] font-semibold text-brand-900 bg-brand-100/60 px-2.5 py-0.5 rounded-md">Showing 10 Active Rows</span>
+                        <span id="lockin-state-badge" class="self-start sm:self-auto text-[11px] font-semibold text-brand-900 bg-brand-100/60 px-2.5 py-0.5 rounded-md">Showing 10 Active Rows</span>
                     </div>
 
                     <div class="bg-white rounded-2xl border border-neutralScale-200 overflow-hidden shadow-xs">
-                        <!-- Table Wrapper with Internal Fixed Scroll Height -->
-                        <div class="max-h-[380px] overflow-y-auto custom-scrollbar">
-                            <table class="w-full text-left border-collapse">
+                        <!-- Table Wrapper with Horizontal & Vertical Scrolling Responsiveness -->
+                        <div class="max-h-[380px] overflow-y-auto overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse min-w-[600px]">
                                 <thead class="sticky top-0 z-10 bg-neutralScale-100 shadow-2xs">
                                     <tr class="border-b border-neutralScale-200 text-[10px] uppercase font-bold text-neutralScale-500 tracking-wider">
-                                        <th class="py-3.5 px-6">LOCK-IN ID</th>
-                                        <th class="py-3.5 px-6">INITIAL AMOUNT</th>
-                                        <th class="py-3.5 px-6">CURRENT VALUE</th>
-                                        <th class="py-3.5 px-6">NET RETURN</th>
-                                        <th class="py-3.5 px-6 text-right">XIRR</th>
+                                        <th class="py-3.5 px-4 sm:px-6">LOCK-IN ID</th>
+                                        <th class="py-3.5 px-4 sm:px-6">START DATE</th>
+                                        <th class="py-3.5 px-4 sm:px-6">
+                                            <span class="flex items-center">
+                                                INITIAL AMOUNT
+                                                <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
+                                                   onmouseenter="showGlobalTooltip(this, 'The initial amount deposited by user for this specific lock-in.')" 
+                                                   onmouseleave="hideGlobalTooltip()"></i>
+                                            </span>
+                                        </th>
+                                        <th class="py-3.5 px-4 sm:px-6">CURRENT VALUE</th>
+                                        <th class="py-3.5 px-4 sm:px-6">NET RETURN</th>
+                                        <th class="py-3.5 px-4 sm:px-6 text-right">XIRR</th>
                                     </tr>
                                 </thead>
                                 <tbody id="lockin-table-body" class="divide-y divide-neutralScale-100 text-xs">
-                                    <!-- Dynamic Rich Dummy Rows -->
+                                    <!-- Dynamic Lock-in Rows with Start Date Column -->
                                 </tbody>
                             </table>
                         </div>
@@ -735,81 +802,6 @@
         </div>
     </main>
 
-    <!-- ========================================== -->
-    <!-- REPORT DOWNLOAD MODAL                      -->
-    <!-- ========================================== -->
-    <div id="modal-report" class="fixed inset-0 bg-neutralScale-900/60 backdrop-blur-xs z-50 items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-neutralScale-100 space-y-5">
-            
-            <div class="flex justify-between items-start border-b border-neutralScale-100 pb-3">
-                <div>
-                    <h3 class="text-base font-bold text-neutralScale-900">Download Portfolio Report</h3>
-                    <p class="text-xs text-neutralScale-500">Request statement for plan or lock-in level analysis</p>
-                </div>
-                <button onclick="closeReportModal()" class="text-neutralScale-500 hover:text-neutralScale-900 font-bold p-1">✕</button>
-            </div>
-
-            <!-- Report Tabs -->
-            <div class="grid grid-cols-2 gap-2 p-1 bg-neutralScale-200/60 rounded-xl">
-                <button id="tab-btn-summary" onclick="switchReportType('summary')" class="py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs">
-                    Investment Summary
-                </button>
-                <button id="tab-btn-npa" onclick="switchReportType('npa')" class="py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900">
-                    Growth NPA
-                </button>
-            </div>
-
-            <!-- FLOW 1 -->
-            <div id="flow-investment-summary" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-neutralScale-900 mb-1.5">Select product</label>
-                    <select class="w-full bg-neutralScale-50 border border-neutralScale-200 rounded-xl px-3 py-2.5 text-xs text-neutralScale-900 font-medium focus:outline-none focus:border-brand-900">
-                        <option value="1">Growth Plan Aggregated (All Lockins)</option>
-                        <option value="2">Growth Lockin</option>
-                        <option value="3">Monthly EMI Plan Aggregated (All Tranches)</option>
-                        <option value="4">Monthly EMI Tranche</option>
-                    </select>
-                </div>
-                
-                <p class="text-xs text-neutralScale-500 leading-relaxed bg-neutralScale-50 p-3 rounded-xl border border-neutralScale-100">
-                    This report provides details of your transactions in the selected Growth Plans and Monthly EMI.
-                </p>
-            </div>
-
-            <!-- FLOW 2 -->
-            <div id="flow-growth-npa" class="space-y-4 hidden">
-                <div>
-                    <label class="block text-xs font-bold text-neutralScale-900 mb-1.5">Select report type</label>
-                    <select class="w-full bg-neutralScale-50 border border-neutralScale-200 rounded-xl px-3 py-2.5 text-xs text-neutralScale-900 font-medium focus:outline-none focus:border-brand-900">
-                        <option value="1">Aggregated NPA Report (All Lockins)</option>
-                        <option value="2">Lockin NPA Report</option>
-                    </select>
-                </div>
-
-                <p class="text-xs text-neutralScale-500 leading-relaxed bg-neutralScale-50 p-3 rounded-xl border border-neutralScale-100">
-                    Choose a growth lockin to request its NPA report.
-                </p>
-            </div>
-
-            <div class="space-y-3 border-t border-neutralScale-100 pt-3">
-                <p class="text-xs text-neutralScale-500 flex items-center">
-                    <i data-lucide="mail" class="w-3.5 h-3.5 mr-1.5 text-brand-900"></i>
-                    Your report will be sent to <strong class="ml-1 text-neutralScale-900">sourav.singh@example.com</strong>.
-                </p>
-
-                <div class="flex space-x-3 pt-2">
-                    <button onclick="closeReportModal()" class="w-1/2 py-2.5 text-xs font-bold text-neutralScale-500 hover:bg-neutralScale-100 rounded-xl transition">
-                        Cancel
-                    </button>
-                    <button onclick="triggerReportRequest()" class="w-1/2 py-2.5 text-xs font-bold bg-brand-900 hover:bg-black text-white rounded-xl shadow-xs transition">
-                        Request Report
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
     <!-- Javascript Controller -->
     <script>
         lucide.createIcons();
@@ -818,54 +810,133 @@
         let currentPlanState = 'active'; // 'active' or 'closed'
         let overviewXIRRVal = 12.4;
 
-        // Mathematical Consistency: Aggregated values strictly sum up from individual row entries
+        // Mobile Sidebar Toggle
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const backdrop = document.getElementById('mobile-sidebar-backdrop');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        // Structured Net Returns Tooltip Generator
+        function getNetReturnsTooltipHTML(netReturns, totalLent, netRepaid, currentValue) {
+            return `
+                <div class="space-y-1 text-left font-sans">
+                    <div class="font-bold border-b border-neutralScale-600 pb-1 text-brand-500">Net Returns Breakdown</div>
+                    <div class="flex justify-between space-x-4 pt-0.5">
+                        <span class="text-neutralScale-300">Net Returns:</span>
+                        <strong class="text-white">${netReturns}</strong>
+                    </div>
+                    <div class="flex justify-between space-x-4">
+                        <span class="text-neutralScale-300">Total Amount Lent:</span>
+                        <strong class="text-white">${totalLent}</strong>
+                    </div>
+                    <div class="flex justify-between space-x-4">
+                        <span class="text-neutralScale-300">Net Repaid To Bank:</span>
+                        <strong class="text-white">${netRepaid}</strong>
+                    </div>
+                    <div class="flex justify-between space-x-4">
+                        <span class="text-neutralScale-300">Current Value:</span>
+                        <strong class="text-white">${currentValue}</strong>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Global Tooltip Placement Engine (Prevents clipping, overflows, and card overlaps)
+        function showGlobalTooltip(element, htmlContent) {
+            const tooltip = document.getElementById('global-tooltip');
+            const tooltipContent = document.getElementById('global-tooltip-content');
+            
+            tooltipContent.innerHTML = htmlContent;
+            tooltip.classList.remove('hidden');
+            
+            // Allow element rendering to get accurate bounding dimensions
+            setTimeout(() => {
+                const rect = element.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+                
+                // Position above element by default
+                let top = rect.top - tooltipRect.height - 10;
+                let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+
+                // Viewport boundaries check
+                if (top < 10) {
+                    // Render below if clipped at top
+                    top = rect.bottom + 10;
+                }
+                if (left < 10) {
+                    left = 10;
+                } else if (left + tooltipRect.width > window.innerWidth - 10) {
+                    left = window.innerWidth - tooltipRect.width - 10;
+                }
+
+                tooltip.style.top = `${top}px`;
+                tooltip.style.left = `${left}px`;
+                tooltip.classList.remove('opacity-0');
+                tooltip.classList.add('opacity-100');
+            }, 0);
+        }
+
+        function hideGlobalTooltip() {
+            const tooltip = document.getElementById('global-tooltip');
+            tooltip.classList.remove('opacity-100');
+            tooltip.classList.add('opacity-0');
+            setTimeout(() => {
+                tooltip.classList.add('hidden');
+            }, 150);
+        }
+
+        // Mathematical Consistency: Net Repaid to Bank = Principal Received + Net Interest Received
         const plansDataMap = {
             'Growth Pro 2 Months': {
                 xirr: 12.8,
                 active: {
                     current: '₹90,000',
                     initial: '₹2,00,000',
-                    lent: '₹1,96,000', // Total Amount Lent = Initial Amount (₹2,00,000) - Fees (₹4,000)
+                    lent: '₹1,96,000',
                     returns: '+₹21,500',
                     principalRecd: '₹1,10,000',
-                    interestRecd: '₹25,500',
-                    netRepaid: '₹1,31,500',
+                    interestRecd: '₹21,500', 
+                    netRepaid: '₹1,31,500',  // ₹1,10,000 + ₹21,500 = ₹1,31,500
                     npa: '0.18% (₹162)',
-                    fees: '₹4,000',
-                    repaid: '₹1,31,500',
                     lockins: [
-                        { id: '#05828074DBNF', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,800', xirr: '12.8%' },
-                        { id: '#08921142KLPQ', initial: '₹20,000', current: '₹10,000', returnVal: '+₹2,100', xirr: '12.7%' },
-                        { id: '#03829103PLMK', initial: '₹25,000', current: '₹12,000', returnVal: '+₹2,650', xirr: '12.9%' },
-                        { id: '#04729184QWER', initial: '₹15,000', current: '₹8,000',  returnVal: '+₹1,600', xirr: '12.6%' },
-                        { id: '#09182374TYUI', initial: '₹30,000', current: '₹15,000', returnVal: '+₹3,200', xirr: '13.0%' },
-                        { id: '#01928374OPAS', initial: '₹18,000', current: '₹7,000',  returnVal: '+₹1,850', xirr: '12.8%' },
-                        { id: '#02837461DFGH', initial: '₹22,000', current: '₹10,000', returnVal: '+₹2,350', xirr: '12.7%' },
-                        { id: '#03746281JKLZ', initial: '₹15,000', current: '₹6,000',  returnVal: '+₹1,550', xirr: '12.5%' },
-                        { id: '#04837261XCVB', initial: '₹12,000', current: '₹5,000',  returnVal: '+₹1,300', xirr: '12.8%' },
-                        { id: '#05938271BNMM', initial: '₹18,000', current: '₹7,000',  returnVal: '+₹2,100', xirr: '12.9%' }
+                        { id: '#05828074DBNF', startDate: '12 Jan 2026', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,800', xirr: '12.8%' },
+                        { id: '#08921142KLPQ', startDate: '18 Jan 2026', initial: '₹20,000', current: '₹10,000', returnVal: '+₹2,100', xirr: '12.7%' },
+                        { id: '#03829103PLMK', startDate: '25 Jan 2026', initial: '₹25,000', current: '₹12,000', returnVal: '+₹2,650', xirr: '12.9%' },
+                        { id: '#04729184QWER', startDate: '02 Feb 2026', initial: '₹15,000', current: '₹8,000',  returnVal: '+₹1,600', xirr: '12.6%' },
+                        { id: '#09182374TYUI', startDate: '10 Feb 2026', initial: '₹30,000', current: '₹15,000', returnVal: '+₹3,200', xirr: '13.0%' },
+                        { id: '#01928374OPAS', startDate: '15 Feb 2026', initial: '₹18,000', current: '₹7,000',  returnVal: '+₹1,850', xirr: '12.8%' },
+                        { id: '#02837461DFGH', startDate: '22 Feb 2026', initial: '₹22,000', current: '₹10,000', returnVal: '+₹2,350', xirr: '12.7%' },
+                        { id: '#03746281JKLZ', startDate: '01 Mar 2026', initial: '₹15,000', current: '₹6,000',  returnVal: '+₹1,550', xirr: '12.5%' },
+                        { id: '#04837261XCVB', startDate: '05 Mar 2026', initial: '₹12,000', current: '₹5,000',  returnVal: '+₹1,300', xirr: '12.8%' },
+                        { id: '#05938271BNMM', startDate: '10 Mar 2026', initial: '₹18,000', current: '₹7,000',  returnVal: '+₹2,100', xirr: '12.9%' }
                     ]
                 },
                 closed: {
-                    current: '₹0', // Always 0 for fully closed state
+                    current: '₹0',
                     initial: '₹1,50,000',
-                    lent: '₹1,47,200', // ₹1,50,000 - ₹2,800 fees
+                    lent: '₹1,47,200',
                     returns: '+₹16,400',
                     principalRecd: '₹1,50,000',
-                    interestRecd: '₹19,200',
-                    netRepaid: '₹1,66,400',
+                    interestRecd: '₹16,400',
+                    netRepaid: '₹1,66,400',  // ₹1,50,000 + ₹16,400 = ₹1,66,400
                     npa: '0.00% (₹0)',
-                    fees: '₹2,800',
-                    repaid: '₹1,66,400',
                     lockins: [
-                        { id: '#01928374CLSD', initial: '₹20,000', current: '₹0', returnVal: '+₹2,100', xirr: '12.5%' },
-                        { id: '#02837482CLSD', initial: '₹25,000', current: '₹0', returnVal: '+₹2,750', xirr: '12.8%' },
-                        { id: '#03829104CLSD', initial: '₹15,000', current: '₹0', returnVal: '+₹1,600', xirr: '12.4%' },
-                        { id: '#04829105CLSD', initial: '₹30,000', current: '₹0', returnVal: '+₹3,300', xirr: '12.6%' },
-                        { id: '#05829106CLSD', initial: '₹10,000', current: '₹0', returnVal: '+₹1,100', xirr: '12.3%' },
-                        { id: '#06829107CLSD', initial: '₹18,000', current: '₹0', returnVal: '+₹1,950', xirr: '12.7%' },
-                        { id: '#07829108CLSD', initial: '₹22,000', current: '₹0', returnVal: '+₹2,400', xirr: '12.5%' },
-                        { id: '#08829109CLSD', initial: '₹10,000', current: '₹0', returnVal: '+₹1,200', xirr: '12.8%' }
+                        { id: '#01928374CLSD', startDate: '10 Oct 2025', initial: '₹20,000', current: '₹0', returnVal: '+₹2,100', xirr: '12.5%' },
+                        { id: '#02837482CLSD', startDate: '15 Oct 2025', initial: '₹25,000', current: '₹0', returnVal: '+₹2,750', xirr: '12.8%' },
+                        { id: '#03829104CLSD', startDate: '01 Nov 2025', initial: '₹15,000', current: '₹0', returnVal: '+₹1,600', xirr: '12.4%' },
+                        { id: '#04829105CLSD', startDate: '12 Nov 2025', initial: '₹30,000', current: '₹0', returnVal: '+₹3,300', xirr: '12.6%' },
+                        { id: '#05829106CLSD', startDate: '20 Nov 2025', initial: '₹10,000', current: '₹0', returnVal: '+₹1,100', xirr: '12.3%' },
+                        { id: '#06829107CLSD', startDate: '05 Dec 2025', initial: '₹18,000', current: '₹0', returnVal: '+₹1,950', xirr: '12.7%' },
+                        { id: '#07829108CLSD', startDate: '15 Dec 2025', initial: '₹22,000', current: '₹0', returnVal: '+₹2,400', xirr: '12.5%' },
+                        { id: '#08829109CLSD', startDate: '28 Dec 2025', initial: '₹10,000', current: '₹0', returnVal: '+₹1,200', xirr: '12.8%' }
                     ]
                 }
             },
@@ -877,17 +948,15 @@
                     lent: '₹1,17,600',
                     returns: '+₹12,400',
                     principalRecd: '₹70,000',
-                    interestRecd: '₹14,800',
-                    netRepaid: '₹82,400',
+                    interestRecd: '₹12,400',
+                    netRepaid: '₹82,400',    // ₹70,000 + ₹12,400 = ₹82,400
                     npa: '0.12% (₹60)',
-                    fees: '₹2,400',
-                    repaid: '₹82,400',
                     lockins: [
-                        { id: '#09128383LKM1', initial: '₹30,000', current: '₹12,000', returnVal: '+₹3,100', xirr: '12.2%' },
-                        { id: '#09128383LKM2', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,600', xirr: '12.1%' },
-                        { id: '#09128383LKM3', initial: '₹20,000', current: '₹8,000',  returnVal: '+₹2,100', xirr: '12.3%' },
-                        { id: '#09128383LKM4', initial: '₹25,000', current: '₹11,000', returnVal: '+₹2,500', xirr: '12.0%' },
-                        { id: '#09128383LKM5', initial: '₹20,000', current: '₹9,000',  returnVal: '+₹2,100', xirr: '12.4%' }
+                        { id: '#09128383LKM1', startDate: '05 Jan 2026', initial: '₹30,000', current: '₹12,000', returnVal: '+₹3,100', xirr: '12.2%' },
+                        { id: '#09128383LKM2', startDate: '14 Jan 2026', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,600', xirr: '12.1%' },
+                        { id: '#09128383LKM3', startDate: '01 Feb 2026', initial: '₹20,000', current: '₹8,000',  returnVal: '+₹2,100', xirr: '12.3%' },
+                        { id: '#09128383LKM4', startDate: '15 Feb 2026', initial: '₹25,000', current: '₹11,000', returnVal: '+₹2,500', xirr: '12.0%' },
+                        { id: '#09128383LKM5', startDate: '01 Mar 2026', initial: '₹20,000', current: '₹9,000',  returnVal: '+₹2,100', xirr: '12.4%' }
                     ]
                 },
                 closed: {
@@ -896,16 +965,14 @@
                     lent: '₹78,400',
                     returns: '+₹8,200',
                     principalRecd: '₹80,000',
-                    interestRecd: '₹9,800',
-                    netRepaid: '₹88,200',
+                    interestRecd: '₹8,200',
+                    netRepaid: '₹88,200',    // ₹80,000 + ₹8,200 = ₹88,200
                     npa: '0.00% (₹0)',
-                    fees: '₹1,600',
-                    repaid: '₹88,200',
                     lockins: [
-                        { id: '#03829102CLSD1', initial: '₹20,000', current: '₹0', returnVal: '+₹2,050', xirr: '12.1%' },
-                        { id: '#03829102CLSD2', initial: '₹30,000', current: '₹0', returnVal: '+₹3,100', xirr: '12.2%' },
-                        { id: '#03829102CLSD3', initial: '₹15,000', current: '₹0', returnVal: '+₹1,500', xirr: '12.0%' },
-                        { id: '#03829102CLSD4', initial: '₹15,000', current: '₹0', returnVal: '+₹1,550', xirr: '12.3%' }
+                        { id: '#03829102CLSD1', startDate: '15 Sep 2025', initial: '₹20,000', current: '₹0', returnVal: '+₹2,050', xirr: '12.1%' },
+                        { id: '#03829102CLSD2', startDate: '01 Oct 2025', initial: '₹30,000', current: '₹0', returnVal: '+₹3,100', xirr: '12.2%' },
+                        { id: '#03829102CLSD3', startDate: '20 Oct 2025', initial: '₹15,000', current: '₹0', returnVal: '+₹1,500', xirr: '12.0%' },
+                        { id: '#03829102CLSD4', startDate: '10 Nov 2025', initial: '₹15,000', current: '₹0', returnVal: '+₹1,550', xirr: '12.3%' }
                     ]
                 }
             },
@@ -917,15 +984,13 @@
                     lent: '₹98,000',
                     returns: '+₹10,850',
                     principalRecd: '₹60,000',
-                    interestRecd: '₹12,850',
-                    netRepaid: '₹70,850',
+                    interestRecd: '₹10,850',
+                    netRepaid: '₹70,850',    // ₹60,000 + ₹10,850 = ₹70,850
                     npa: '0.15% (₹60)',
-                    fees: '₹2,000',
-                    repaid: '₹70,850',
                     lockins: [
-                        { id: '#10293847PLM1', initial: '₹40,000', current: '₹16,000', returnVal: '+₹4,300', xirr: '13.1%' },
-                        { id: '#10293847PLM2', initial: '₹35,000', current: '₹14,000', returnVal: '+₹3,800', xirr: '13.2%' },
-                        { id: '#10293847PLM3', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,750', xirr: '13.0%' }
+                        { id: '#10293847PLM1', startDate: '10 Jan 2026', initial: '₹40,000', current: '₹16,000', returnVal: '+₹4,300', xirr: '13.1%' },
+                        { id: '#10293847PLM2', startDate: '01 Feb 2026', initial: '₹35,000', current: '₹14,000', returnVal: '+₹3,800', xirr: '13.2%' },
+                        { id: '#10293847PLM3', startDate: '20 Feb 2026', initial: '₹25,000', current: '₹10,000', returnVal: '+₹2,750', xirr: '13.0%' }
                     ]
                 },
                 closed: {
@@ -934,14 +999,12 @@
                     lent: '₹49,000',
                     returns: '+₹5,600',
                     principalRecd: '₹50,000',
-                    interestRecd: '₹6,600',
-                    netRepaid: '₹55,600',
+                    interestRecd: '₹5,600',
+                    netRepaid: '₹55,600',    // ₹50,000 + ₹5,600 = ₹55,600
                     npa: '0.00% (₹0)',
-                    fees: '₹1,000',
-                    repaid: '₹55,600',
                     lockins: [
-                        { id: '#10293847CLSD1', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.0%' },
-                        { id: '#10293847CLSD2', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.1%' }
+                        { id: '#10293847CLSD1', startDate: '10 Aug 2025', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.0%' },
+                        { id: '#10293847CLSD2', startDate: '25 Aug 2025', initial: '₹25,000', current: '₹0', returnVal: '+₹2,800', xirr: '13.1%' }
                     ]
                 }
             },
@@ -953,14 +1016,12 @@
                     lent: '₹78,400',
                     returns: '+₹3,500',
                     principalRecd: '₹50,000',
-                    interestRecd: '₹5,100',
-                    netRepaid: '₹53,500',
+                    interestRecd: '₹3,500',
+                    netRepaid: '₹53,500',    // ₹50,000 + ₹3,500 = ₹53,500
                     npa: '0.11% (₹33)',
-                    fees: '₹1,600',
-                    repaid: '₹53,500',
                     lockins: [
-                        { id: '#55493821QWE1', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,800', xirr: '11.2%' },
-                        { id: '#55493821QWE2', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,700', xirr: '11.1%' }
+                        { id: '#55493821QWE1', startDate: '15 Feb 2026', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,800', xirr: '11.2%' },
+                        { id: '#55493821QWE2', startDate: '28 Feb 2026', initial: '₹40,000', current: '₹15,000', returnVal: '+₹1,700', xirr: '11.1%' }
                     ]
                 },
                 closed: {
@@ -969,13 +1030,11 @@
                     lent: '₹29,400',
                     returns: '+₹2,100',
                     principalRecd: '₹30,000',
-                    interestRecd: '₹2,700',
-                    netRepaid: '₹32,100',
+                    interestRecd: '₹2,100',
+                    netRepaid: '₹32,100',    // ₹30,000 + ₹2,100 = ₹32,100
                     npa: '0.00% (₹0)',
-                    fees: '₹600',
-                    repaid: '₹32,100',
                     lockins: [
-                        { id: '#09281726CLSD', initial: '₹30,000', current: '₹0', returnVal: '+₹2,100', xirr: '11.0%' }
+                        { id: '#09281726CLSD', startDate: '01 Nov 2025', initial: '₹30,000', current: '₹0', returnVal: '+₹2,100', xirr: '11.0%' }
                     ]
                 }
             }
@@ -1015,19 +1074,19 @@
         function updateBreadcrumbs(view) {
             const bc = document.getElementById('breadcrumb');
             if (view === 'portfolio') {
-                bc.innerHTML = `<span>Portfolio</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> <span class="text-brand-900 font-bold">P2P Edge Overview</span>`;
+                bc.innerHTML = `<span>Portfolio</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500 shrink-0"></i> <span class="text-brand-900 font-bold truncate">P2P Edge Overview</span>`;
             } else if (view === 'plans_list') {
                 bc.innerHTML = `
                     <span class="hover:underline cursor-pointer" onclick="navigateTo('portfolio')">Portfolio</span> 
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> 
-                    <span class="text-brand-900 font-bold">Invested Plans</span>`;
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500 shrink-0"></i> 
+                    <span class="text-brand-900 font-bold truncate">Invested Plans</span>`;
             } else if (view === 'plan_detail') {
                 bc.innerHTML = `
                     <span class="hover:underline cursor-pointer" onclick="navigateTo('portfolio')">Portfolio</span> 
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> 
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500 shrink-0"></i> 
                     <span class="hover:underline cursor-pointer" onclick="navigateTo('plans_list')">Invested Plans</span>
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500"></i> 
-                    <span class="text-brand-900 font-bold">${currentPlanName}</span>`;
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-neutralScale-500 shrink-0"></i> 
+                    <span class="text-brand-900 font-bold truncate">${currentPlanName}</span>`;
             }
             lucide.createIcons();
         }
@@ -1050,6 +1109,7 @@
             }
 
             updateBreadcrumbs(view);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Updates metrics, tooltips, and lock-in table on Plan Detail screen based on Active vs Closed State
@@ -1074,13 +1134,13 @@
             document.getElementById('plan-interest-recd').innerText = stateData.interestRecd;
             document.getElementById('plan-net-repaid').innerText = stateData.netRepaid;
             document.getElementById('plan-npa-text').innerText = stateData.npa;
-            document.getElementById('plan-fees-text').innerText = stateData.fees;
 
-            // Tooltip Breakdown Updates
-            document.getElementById('tt-returns').innerText = stateData.returns;
-            document.getElementById('tt-lent').innerText = stateData.lent;
-            document.getElementById('tt-repaid').innerText = stateData.repaid;
-            document.getElementById('tt-current').innerText = stateData.current;
+            // Dynamically Bind Custom Net Returns Tooltip to Info Icon
+            const netReturnsIcon = document.getElementById('plan-net-returns-info-icon');
+            netReturnsIcon.onmouseenter = () => showGlobalTooltip(
+                netReturnsIcon, 
+                getNetReturnsTooltipHTML(stateData.returns, stateData.lent, stateData.netRepaid, stateData.current)
+            );
 
             // Table Header Title Updates
             document.getElementById('lockin-table-heading').innerText = `${currentPlanState.toUpperCase()} LOCK-IN CONTRACTS`;
@@ -1096,11 +1156,11 @@
             const btnClosed = document.getElementById('plan-state-btn-closed');
 
             if (state === 'active') {
-                btnActive.className = "px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition";
-                btnClosed.className = "px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition";
+                btnActive.className = "flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition";
+                btnClosed.className = "flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition";
             } else {
-                btnClosed.className = "px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition";
-                btnActive.className = "px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition";
+                btnClosed.className = "flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs transition";
+                btnActive.className = "flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900 transition";
             }
 
             updatePlanDetailView();
@@ -1111,7 +1171,7 @@
             tbody.innerHTML = '';
 
             if (!lockins || lockins.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-neutralScale-500 font-medium">No ${currentPlanState} lock-in contracts found for this plan.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-neutralScale-500 font-medium">No ${currentPlanState} lock-in contracts found for this plan.</td></tr>`;
                 return;
             }
 
@@ -1119,11 +1179,12 @@
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-neutralScale-50 transition border-b border-neutralScale-100";
                 tr.innerHTML = `
-                    <td class="py-3.5 px-6 font-bold text-brand-900">${item.id}</td>
-                    <td class="py-3.5 px-6 font-semibold text-neutralScale-900">${item.initial}</td>
-                    <td class="py-3.5 px-6 font-bold ${item.current === '₹0' ? 'text-neutralScale-500' : 'text-neutralScale-900'}">${item.current}</td>
-                    <td class="py-3.5 px-6 font-bold text-brand-600">${item.returnVal}</td>
-                    <td class="py-3.5 px-6 font-bold text-neutralScale-900 text-right font-mono">${item.xirr}</td>
+                    <td class="py-3.5 px-4 sm:px-6 font-bold text-brand-900">${item.id}</td>
+                    <td class="py-3.5 px-4 sm:px-6 font-medium text-neutralScale-500">${item.startDate}</td>
+                    <td class="py-3.5 px-4 sm:px-6 font-semibold text-neutralScale-900">${item.initial}</td>
+                    <td class="py-3.5 px-4 sm:px-6 font-bold ${item.current === '₹0' ? 'text-neutralScale-500' : 'text-neutralScale-900'}">${item.current}</td>
+                    <td class="py-3.5 px-4 sm:px-6 font-bold text-brand-600">${item.returnVal}</td>
+                    <td class="py-3.5 px-4 sm:px-6 font-bold text-neutralScale-900 text-right font-mono">${item.xirr}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1131,43 +1192,6 @@
 
         function addFundsAction(planName) {
             alert(`Redirecting to payment/investment flow to add funds to ${planName}.`);
-        }
-
-        // Modal Controllers
-        function openReportModal() {
-            const modal = document.getElementById('modal-report');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeReportModal() {
-            const modal = document.getElementById('modal-report');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        function switchReportType(type) {
-            const btnSummary = document.getElementById('tab-btn-summary');
-            const btnNpa = document.getElementById('tab-btn-npa');
-            const flowSummary = document.getElementById('flow-investment-summary');
-            const flowNpa = document.getElementById('flow-growth-npa');
-
-            if (type === 'summary') {
-                btnSummary.className = "py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs";
-                btnNpa.className = "py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900";
-                flowSummary.classList.remove('hidden');
-                flowNpa.classList.add('hidden');
-            } else {
-                btnNpa.className = "py-2 text-xs font-bold rounded-lg bg-white text-brand-900 shadow-xs";
-                btnSummary.className = "py-2 text-xs font-bold rounded-lg text-neutralScale-500 hover:text-neutralScale-900";
-                flowNpa.classList.remove('hidden');
-                flowSummary.classList.add('hidden');
-            }
-        }
-
-        function triggerReportRequest() {
-            alert('Report request sent successfully! You will receive it at sourav.singh@example.com shortly.');
-            closeReportModal();
         }
 
         // Initialize Page

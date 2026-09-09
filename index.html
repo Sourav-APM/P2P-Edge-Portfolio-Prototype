@@ -62,13 +62,27 @@
         /* Mobile Sidebar Overlay Transition */
         #mobile-sidebar-backdrop { transition: opacity 0.3s ease-in-out; }
         #mobile-sidebar { transition: transform 0.3s ease-in-out; }
+
+        /* Bottom Sheet Styles for Mobile Info Panel */
+        #mobile-bottom-sheet-backdrop { transition: opacity 0.3s ease-in-out; }
+        #mobile-bottom-sheet { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col md:flex-row text-neutralScale-900 font-sf">
 
-    <!-- GLOBAL FIXED TOOLTIP CARD CONTAINER -->
+    <!-- GLOBAL FIXED TOOLTIP CARD CONTAINER (DESKTOP) -->
     <div id="global-tooltip" class="fixed hidden z-[9999] pointer-events-none transition-opacity duration-150 opacity-0 bg-neutralScale-900 text-white text-[11px] p-3 rounded-xl shadow-2xl max-w-xs leading-relaxed font-normal">
         <div id="global-tooltip-content"></div>
+    </div>
+
+    <!-- MOBILE BOTTOM SHEET PANEL CONTAINER -->
+    <div id="mobile-bottom-sheet-backdrop" onclick="closeMobileBottomSheet()" class="fixed inset-0 bg-black/50 z-[100] hidden md:hidden opacity-0"></div>
+    <div id="mobile-bottom-sheet" class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-[101] p-5 shadow-2xl transform translate-y-full md:hidden border-t border-neutralScale-200">
+        <div class="w-12 h-1.5 bg-neutralScale-300 rounded-full mx-auto mb-4"></div>
+        <div id="mobile-bottom-sheet-content" class="text-xs text-neutralScale-900 font-normal leading-relaxed"></div>
+        <button onclick="closeMobileBottomSheet()" class="w-full mt-5 bg-neutralScale-100 hover:bg-neutralScale-200 text-neutralScale-900 font-bold py-2.5 rounded-xl text-xs transition">
+            Close
+        </button>
     </div>
 
     <!-- MOBILE SIDEBAR BACKDROP -->
@@ -212,7 +226,8 @@
                                             <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>
                                             <span id="overview-xirr-text" class="text-xs font-bold text-brand-900">Avg. XIRR 12.4%</span>
                                             <i data-lucide="info" class="w-3.5 h-3.5 text-brand-900 cursor-pointer" 
-                                               onmouseenter="showGlobalTooltip(this, 'Your average yearly return percentage across all your P2P Edge investments, taking exact dates into account.')" 
+                                               onclick="handleInfoTrigger(this, 'Your average yearly return percentage across all your P2P Edge investments, taking exact dates into account.')"
+                                               onmouseenter="handleInfoTrigger(this, 'Your average yearly return percentage across all your P2P Edge investments, taking exact dates into account.')" 
                                                onmouseleave="hideGlobalTooltip()"></i>
                                             <button onclick="refreshXIRRAction(this, 'overview')" title="Refresh XIRR" class="text-brand-900 hover:text-black transition ml-0.5 focus:outline-none">
                                                 <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
@@ -234,7 +249,8 @@
                                         <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
                                             Current Value
                                             <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500 ml-1 cursor-pointer" 
-                                               onmouseenter="showGlobalTooltip(this, 'The exact amount of your money currently working in active loans.')" 
+                                               onclick="handleInfoTrigger(this, 'The exact amount of your money currently working in active loans.')"
+                                               onmouseenter="handleInfoTrigger(this, 'The exact amount of your money currently working in active loans.')" 
                                                onmouseleave="hideGlobalTooltip()"></i>
                                         </span>
                                         <p class="text-2xl font-bold text-neutralScale-900">₹2,10,000</p>
@@ -245,7 +261,8 @@
                                         <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
                                             Total Initial Amount
                                             <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500 ml-1 cursor-pointer" 
-                                               onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins across all P2P Edge plans.')" 
+                                               onclick="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins across all P2P Edge plans.')"
+                                               onmouseenter="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins across all P2P Edge plans.')" 
                                                onmouseleave="hideGlobalTooltip()"></i>
                                         </span>
                                         <p class="text-2xl font-bold text-neutralScale-900">₹5,00,000</p>
@@ -256,7 +273,8 @@
                                         <span class="text-xs text-neutralScale-500 font-medium flex items-center mb-1">
                                             Net Returns
                                             <i data-lucide="info" class="w-3.5 h-3.5 text-brand-600 ml-1 cursor-pointer" 
-                                               onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹48,250', '₹4,90,000', '₹3,38,250', '₹2,10,000'))" 
+                                               onclick="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹48,250', '₹4,90,000', '₹3,38,250', '₹2,10,000'))"
+                                               onmouseenter="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹48,250', '₹4,90,000', '₹3,38,250', '₹2,10,000'))" 
                                                onmouseleave="hideGlobalTooltip()"></i>
                                         </span>
                                         <p class="text-2xl font-bold text-brand-600">+₹48,250</p>
@@ -345,7 +363,8 @@
                                         <span class="text-xs font-extrabold text-white tracking-wide flex items-center">
                                             Lifetime Earnings
                                             <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100 ml-1.5 cursor-pointer" 
-                                               onmouseenter="showGlobalTooltip(this, 'Total money made from P2P Edge since you started. Includes interest profit plus P2P Edge rewards, cashbacks, and discounts.')" 
+                                               onclick="handleInfoTrigger(this, 'Total money made from P2P Edge since you started. Includes interest profit plus P2P Edge rewards, cashbacks, and discounts.')"
+                                               onmouseenter="handleInfoTrigger(this, 'Total money made from P2P Edge since you started. Includes interest profit plus P2P Edge rewards, cashbacks, and discounts.')" 
                                                onmouseleave="hideGlobalTooltip()"></i>
                                         </span>
                                         <span class="bg-brand-500 text-brand-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">P2P Edge</span>
@@ -381,7 +400,7 @@
             </div>
 
             <!-- ========================================== -->
-            <!-- LEVEL 2: INVESTED PLANS LIST               -->
+            <!-- LEVEL 2: INVESTED PLANS LIST & LEDGER      -->
             <!-- ========================================== -->
             <div id="view-plans-list" class="space-y-6 hidden">
                 
@@ -419,7 +438,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Total Initial Amount:
                                         <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth Pro 2 Months.')" 
+                                           onclick="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth Pro 2 Months.')"
+                                           onmouseenter="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth Pro 2 Months.')" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-semibold text-neutralScale-900">₹2,00,000</span>
@@ -428,7 +448,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Net Returns:
                                         <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹21,500', '₹1,96,000', '₹1,31,500', '₹90,000'))" 
+                                           onclick="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹21,500', '₹1,96,000', '₹1,31,500', '₹90,000'))"
+                                           onmouseenter="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹21,500', '₹1,96,000', '₹1,31,500', '₹90,000'))" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-bold text-brand-600">+₹21,500</span>
@@ -469,7 +490,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Total Initial Amount:
                                         <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth X.')" 
+                                           onclick="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth X.')"
+                                           onmouseenter="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth X.')" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-semibold text-neutralScale-900">₹1,20,000</span>
@@ -478,7 +500,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Net Returns:
                                         <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹12,400', '₹1,17,600', '₹82,400', '₹50,000'))" 
+                                           onclick="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹12,400', '₹1,17,600', '₹82,400', '₹50,000'))"
+                                           onmouseenter="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹12,400', '₹1,17,600', '₹82,400', '₹50,000'))" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-bold text-brand-600">+₹12,400</span>
@@ -519,7 +542,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Total Initial Amount:
                                         <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth Pro 6 Months.')" 
+                                           onclick="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth Pro 6 Months.')"
+                                           onmouseenter="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth Pro 6 Months.')" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-semibold text-neutralScale-900">₹1,00,000</span>
@@ -528,7 +552,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Net Returns:
                                         <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹10,850', '₹98,000', '₹70,850', '₹40,000'))" 
+                                           onclick="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹10,850', '₹98,000', '₹70,850', '₹40,000'))"
+                                           onmouseenter="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹10,850', '₹98,000', '₹70,850', '₹40,000'))" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-bold text-brand-600">+₹10,850</span>
@@ -569,7 +594,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Total Initial Amount:
                                         <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for Growth Plus.')" 
+                                           onclick="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth Plus.')"
+                                           onmouseenter="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for Growth Plus.')" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-semibold text-neutralScale-900">₹80,000</span>
@@ -578,7 +604,8 @@
                                     <span class="text-neutralScale-500 flex items-center">
                                         Net Returns:
                                         <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
-                                           onmouseenter="showGlobalTooltip(this, getNetReturnsTooltipHTML('+₹3,500', '₹78,400', '₹53,500', '₹30,000'))" 
+                                           onclick="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹3,500', '₹78,400', '₹53,500', '₹30,000'))"
+                                           onmouseenter="handleInfoTrigger(this, getNetReturnsTooltipHTML('+₹3,500', '₹78,400', '₹53,500', '₹30,000'))" 
                                            onmouseleave="hideGlobalTooltip()"></i>
                                     </span>
                                     <span class="font-bold text-brand-600">+₹3,500</span>
@@ -598,6 +625,227 @@
                         </div>
                     </div>
 
+                </div>
+
+                <!-- ========================================== -->
+                <!-- BANK LEDGER SECTION (GROWTH PLAN)          -->
+                <!-- ========================================== -->
+                <div class="space-y-4 pt-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <h2 class="text-sm font-bold text-neutralScale-900 uppercase tracking-wider">BANK LEDGER (GROWTH PLAN)</h2>
+                        </div>
+                        <span class="self-start sm:self-auto text-[11px] font-bold text-brand-900 bg-brand-100/80 px-3 py-1 rounded-full border border-brand-100">16 Cash Flow Transactions</span>
+                    </div>
+
+                    <!-- Ledger Table -->
+                    <div class="bg-white rounded-2xl border border-neutralScale-200 overflow-hidden shadow-xs">
+                        <div class="max-h-[420px] overflow-y-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse table-fixed">
+                                <thead class="sticky top-0 z-10 bg-neutralScale-100 shadow-2xs">
+                                    <tr class="border-b border-neutralScale-200 text-[10px] uppercase font-bold text-neutralScale-500 tracking-wider">
+                                        <th class="py-3.5 px-2 sm:px-6 w-1/3">DATE</th>
+                                        <th class="py-3.5 px-2 sm:px-6 w-1/3">TXN. TYPE</th>
+                                        <th class="py-3.5 px-2 sm:px-6 w-1/3 text-right">CASHFLOW</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-neutralScale-100 text-xs font-medium">
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">08 Sep '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹13,650.94 settled on 08 Sep \'26 in account 5451140000404. UTR: CMS4942462466')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹13,650.94 settled on 08 Sep \'26 in account 5451140000404. UTR: CMS4942462466')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 13,650.94</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">07 Sep '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹84,486.74 settled on 07 Sep \'26 in account 5451140000404. UTR: CMS4942462467')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹84,486.74 settled on 07 Sep \'26 in account 5451140000404. UTR: CMS4942462467')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 84,486.74</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">07 Sep '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹5,793.38 settled on 07 Sep \'26 in account 5451140000404. UTR: CMS4942462468')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹5,793.38 settled on 07 Sep \'26 in account 5451140000404. UTR: CMS4942462468')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 5,793.38</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">04 Sep '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹30,961.69 settled on 04 Sep \'26 in account 5451140000404. UTR: CMS4942462469')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹30,961.69 settled on 04 Sep \'26 in account 5451140000404. UTR: CMS4942462469')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 30,961.69</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">02 Sep '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹12,946.84 settled on 02 Sep \'26 in account 5451140000404. UTR: CMS4942462470')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹12,946.84 settled on 02 Sep \'26 in account 5451140000404. UTR: CMS4942462470')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 12,946.84</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">01 Sep '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹56,563.41 settled on 01 Sep \'26 in account 5451140000404. UTR: CMS4942462471')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹56,563.41 settled on 01 Sep \'26 in account 5451140000404. UTR: CMS4942462471')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 56,563.41</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">31 Aug '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹14,412.70 settled on 31 Aug \'26 in account 5451140000404. UTR: CMS4942462472')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹14,412.70 settled on 31 Aug \'26 in account 5451140000404. UTR: CMS4942462472')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 14,412.70</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">25 Aug '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹51,192.30 settled on 25 Aug \'26 in account 5451140000404. UTR: CMS4942462473')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹51,192.30 settled on 25 Aug \'26 in account 5451140000404. UTR: CMS4942462473')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 51,192.30</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition bg-red-50/20">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">17 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-red-700">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Deposit</span>
+                                                <button onclick="handleInfoTrigger(this, '₹1,13,850.00 deposited on 17 May \'26')" onmouseenter="handleInfoTrigger(this, '₹1,13,850.00 deposited on 17 May \'26')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-red-100 text-red-700 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-red-600 text-right">-₹ 1,13,850.00</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition bg-red-50/20">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">12 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-red-700">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Deposit</span>
+                                                <button onclick="handleInfoTrigger(this, '₹2,13,000.00 deposited on 12 May \'26')" onmouseenter="handleInfoTrigger(this, '₹2,13,000.00 deposited on 12 May \'26')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-red-100 text-red-700 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-red-600 text-right">-₹ 2,13,000.00</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">12 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹1,95,703.30 settled on 12 May \'26 in account 5451140000404. UTR: CMS4942462474')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹1,95,703.30 settled on 12 May \'26 in account 5451140000404. UTR: CMS4942462474')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 1,95,703.30</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition bg-red-50/20">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">10 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-red-700">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Deposit</span>
+                                                <button onclick="handleInfoTrigger(this, '₹1,46,000.00 deposited on 10 May \'26')" onmouseenter="handleInfoTrigger(this, '₹1,46,000.00 deposited on 10 May \'26')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-red-100 text-red-700 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-red-600 text-right">-₹ 1,46,000.00</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition bg-red-50/20">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">09 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-red-700">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Deposit</span>
+                                                <button onclick="handleInfoTrigger(this, '₹1,50,000.00 deposited on 09 May \'26')" onmouseenter="handleInfoTrigger(this, '₹1,50,000.00 deposited on 09 May \'26')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-red-100 text-red-700 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-red-600 text-right">-₹ 1,50,000.00</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition bg-red-50/20">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">08 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-red-700">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Deposit</span>
+                                                <button onclick="handleInfoTrigger(this, '₹1,87,497.00 deposited on 08 May \'26')" onmouseenter="handleInfoTrigger(this, '₹1,87,497.00 deposited on 08 May \'26')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-red-100 text-red-700 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-red-600 text-right">-₹ 1,87,497.00</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">08 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹50,274.90 settled on 08 May \'26 in account 5451140000404. UTR: CMS4942462475')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹50,274.90 settled on 08 May \'26 in account 5451140000404. UTR: CMS4942462475')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 50,274.90</td>
+                                    </tr>
+                                    <tr class="hover:bg-neutralScale-50 transition">
+                                        <td class="py-3 px-2 sm:px-6 text-neutralScale-500">07 May '26</td>
+                                        <td class="py-3 px-2 sm:px-6 font-semibold text-brand-600">
+                                            <span class="inline-flex items-center gap-1 flex-wrap">
+                                                <span>Repayment to Bank</span>
+                                                <button onclick="handleInfoTrigger(this, 'Repayment of ₹5,05,129.47 settled on 07 May \'26 in account 5451140000404. UTR: CMS4942462476')" onmouseenter="handleInfoTrigger(this, 'Repayment of ₹5,05,129.47 settled on 07 May \'26 in account 5451140000404. UTR: CMS4942462476')" onmouseleave="hideGlobalTooltip()" class="p-0.5 rounded-full hover:bg-neutralScale-200 text-neutralScale-500 transition inline-flex items-center justify-center">
+                                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-2 sm:px-6 font-bold text-brand-600 text-right">+₹ 5,05,129.47</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -655,7 +903,8 @@
                             <div class="flex items-center space-x-1.5 text-brand-100/80 text-xs font-medium justify-center">
                                 <span>Current Value</span>
                                 <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100/70 cursor-pointer" 
-                                   onmouseenter="showGlobalTooltip(this, 'The money you currently have actively working in ongoing loans for this plan.')" 
+                                   onclick="handleInfoTrigger(this, 'The money you currently have actively working in ongoing loans for this plan.')"
+                                   onmouseenter="handleInfoTrigger(this, 'The money you currently have actively working in ongoing loans for this plan.')" 
                                    onmouseleave="hideGlobalTooltip()"></i>
                             </div>
                             <p id="plan-current-val" class="text-3xl font-extrabold text-white tracking-tight">₹90,000</p>
@@ -678,7 +927,8 @@
                             <div class="flex items-center space-x-1.5 text-brand-100 text-xs font-bold justify-center">
                                 <span>Net Repaid to Bank</span>
                                 <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100 cursor-pointer" 
-                                   onmouseenter="showGlobalTooltip(this, 'Total money sent directly back to your bank account from this plan so far.<br><br><strong>Formula:</strong> Principal Received + Net Interest Received')" 
+                                   onclick="handleInfoTrigger(this, 'Total money sent directly back to your bank account from this plan so far.<br><br><strong>Formula:</strong> Principal Received + Net Interest Received')"
+                                   onmouseenter="handleInfoTrigger(this, 'Total money sent directly back to your bank account from this plan so far.<br><br><strong>Formula:</strong> Principal Received + Net Interest Received')" 
                                    onmouseleave="hideGlobalTooltip()"></i>
                             </div>
                             <p id="plan-net-repaid" class="text-3xl font-extrabold text-white tracking-tight">₹1,31,500</p>
@@ -696,7 +946,8 @@
                                 <span class="text-xs font-semibold flex items-center">
                                     Total Initial Amount
                                     <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                       onmouseenter="showGlobalTooltip(this, 'Total amount initially deposited across all lock-ins for this plan.')" 
+                                       onclick="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for this plan.')"
+                                       onmouseenter="handleInfoTrigger(this, 'Total amount initially deposited across all lock-ins for this plan.')" 
                                        onmouseleave="hideGlobalTooltip()"></i>
                                 </span>
                                 <i data-lucide="layers" class="w-4 h-4 text-neutralScale-500"></i>
@@ -710,7 +961,8 @@
                                 <span class="text-xs font-semibold flex items-center">
                                     Total Amount Lent
                                     <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                       onmouseenter="showGlobalTooltip(this, 'The exact portion of your money given out to borrowers as loans.')" 
+                                       onclick="handleInfoTrigger(this, 'The exact portion of your money given out to borrowers as loans.')"
+                                       onmouseenter="handleInfoTrigger(this, 'The exact portion of your money given out to borrowers as loans.')" 
                                        onmouseleave="hideGlobalTooltip()"></i>
                                 </span>
                                 <i data-lucide="send" class="w-4 h-4 text-neutralScale-500"></i>
@@ -724,7 +976,8 @@
                                 <span class="text-xs font-semibold flex items-center">
                                     Principal Received
                                     <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                       onmouseenter="showGlobalTooltip(this, 'The original loan money paid back to your bank account by borrowers.')" 
+                                       onclick="handleInfoTrigger(this, 'The original loan money paid back to your bank account by borrowers.')"
+                                       onmouseenter="handleInfoTrigger(this, 'The original loan money paid back to your bank account by borrowers.')" 
                                        onmouseleave="hideGlobalTooltip()"></i>
                                 </span>
                                 <i data-lucide="arrow-down-left" class="w-4 h-4 text-neutralScale-500"></i>
@@ -738,7 +991,8 @@
                                 <span class="text-xs font-semibold flex items-center">
                                     Net Interest Received
                                     <i data-lucide="info" class="w-3 h-3 text-brand-600 ml-1 cursor-pointer" 
-                                       onmouseenter="showGlobalTooltip(this, 'The interest profit sent to your bank account after subtracting platform fees (Interest Earned minus Fees).')" 
+                                       onclick="handleInfoTrigger(this, 'The interest profit sent to your bank account after subtracting platform fees (Interest Earned minus Fees).')"
+                                       onmouseenter="handleInfoTrigger(this, 'The interest profit sent to your bank account after subtracting platform fees (Interest Earned minus Fees).')" 
                                        onmouseleave="hideGlobalTooltip()"></i>
                                 </span>
                                 <i data-lucide="percent" class="w-4 h-4 text-brand-600"></i>
@@ -754,7 +1008,8 @@
                             <span>Portfolio NPA Rate:</span>
                             <strong id="plan-npa-text" class="text-amber-600 font-bold">0.18% (₹162)</strong>
                             <i data-lucide="info" class="w-3.5 h-3.5 text-neutralScale-500 ml-1 cursor-pointer" 
-                               onmouseenter="showGlobalTooltip(this, 'NPA stands for Non Performing Assets. It shows the tiny percentage of loans that are overdue or delayed in repayment.')" 
+                               onclick="handleInfoTrigger(this, 'NPA stands for Non Performing Assets. It shows the tiny percentage of loans that are overdue or delayed in repayment.')"
+                               onmouseenter="handleInfoTrigger(this, 'NPA stands for Non Performing Assets. It shows the tiny percentage of loans that are overdue or delayed in repayment.')" 
                                onmouseleave="hideGlobalTooltip()"></i>
                         </div>
                     </div>
@@ -780,7 +1035,8 @@
                                             <span class="flex items-center">
                                                 INITIAL AMOUNT
                                                 <i data-lucide="info" class="w-3 h-3 text-neutralScale-500 ml-1 cursor-pointer" 
-                                                   onmouseenter="showGlobalTooltip(this, 'The initial amount deposited by user for this specific lock-in.')" 
+                                                   onclick="handleInfoTrigger(this, 'The initial amount deposited by user for this specific lock-in.')"
+                                                   onmouseenter="handleInfoTrigger(this, 'The initial amount deposited by user for this specific lock-in.')" 
                                                    onmouseleave="hideGlobalTooltip()"></i>
                                             </span>
                                         </th>
@@ -824,6 +1080,43 @@
             }
         }
 
+        // Mobile Bottom Sheet Handlers
+        function openMobileBottomSheet(content) {
+            const backdrop = document.getElementById('mobile-bottom-sheet-backdrop');
+            const sheet = document.getElementById('mobile-bottom-sheet');
+            const container = document.getElementById('mobile-bottom-sheet-content');
+
+            container.innerHTML = content;
+            backdrop.classList.remove('hidden');
+            
+            // Trigger animation frame
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                sheet.classList.remove('translate-y-full');
+            }, 10);
+        }
+
+        function closeMobileBottomSheet() {
+            const backdrop = document.getElementById('mobile-bottom-sheet-backdrop');
+            const sheet = document.getElementById('mobile-bottom-sheet');
+
+            backdrop.classList.add('opacity-0');
+            sheet.classList.add('translate-y-full');
+
+            setTimeout(() => {
+                backdrop.classList.add('hidden');
+            }, 300);
+        }
+
+        // Unified info button trigger handler for desktop hover vs mobile bottom sheet
+        function handleInfoTrigger(element, content) {
+            if (window.innerWidth < 768) {
+                openMobileBottomSheet(content);
+            } else {
+                showGlobalTooltip(element, content);
+            }
+        }
+
         // Structured Net Returns Tooltip Generator
         function getNetReturnsTooltipHTML(netReturns, totalLent, netRepaid, currentValue) {
             return `
@@ -849,26 +1142,24 @@
             `;
         }
 
-        // Global Tooltip Placement Engine (Prevents clipping, overflows, and card overlaps)
+        // Global Tooltip Placement Engine (Desktop)
         function showGlobalTooltip(element, htmlContent) {
+            if (window.innerWidth < 768) return; // Ignore desktop tooltips on mobile
+
             const tooltip = document.getElementById('global-tooltip');
             const tooltipContent = document.getElementById('global-tooltip-content');
             
             tooltipContent.innerHTML = htmlContent;
             tooltip.classList.remove('hidden');
             
-            // Allow element rendering to get accurate bounding dimensions
             setTimeout(() => {
                 const rect = element.getBoundingClientRect();
                 const tooltipRect = tooltip.getBoundingClientRect();
                 
-                // Position above element by default
                 let top = rect.top - tooltipRect.height - 10;
                 let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
 
-                // Viewport boundaries check
                 if (top < 10) {
-                    // Render below if clipped at top
                     top = rect.bottom + 10;
                 }
                 if (left < 10) {
@@ -1137,10 +1428,9 @@
 
             // Dynamically Bind Custom Net Returns Tooltip to Info Icon
             const netReturnsIcon = document.getElementById('plan-net-returns-info-icon');
-            netReturnsIcon.onmouseenter = () => showGlobalTooltip(
-                netReturnsIcon, 
-                getNetReturnsTooltipHTML(stateData.returns, stateData.lent, stateData.netRepaid, stateData.current)
-            );
+            const tooltipHTML = getNetReturnsTooltipHTML(stateData.returns, stateData.lent, stateData.netRepaid, stateData.current);
+            netReturnsIcon.onclick = () => handleInfoTrigger(netReturnsIcon, tooltipHTML);
+            netReturnsIcon.onmouseenter = () => handleInfoTrigger(netReturnsIcon, tooltipHTML);
 
             // Table Header Title Updates
             document.getElementById('lockin-table-heading').innerText = `${currentPlanState.toUpperCase()} LOCK-IN CONTRACTS`;

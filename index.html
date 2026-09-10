@@ -342,8 +342,8 @@
                     <!-- Right Column Sidebar -->
                     <div class="space-y-6">
                         
-                        <!-- User's Portfolio Card (Prominently Highlighting Lifetime Earnings) -->
-                        <div class="bg-brand-900 text-white rounded-2xl p-5 sm:p-6 shadow-md relative overflow-hidden space-y-5">
+                        <!-- User's Portfolio Card (Updated for PRD Lifetime Earnings & Collapsible Cards) -->
+                        <div class="bg-brand-900 text-white rounded-2xl p-5 sm:p-6 shadow-md relative overflow-hidden space-y-4">
                             <div class="flex justify-between items-start border-b border-brand-700/50 pb-3">
                                 <div>
                                     <h3 class="font-bold text-base text-white">Sourav's Portfolio</h3>
@@ -352,42 +352,61 @@
                             </div>
 
                             <div class="space-y-4">
-                                <div>
-                                    <p class="text-xs text-brand-100/70">Current Value</p>
-                                    <p class="text-2xl font-bold text-white mt-0.5">₹5,06,500</p>
+                                <!-- COLLAPSIBLE CURRENT VALUE CARD -->
+                                <div class="bg-brand-800/60 rounded-xl border border-brand-700/60 overflow-hidden transition-all">
+                                    <button onclick="togglePortfolioCurrentValue()" class="w-full p-3.5 flex items-center justify-between text-left hover:bg-brand-800/90 transition focus:outline-none">
+                                        <div>
+                                            <p class="text-xs text-brand-100/70">Current Value</p>
+                                            <p id="portfolio-current-val-total" class="text-xl font-bold text-white mt-0.5">₹5,06,500</p>
+                                        </div>
+                                        <i id="current-val-chevron" data-lucide="chevron-down" class="w-4 h-4 text-brand-100 transition-transform duration-200"></i>
+                                    </button>
+                                    
+                                    <!-- Collapsible Table for Current Value -->
+                                    <div id="current-val-collapse-content" class="hidden px-3.5 pb-3.5 pt-1 border-t border-brand-700/40 text-xs">
+                                        <div class="flex justify-between items-center text-[10px] uppercase font-bold text-brand-100/70 pb-1.5 border-b border-brand-700/30 mb-2">
+                                            <span>PRODUCT</span>
+                                            <span>CURRENT VALUE</span>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex justify-between items-center text-white">
+                                                <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-500 mr-2"></span>P2P Edge</span>
+                                                <span class="font-bold">₹2,10,000</span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-white">
+                                                <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-100 mr-2"></span>Estates</span>
+                                                <span class="font-bold">₹2,96,500</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 
-                                <!-- HIGH VISIBILITY LIFETIME EARNINGS CARD -->
-                                <div class="bg-gradient-to-r from-brand-700 to-brand-600 p-3.5 rounded-xl border border-brand-500/40 shadow-inner space-y-1.5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs font-extrabold text-white tracking-wide flex items-center">
-                                            Lifetime Earnings
-                                            <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100 ml-1.5 cursor-pointer" 
-                                               onclick="handleInfoTrigger(this, 'Total money made from P2P Edge since you started. Includes interest profit plus P2P Edge rewards, cashbacks, and discounts.')"
-                                               onmouseenter="handleInfoTrigger(this, 'Total money made from P2P Edge since you started. Includes interest profit plus P2P Edge rewards, cashbacks, and discounts.')" 
-                                               onmouseleave="hideGlobalTooltip()"></i>
-                                        </span>
-                                        <span class="bg-brand-500 text-brand-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">P2P Edge</span>
-                                    </div>
-                                    <p class="text-2xl font-black text-white">+₹64,250</p>
-                                    <div class="text-[10px] text-brand-100/90 pt-1 border-t border-brand-500/30 flex justify-between">
-                                        <span>P2P Interest: +₹58,750</span>
-                                        <span>Rewards: +₹5,500</span>
-                                    </div>
-                                </div>
-
-                                <div class="pt-2 border-t border-brand-700/50 space-y-2 text-xs">
-                                    <div class="flex justify-between items-center text-[10px] uppercase font-bold text-brand-100/70 border-b border-brand-700/30 pb-1">
-                                        <span>PRODUCT</span>
-                                        <span>AMOUNT</span>
-                                    </div>
-                                    <div class="flex justify-between items-center text-white">
-                                        <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-500 mr-2"></span>P2P Edge</span>
-                                        <span class="font-bold">₹2,10,000</span>
-                                    </div>
-                                    <div class="flex justify-between items-center text-white">
-                                        <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-100 mr-2"></span>Estates</span>
-                                        <span class="font-bold">₹2,96,500</span>
+                                <!-- COLLAPSIBLE LIFETIME EARNINGS CARD (PRD COMPLIANT) -->
+                                <div class="bg-gradient-to-r from-brand-700 to-brand-600 rounded-xl border border-brand-500/40 shadow-inner overflow-hidden transition-all">
+                                    <button onclick="togglePortfolioLifetimeEarnings()" class="w-full p-3.5 flex items-center justify-between text-left hover:opacity-95 transition focus:outline-none">
+                                        <div>
+                                            <div class="flex items-center">
+                                                <span class="text-xs font-extrabold text-white tracking-wide">Lifetime Earnings</span>
+                                                <i data-lucide="info" class="w-3.5 h-3.5 text-brand-100 ml-1.5 cursor-pointer" 
+                                                   onclick="event.stopPropagation(); handleInfoTrigger(this, 'Total net earnings from your Per Annum investments and rewards.')"
+                                                   onmouseenter="handleInfoTrigger(this, 'Total net earnings from your Per Annum investments and rewards.')" 
+                                                   onmouseleave="hideGlobalTooltip()"></i>
+                                            </div>
+                                            <p id="portfolio-lifetime-earnings-total" class="text-2xl font-black text-white mt-0.5">₹24,450</p>
+                                            <p class="text-[10px] text-brand-100/90 mt-0.5">Total net earnings from your Per Annum investments and rewards.</p>
+                                        </div>
+                                        <i id="lifetime-earnings-chevron" data-lucide="chevron-down" class="w-4 h-4 text-white transition-transform duration-200 shrink-0 ml-2"></i>
+                                    </button>
+                                    
+                                    <!-- Collapsible Breakdown Table based on PRD Requirements -->
+                                    <div id="lifetime-earnings-collapse-content" class="hidden px-3.5 pb-3.5 pt-1 border-t border-brand-500/30 text-xs">
+                                        <div class="flex justify-between items-center text-[10px] uppercase font-bold text-brand-100/80 pb-1.5 border-b border-brand-500/30 mb-2">
+                                            <span>SOURCE</span>
+                                            <span>EARNINGS</span>
+                                        </div>
+                                        <div id="lifetime-earnings-breakdown-list" class="space-y-2 text-white">
+                                            <!-- Dynamically populated PRD complaint rows without 0 value sources -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1066,6 +1085,80 @@
         let currentPlanState = 'active'; // 'active' or 'closed'
         let overviewXIRRVal = 12.4;
 
+        // PRD DATA SOURCE CONTRACT IMPLEMENTATION
+        const portfolioEarningsData = {
+            lifetimeEarnings: 24450,
+            lifetimeEarningsBreakdown: {
+                p2pEdge: 10000,
+                tranche: 4000,
+                oldPa: 3000,
+                rewards: 1450,
+                estates: 6000
+            }
+        };
+
+        const sourceLabelMapping = {
+            p2pEdge: "P2P Edge",
+            tranche: "Tranche / Monthly EMI",
+            oldPa: "Flexi / Fixed / Old PA",
+            rewards: "Rewards",
+            estates: "Estates"
+        };
+
+        function initPortfolioLifetimeEarnings() {
+            // Calculate Total from Breakdown according to PRD Logic
+            const breakdown = portfolioEarningsData.lifetimeEarningsBreakdown;
+            let computedTotal = 0;
+            const container = document.getElementById('lifetime-earnings-breakdown-list');
+            container.innerHTML = '';
+
+            for (const [key, value] of Object.entries(breakdown)) {
+                if (value !== 0 && value !== null && value !== undefined) {
+                    computedTotal += value;
+                    
+                    const row = document.createElement('div');
+                    row.className = 'flex justify-between items-center';
+                    row.innerHTML = `
+                        <span class="flex items-center text-brand-100/90">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-100 mr-2"></span>
+                            ${sourceLabelMapping[key] || key}
+                        </span>
+                        <span class="font-bold">₹${value.toLocaleString('en-IN')}</span>
+                    `;
+                    container.appendChild(row);
+                }
+            }
+
+            // Fallback to lifetimeEarnings if breakdown missing
+            const finalTotal = computedTotal > 0 ? computedTotal : portfolioEarningsData.lifetimeEarnings;
+            document.getElementById('portfolio-lifetime-earnings-total').innerText = `₹${finalTotal.toLocaleString('en-IN')}`;
+        }
+
+        // Collapsible Card Toggles
+        function togglePortfolioCurrentValue() {
+            const content = document.getElementById('current-val-collapse-content');
+            const chevron = document.getElementById('current-val-chevron');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        function togglePortfolioLifetimeEarnings() {
+            const content = document.getElementById('lifetime-earnings-collapse-content');
+            const chevron = document.getElementById('lifetime-earnings-chevron');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
         // Mobile Sidebar Toggle
         function toggleMobileSidebar() {
             const sidebar = document.getElementById('mobile-sidebar');
@@ -1485,6 +1578,7 @@
         }
 
         // Initialize Page
+        initPortfolioLifetimeEarnings();
         updateBreadcrumbs('portfolio');
     </script>
 </body>

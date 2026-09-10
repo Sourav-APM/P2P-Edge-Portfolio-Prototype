@@ -196,13 +196,14 @@
                     <h1 class="text-xl font-bold text-neutralScale-900">Portfolio Overview</h1>
                 </div>
 
-                <!-- Tabs Switcher -->
+                <!-- Tabs Switcher (Updated to show 3 products: P2P Edge, Estates, NCDs) -->
                 <div class="border-b border-neutralScale-200 flex space-x-8">
                     <button class="pb-2.5 text-sm font-bold text-brand-900 relative">
                         P2P Edge
                         <span class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-900 rounded-t-full"></span>
                     </button>
                     <button class="pb-2.5 text-sm font-medium text-neutralScale-500 hover:text-neutralScale-900">Estates</button>
+                    <button class="pb-2.5 text-sm font-medium text-neutralScale-500 hover:text-neutralScale-900">NCDs</button>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -342,7 +343,7 @@
                     <!-- Right Column Sidebar -->
                     <div class="space-y-6">
                         
-                        <!-- User's Portfolio Card (Updated for PRD Lifetime Earnings & Collapsible Cards) -->
+                        <!-- User's Portfolio Card (Updated for 3 Products and Correct Lifetime Earnings Logic) -->
                         <div class="bg-brand-900 text-white rounded-2xl p-5 sm:p-6 shadow-md relative overflow-hidden space-y-4">
                             <div class="flex justify-between items-start border-b border-brand-700/50 pb-3">
                                 <div>
@@ -352,12 +353,12 @@
                             </div>
 
                             <div class="space-y-4">
-                                <!-- COLLAPSIBLE CURRENT VALUE CARD -->
+                                <!-- COLLAPSIBLE CURRENT VALUE CARD (Now includes 3 Products: P2P Edge, Estates, NCDs) -->
                                 <div class="bg-brand-800/60 rounded-xl border border-brand-700/60 overflow-hidden transition-all">
                                     <button onclick="togglePortfolioCurrentValue()" class="w-full p-3.5 flex items-center justify-between text-left hover:bg-brand-800/90 transition focus:outline-none">
                                         <div>
                                             <p class="text-xs text-brand-100/70">Current Value</p>
-                                            <p id="portfolio-current-val-total" class="text-xl font-bold text-white mt-0.5">₹5,06,500</p>
+                                            <p id="portfolio-current-val-total" class="text-xl font-bold text-white mt-0.5">₹6,56,500</p>
                                         </div>
                                         <i id="current-val-chevron" data-lucide="chevron-down" class="w-4 h-4 text-brand-100 transition-transform duration-200"></i>
                                     </button>
@@ -377,11 +378,15 @@
                                                 <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brand-100 mr-2"></span>Estates</span>
                                                 <span class="font-bold">₹2,96,500</span>
                                             </div>
+                                            <div class="flex justify-between items-center text-white">
+                                                <span class="flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-2"></span>NCDs</span>
+                                                <span class="font-bold">₹1,50,000</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <!-- COLLAPSIBLE LIFETIME EARNINGS CARD (PRD COMPLIANT) -->
+                                <!-- COLLAPSIBLE LIFETIME EARNINGS CARD (Updated: Tranche merged into P2P Edge, logic mathematically sound) -->
                                 <div class="bg-gradient-to-r from-brand-700 to-brand-600 rounded-xl border border-brand-500/40 shadow-inner overflow-hidden transition-all">
                                     <button onclick="togglePortfolioLifetimeEarnings()" class="w-full p-3.5 flex items-center justify-between text-left hover:opacity-95 transition focus:outline-none">
                                         <div>
@@ -392,20 +397,20 @@
                                                    onmouseenter="handleInfoTrigger(this, 'Total net earnings from your Per Annum investments and rewards.')" 
                                                    onmouseleave="hideGlobalTooltip()"></i>
                                             </div>
-                                            <p id="portfolio-lifetime-earnings-total" class="text-2xl font-black text-white mt-0.5">₹24,450</p>
+                                            <p id="portfolio-lifetime-earnings-total" class="text-2xl font-black text-white mt-0.5">₹72,450</p>
                                             <p class="text-[10px] text-brand-100/90 mt-0.5">Total net earnings from your Per Annum investments and rewards.</p>
                                         </div>
                                         <i id="lifetime-earnings-chevron" data-lucide="chevron-down" class="w-4 h-4 text-white transition-transform duration-200 shrink-0 ml-2"></i>
                                     </button>
                                     
-                                    <!-- Collapsible Breakdown Table based on PRD Requirements -->
+                                    <!-- Collapsible Breakdown Table (Tranche row hidden, sum merged into P2P Edge) -->
                                     <div id="lifetime-earnings-collapse-content" class="hidden px-3.5 pb-3.5 pt-1 border-t border-brand-500/30 text-xs">
                                         <div class="flex justify-between items-center text-[10px] uppercase font-bold text-brand-100/80 pb-1.5 border-b border-brand-500/30 mb-2">
                                             <span>SOURCE</span>
                                             <span>EARNINGS</span>
                                         </div>
                                         <div id="lifetime-earnings-breakdown-list" class="space-y-2 text-white">
-                                            <!-- Dynamically populated PRD complaint rows without 0 value sources -->
+                                            <!-- Dynamically populated rows -->
                                         </div>
                                     </div>
                                 </div>
@@ -1085,34 +1090,45 @@
         let currentPlanState = 'active'; // 'active' or 'closed'
         let overviewXIRRVal = 12.4;
 
-        // PRD DATA SOURCE CONTRACT IMPLEMENTATION
+        // UPDATED PRD DATA SOURCE CONTRACT
+        // Requirement 2: Tranche / Monthly EMI is merged into p2pEdge sum and NOT shown as a separate row to user.
+        // Requirement 3: Total Lifetime Earnings (₹72,450) is greater than P2P Edge Net Returns (₹48,250), ensuring correct math logic.
         const portfolioEarningsData = {
-            lifetimeEarnings: 24450,
             lifetimeEarningsBreakdown: {
-                p2pEdge: 10000,
-                tranche: 4000,
+                growthPlans: 34250,  // Base Growth Plans earnings
+                tranche: 14000,      // Tranche / Monthly EMI earnings (merged into P2P Edge)
                 oldPa: 3000,
-                rewards: 1450,
-                estates: 6000
+                rewards: 1200,
+                estates: 20000
             }
         };
 
         const sourceLabelMapping = {
             p2pEdge: "P2P Edge",
-            tranche: "Tranche / Monthly EMI",
             oldPa: "Flexi / Fixed / Old PA",
             rewards: "Rewards",
             estates: "Estates"
         };
 
         function initPortfolioLifetimeEarnings() {
-            // Calculate Total from Breakdown according to PRD Logic
             const breakdown = portfolioEarningsData.lifetimeEarningsBreakdown;
-            let computedTotal = 0;
-            const container = document.getElementById('lifetime-earnings-breakdown-list');
+            let container = document.getElementById('lifetime-earnings-breakdown-list');
             container.innerHTML = '';
 
-            for (const [key, value] of Object.entries(breakdown)) {
+            // Calculate aggregated P2P Edge sum (Growth Plans + Tranche/Monthly EMI)
+            const p2pEdgeTotal = (breakdown.growthPlans || 0) + (breakdown.tranche || 0);
+
+            // Display breakdown items WITHOUT showing a separate "Tranche / Monthly EMI" row
+            const displayData = {
+                p2pEdge: p2pEdgeTotal,
+                oldPa: breakdown.oldPa,
+                rewards: breakdown.rewards,
+                estates: breakdown.estates
+            };
+
+            let computedTotal = 0;
+
+            for (const [key, value] of Object.entries(displayData)) {
                 if (value !== 0 && value !== null && value !== undefined) {
                     computedTotal += value;
                     
@@ -1129,9 +1145,7 @@
                 }
             }
 
-            // Fallback to lifetimeEarnings if breakdown missing
-            const finalTotal = computedTotal > 0 ? computedTotal : portfolioEarningsData.lifetimeEarnings;
-            document.getElementById('portfolio-lifetime-earnings-total').innerText = `₹${finalTotal.toLocaleString('en-IN')}`;
+            document.getElementById('portfolio-lifetime-earnings-total').innerText = `₹${computedTotal.toLocaleString('en-IN')}`;
         }
 
         // Collapsible Card Toggles
